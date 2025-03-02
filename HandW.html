@@ -1,13 +1,529 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" itemscope itemtype="http://schema.org/WebApplication">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>d pal - Interactive Planner</title>
+
+    <title>dPal - Your AI Wellness Hub: Personalized Diet, Fitness, Finance & Mind</title>
+    <meta name="description" content="Unlock your full potential with dPal, the AI-powered holistic wellness planner. Get custom diet & nutrition plans, fitness workouts, BMI tracking, smart financial tools & mindfulness guides—all in one app for balanced living.">
+    <meta name="keywords" content="AI wellness planner, holistic health app, personalized diet plan, nutrition guide, BMI calculator, body composition analysis, AI fitness workout, custom exercise routine, CAGR calculator, investment growth, retirement planning, loan EMI calculator, debt management, mindfulness meditation, mood tracker, gratitude journal, digital wellness coach, AI life planner, health finance balance, lifestyle optimization, mobile health app, AI nutrition planner, AI fitness coach, financial wellness tools">
+    <link rel="canonical" href="https://www.yourdomain.com/dpal">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="dPal - AI Wellness Hub: Diet, Fitness, Finance & Mind - Your Personalized Life Planner">
+    <meta property="og:description" content="Transform your well-being with dPal, the AI holistic planner. Expertly crafted tools for diet, fitness, BMI tracking, wealth growth, retirement planning & mindfulness. Start your journey to a healthier, wealthier, and more mindful you.">
+    <meta property="og:url" content="https://www.yourdomain.com/dpal">
+    <meta property="og:site_name" content="dPal AI Wellness Hub">
+    <meta property="og:image" content="https://www.yourdomain.com/images/dpal-og-image-v4.jpg">
+    <meta property="og:image:alt" content="dPal AI Wellness Hub App Dashboard Preview">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Achieve holistic wellness with dPal AI Planner! AI-driven Diet, Fitness, Finance & Mind tools for a balanced life. #AIWellness #HolisticPlanner #Nutrition #Finance #Mindfulness">
+    <meta name="twitter:title" content="dPal - AI Wellness Hub | Diet, Fitness, Finance & Mind Planner">
+    <meta name="twitter:site" content="@dPalApp">
+    <meta name="twitter:image" content="https://www.yourdomain.com/images/dpal-twitter-card-v4.jpg">
+    <meta name="twitter:image:alt" content="dPal AI Wellness Hub App Interface">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "dPal - AI Holistic Wellness Planner",
+        "description": "dPal is your intelligent AI-driven platform for holistic life management. Seamlessly integrate personalized diet and nutrition planning, fitness workouts, wealth building tools, and mindfulness practices to achieve a balanced and thriving lifestyle.",
+        "applicationCategory": ["HealthApplication", "FinanceApplication", "ProductivityApplication"],
+        "operatingSystem": "Web, Android, iOS",
+        " большей частью": "Web-based application accessible across devices with dedicated mobile apps for enhanced user experience.",
+        "url": "https://www.yourdomain.com/dpal",
+        "keywords": "AI holistic planner, diet nutrition app, nutrition planner, meal plan generator, fitness planner, workout generator, BMI calculator, body mass index, body composition, CAGR calculator, compound annual growth rate, investment calculator, retirement planner, retirement savings, loan calculator, EMI calculator, debt management tool, mindfulness app, meditation guide, mood tracker, gratitude journal, wellness tools, financial planning, life balance, digital health coach, personalized wellness, AI driven insights",
+        "image": "https://www.yourdomain.com/images/dpal-app-icon-v3.png",
+        "brand": {
+            "@type": "Brand",
+            "name": "dPal",
+            "logo": "https://www.yourdomain.com/images/dpal-logo-v3.png"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "Your Company Name",
+            "url": "https://www.yourdomain.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Your Company Name",
+            "url": "https://www.yourdomain.com"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "725"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/OnlineOnly"
+        },
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.yourdomain.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
     <style>
         :root {
             --health-color: #10B981;
             --wealth-color: #3B82F6;
+            --mind-color: #8B5CF6;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --popup-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* Deeper shadow for popup effect */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            background: #F3F4F6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .main-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            height: 100vh;
+            padding: 2rem;
+        }
+
+        .main-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .health-option {
+            background: var(--health-color);
+            color: white;
+        }
+
+        .wealth-option {
+            background: var(--wealth-color);
+            color: white;
+        }
+
+        .mind-option {
+            background: var(--mind-color);
+            color: white;
+        }
+
+        .main-option:hover {
+            transform: scale(0.98);
+        }
+
+        .main-option h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-option p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .section-container {
+            position: fixed;
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%) scale(0.9); /* Center and slightly scaled down */
+            width: 90%; /* Adjust width as needed */
+            max-width: 800px; /* Maximum width for larger screens */
+            padding: 2rem;
+            background: white;
+            border-radius: 1.5rem; /* More rounded corners for popup */
+            transition: var(--transition);
+            overflow-y: auto;
+            box-shadow: var(--popup-shadow); /* Deeper shadow for popup effect */
+            opacity: 0;
+            visibility: hidden;
+            max-height: 90vh; /* Limit height to viewport height */
+        }
+
+        .section-container.active {
+            transform: translate(-50%, -50%) scale(1); /* Scale up to normal size */
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 1rem; /* Adjust back button position inside popup */
+            left: 1rem; /* Adjust back button position inside popup */
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.25rem; /* Slightly smaller back button */
+            color: #6B7280;
+            padding: 0.5rem; /* Smaller padding for back button */
+            border-radius: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .back-button:hover {
+            background: #F3F4F6;
+        }
+
+        .section-content {
+            max-width: 100%; /* Section content takes full width of popup */
+            margin: 0 auto;
+            padding-top: 2rem; /* Reduced padding at top inside popup */
+        }
+
+        .section-box {
+            background: #F9FAFB; /* Lighter background for boxes inside popup */
+            padding: 1.25rem; /* Slightly less padding inside popup boxes */
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #E5E7EB;
+            transition: var(--transition);
+        }
+
+        .section-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px -3px rgba(0, 0, 0, 0.05); /* Less shadow on hover in popup */
+        }
+
+        .section-box h3 {
+            font-size: 1.125rem; /* Slightly smaller heading in popup boxes */
+            margin-bottom: 0.75rem; /* Less margin at bottom of headings in popup boxes */
+            color: var(--health-color);
+        }
+
+        .wealth-section .section-box h3 {
+            color: var(--wealth-color);
+        }
+
+        .mind-section .section-box h3 {
+            color: var(--mind-color);
+        }
+
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.6rem 1.25rem; /* Smaller action button padding in popup */
+            border-radius: 0.75rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            background: var(--health-color);
+            color: white;
+            font-size: 1rem; /* Smaller font size for action buttons in popup */
+        }
+
+        .wealth-section .action-button {
+            background: var(--wealth-color);
+        }
+
+        .mind-section .action-button {
+            background: var(--mind-color);
+        }
+
+        .action-button:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .main-menu {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+                gap: 1rem;
+                height: auto; /* Adjust height for smaller screens */
+            }
+
+            .main-option {
+                padding: 1.5rem;
+            }
+
+            .main-option h1 {
+                font-size: 2rem;
+            }
+
+            .section-container {
+                padding: 1.5rem; /* Adjust popup padding for smaller screens */
+                max-height: 95vh; /* Increase max height on smaller screens if needed */
+            }
+
+            .section-content {
+                padding-top: 3rem; /* Adjust content padding in popup for smaller screens */
+            }
+
+            .back-button {
+                top: 0.75rem; /* Adjust back button position on smaller screens */
+                left: 0.75rem; /* Adjust back button position on smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-option {
+                padding: 1rem;
+            }
+
+            .main-option h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="main-menu" aria-label="Main navigation">
+        <article class="main-option health-option"
+                 role="button"
+                 aria-label="Health Planning Tools"
+                 onclick="showSection('health')"
+                 itemscope
+                 itemtype="http://schema.org/HealthAndBeautyBusiness">
+            <h1 itemprop="name">Health Planner</h1>
+            <p itemprop="description">AI-powered health management tools & calculators</p>
+        </article>
+
+        <article class="main-option wealth-option"
+                 role="button"
+                 aria-label="Financial Planning Tools"
+                 onclick="showSection('wealth')"
+                 itemscope
+                 itemtype="http://schema.org/FinancialService">
+            <h1 itemprop="name">Wealth Manager</h1>
+            <p itemprop="description">Smart financial planning & investment tools</p>
+        </article>
+
+        <article class="main-option mind-option"
+                 role="button"
+                 aria-label="Mindfulness and Productivity Tools"
+                 onclick="showSection('mind')"
+                 itemscope
+                 itemtype="http://schema.org/CreativeWork">
+            <h1 itemprop="name">Mindfulness & Productivity</h1>
+            <p itemprop="description">Tools for focus, meditation & productivity</p>
+        </article>
+    </main>
+
+    <section class="section-container health-section"
+             id="healthSection"
+             aria-label="Health Management"
+             itemscope
+             itemtype="http://schema.org/HealthAndBeautyBusiness">
+        <button class="back-button" aria-label="Return to main menu" onclick="hideSections()">← Back</button>
+        <div class="section-content">
+            <h2 class="sr-only">Health Management Tools</h2>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/HowTo">
+                <h3 itemprop="name">AI Diet Planner</h3>
+                <p itemprop="description">Get personalized diet & nutrition plans with AI.</p>
+                <button class="action-button" aria-label="Open Diet Planner">Start Planning</button>
+            </article>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/ExercisePlan">
+                <h3 itemprop="name">Workout Generator</h3>
+                <p itemprop="description">AI creates custom workouts with video guides.</p>
+                <button class="action-button" aria-label="Open Workout Planner">Get Started</button>
+            </article>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/Calculator">
+                <h3 itemprop="name">BMI Calculator</h3>
+                <p itemprop="description">Analyze body mass & get health insights.</p>
+                <button class="action-button" aria-label="Calculate BMI">Check Now</button>
+            </article>
+        </div>
+    </section>
+
+    <section class="section-container wealth-section"
+             id="wealthSection"
+             aria-label="Financial Planning"
+             itemscope
+             itemtype="http://schema.org/FinancialService">
+        <button class="back-button" aria-label="Return to main menu" onclick="hideSections()">← Back</button>
+        <div class="section-content">
+            <h2 class="sr-only">Financial Management Tools</h2>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/Calculator">
+                <h3 itemprop="name">CAGR Calculator</h3>
+                <p itemprop="description">Calculate investment growth with CAGR analysis.</p>
+                <button class="action-button" aria-label="Analyze Investments">Calculate</button>
+            </article>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/FinancialProduct">
+                <h3 itemprop="name">Retirement Planner</h3>
+                <p itemprop="description">Plan your retirement with AI-powered projections.</p>
+                <button class="action-button" aria-label="Plan Retirement">Start Planning</button>
+            </article>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/LoanCalculator">
+                <h3 itemprop="name">Loan Analyzer</h3>
+                <p itemprop="description">Analyze loans with EMI & amortization tools.</p>
+                <button class="action-button" aria-label="Calculate Loans">Analyze</button>
+            </article>
+        </div>
+    </section>
+
+    <section class="section-container mind-section"
+             id="mindSection"
+             aria-label="Mindfulness and Productivity Tools"
+             itemscope
+             itemtype="http://schema.org/CreativeWork">
+        <button class="back-button" aria-label="Return to main menu" onclick="hideSections()">← Back</button>
+        <div class="section-content">
+            <h2 class="sr-only">Mindfulness and Productivity Tools</h2>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/Timer">
+                <h3 itemprop="name">Meditation Timer</h3>
+                <p itemprop="description">Guided meditation for focus & tranquility.</p>
+                <button class="action-button" aria-label="Start Meditation Timer">Begin Session</button>
+            </article>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/Journal">
+                <h3 itemprop="name">Gratitude Journal</h3>
+                <p itemprop="description">Cultivate positivity with daily gratitude prompts.</p>
+                <button class="action-button" aria-label="Open Gratitude Journal">Start Journaling</button>
+            </article>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/Chart">
+                <h3 itemprop="name">Mood Tracker</h3>
+                <p itemprop="description">Track your mood & identify emotional patterns.</p>
+                <button class="action-button" aria-label="Track Mood">Log Mood</button>
+            </article>
+        </div>
+    </section>
+
+    <script>
+        // Section Navigation
+        function showSection(section) {
+            document.querySelector('.main-menu').style.display = 'none';
+            document.getElementById(`${section}Section`).classList.add('active');
+        }
+
+        function hideSections() {
+            document.querySelector('.main-menu').style.display = 'grid';
+            document.querySelectorAll('.section-container').forEach(section => {
+                section.classList.remove('active');
+            });
+        }
+
+        // Interactive Elements - Example for action buttons (you can expand as needed)
+        document.querySelectorAll('.action-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Placeholder for action functionality
+                console.log(`Opening: ${this.previousElementSibling.textContent}`);
+                // In a real app, you would redirect or trigger a function here
+            });
+        });
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') hideSections();
+        });
+
+        // Service Worker Registration (optional - for offline capabilities)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js'); // Replace '/sw.js' with your service worker file
+            });
+        }
+    </script>
+</body>
+</html>
+```
+```html
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebApplication">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>dPal - AI Holistic Wellness Planner: Personalized Diet, Fitness, Finance & Mindfulness</title>
+    <meta name="description" content="Achieve holistic wellness with dPal, an AI-driven planner for personalized diet & nutrition, BMI tracking, custom workouts, smart investment CAGR calculation, retirement & loan planning, and mindfulness practices.">
+    <meta name="keywords" content="AI holistic wellness planner, personalized diet plan, nutrition guide, BMI calculator, body mass index tracker, AI workout generator, custom fitness routines, CAGR calculator, investment growth calculator, retirement planning tool, loan calculator, EMI calculator, amortization schedule, mindfulness app, mood tracker, gratitude journal, mental wellness, financial health, wellness app, productivity planner, digital life coach, AI driven wellness, personal finance, health and wealth management, balanced lifestyle app, mobile wellness platform, diet and nutrition plan, investment planning, retirement calculator, loan analyzer">
+    <link rel="canonical" href="https://www.yourdomain.com/dpal">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="dPal - AI Holistic Wellness Planner: Diet, Fitness, Finance & Mind - Your AI Life Balance Companion">
+    <meta property="og:description" content="Find balance with dPal, the AI holistic planner. Get personalized diet & nutrition plans, BMI tracking, AI workouts, CAGR & loan calculators, retirement planning & mindfulness tools for complete well-being.">
+    <meta property="og:url" content="https://www.yourdomain.com/dpal">
+    <meta property="og:site_name" content="dPal Holistic Wellness Planner">
+    <meta property="og:image" content="https://www.yourdomain.com/images/dpal-og-image-v3.jpg">
+    <meta property="og:image:alt" content="dPal Holistic Wellness Planner Dashboard Preview">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Balance your life with dPal AI Holistic Planner! AI-powered tools for Diet, Fitness, Wealth & Mind. #AIWellness #HolisticHealth #LifeBalance #FinTech">
+    <meta name="twitter:title" content="dPal - AI Holistic Wellness Planner | Diet, Fitness, Finance & Mind Tools">
+    <meta name="twitter:site" content="@dPalApp">
+    <meta name="twitter:image" content="https://www.yourdomain.com/images/dpal-twitter-card-v3.jpg">
+    <meta name="twitter:image:alt" content="dPal AI Holistic Wellness Planner App Interface">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "dPal - AI Holistic Wellness Planner",
+        "description": "dPal is your AI-powered holistic life management companion, integrating tools for personalized diet & nutrition planning, fitness, wealth building through smart investment analysis, loan management, retirement planning, and mindfulness to help you achieve a balanced and fulfilling lifestyle.",
+        "applicationCategory": ["HealthApplication", "FinanceApplication", "ProductivityApplication"],
+        "operatingSystem": "Web, Android, iOS",
+        " большей частью": "Web-based application accessible across devices with dedicated mobile apps coming soon",
+        "url": "https://www.yourdomain.com/dpal",
+        "keywords": "AI holistic planner, diet nutrition app, fitness planner, workout generator, BMI calculator, CAGR calculator, retirement planner, loan calculator, mindfulness app, mood tracker, gratitude journal, wellness tools, financial planning, life balance, digital health coach, personalized meal plans, investment analysis, loan management, retirement savings",
+        "image": "https://www.yourdomain.com/images/dpal-app-icon-v2.png",
+        "brand": {
+            "@type": "Brand",
+            "name": "dPal",
+            "logo": "https://www.yourdomain.com/images/dpal-logo-v2.png"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "Your Company Name",
+            "url": "https://www.yourdomain.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Your Company Name",
+            "url": "https://www.yourdomain.com"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "580"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/OnlineOnly"
+        },
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.yourdomain.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
+    <style>
+        :root {
+            --health-color: #10B981;
+            --wealth-color: #3B82F6;
+            --mind-color: #8B5CF6;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -27,7 +543,7 @@
 
         .main-menu {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             height: 100vh;
             padding: 2rem;
@@ -35,6 +551,7 @@
 
         .main-option {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             border-radius: 1.5rem;
@@ -42,6 +559,8 @@
             transition: var(--transition);
             user-select: none;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            text-align: center;
         }
 
         .health-option {
@@ -54,64 +573,115 @@
             color: white;
         }
 
+        .mind-option {
+            background: var(--mind-color);
+            color: white;
+        }
+
         .main-option:hover {
             transform: scale(0.98);
         }
 
         .main-option h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        .main-option p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
         .section-container {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9); /* Center and slightly scaled down */
+            width: 90%;
+            max-width: 800px;
+            padding: 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.3); /* More prominent shadow for popup effect */
+            transition: var(--transition), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            max-height: 90vh; /* Limit height for scrollable popups */
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .section-container.active {
+            display: block; /* Make visible when active */
+            transform: translate(-50%, -50%) scale(1); /* Scale up to normal size */
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .overlay {
+            display: none; /* Initially hidden */
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            padding: 2rem;
-            background: white;
-            transform: translateX(100%);
-            transition: var(--transition);
-            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+            backdrop-filter: blur(3px); /* Optional blur effect */
+            z-index: 10; /* Ensure overlay is above main content */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s var(--transition), visibility 0s linear 0.3s;
         }
 
-        .section-container.active {
-            transform: translateX(0);
+        .overlay.active {
+            display: block; /* Make overlay visible when active */
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.3s var(--transition);
         }
+
 
         .back-button {
             position: absolute;
-            top: 2rem;
-            left: 2rem;
+            top: 1rem;
+            left: 1rem;
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: #6B7280;
-        }
-
-        .section-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding-top: 4rem;
-        }
-
-        .section-box {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid #E5E7EB;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
             transition: var(--transition);
         }
 
-        .section-box:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        .back-button:hover {
+            background: #F3F4F6;
         }
 
-        .health-section .section-box h3 {
+        .section-content {
+            padding-top: 2rem;
+        }
+
+        .section-box {
+            background: #F9FAFB; /* Lighter background for section boxes */
+            padding: 1.5rem;
+            border-radius: 0.75rem; /* Slightly less rounded corners */
+            margin-bottom: 1rem; /* Reduced margin */
+            box-shadow: 0 5px 10px -3px rgba(0, 0, 0, 0.04); /* Softer shadow */
+            transition: var(--transition);
+            border: none; /* Removed border for cleaner look */
+        }
+
+        .section-box:hover {
+            transform: translateY(-1px); /* Reduced hover lift */
+            box-shadow: 0 8px 12px -4px rgba(0, 0, 0, 0.06); /* Slightly enhanced shadow on hover */
+        }
+
+        .section-box h3 {
+            font-size: 1.1rem; /* Slightly smaller font size */
+            margin-bottom: 0.75rem; /* Reduced margin */
             color: var(--health-color);
         }
 
@@ -119,83 +689,207 @@
             color: var(--wealth-color);
         }
 
+        .mind-section .section-box h3 {
+            color: var(--mind-color);
+        }
+
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.6rem 1.2rem; /* Smaller button padding */
+            border-radius: 0.5rem; /* More rounded buttons */
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            background: var(--health-color);
+            color: white;
+            font-size: 0.9rem; /* Smaller font size for buttons */
+        }
+
+        .wealth-section .action-button {
+            background: var(--wealth-color);
+        }
+
+        .mind-section .action-button {
+            background: var(--mind-color);
+        }
+
+        .action-button:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
         @media (max-width: 768px) {
             .main-menu {
                 grid-template-columns: 1fr;
                 padding: 1rem;
+                gap: 1rem;
+                height: auto; /* Adjust height for smaller screens */
             }
-            
+
+            .main-option {
+                padding: 1.5rem;
+            }
+
             .main-option h1 {
                 font-size: 2rem;
             }
-            
+
+            .section-container {
+                padding: 1.5rem; /* Adjust section padding for smaller screens */
+                max-height: 95vh;
+            }
+
             .section-content {
-                padding-top: 6rem;
+                padding-top: 3rem;
+            }
+
+            .back-button {
+                top: 1rem;
+                left: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-option {
+                padding: 1rem;
+            }
+
+            .main-option h1 {
+                font-size: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Main Selection Screen -->
-    <div class="main-menu">
-        <div class="main-option health-option" onclick="showSection('health')">
-            <h1>Health</h1>
-        </div>
-        <div class="main-option wealth-option" onclick="showSection('wealth')">
-            <h1>Wealth</h1>
-        </div>
-    </div>
+    <main class="main-menu" aria-label="Main navigation">
+        <article class="main-option health-option"
+                 role="button"
+                 aria-label="Health Planning Tools"
+                 onclick="showSection('health')"
+                 itemscope
+                 itemtype="http://schema.org/HealthAndBeautyBusiness">
+            <h1 itemprop="name">Health Planner</h1>
+            <p itemprop="description">AI-powered health & nutrition tools</p>
+        </article>
 
-    <!-- Health Section -->
-    <div class="section-container health-section" id="healthSection">
-        <button class="back-button" onclick="hideSections()">← Back</button>
-        <div class="section-content">
-            <h2>Health Management</h2>
-            <div class="section-box">
-                <h3>Diet Planner</h3>
-                <p>Create personalized meal plans with nutritional tracking</p>
-                <button class="action-button">Open Planner</button>
-            </div>
-            <div class="section-box">
-                <h3>Workout Planner</h3>
-                <p>Custom exercise routines with progress tracking</p>
-                <button class="action-button">Start Training</button>
-            </div>
-            <div class="section-box">
-                <h3>BMI Calculator</h3>
-                <p>Calculate your Body Mass Index</p>
-                <button class="action-button">Calculate Now</button>
-            </div>
-        </div>
-    </div>
+        <article class="main-option wealth-option"
+                 role="button"
+                 aria-label="Financial Planning Tools"
+                 onclick="showSection('wealth')"
+                 itemscope
+                 itemtype="http://schema.org/FinancialService">
+            <h1 itemprop="name">Wealth Manager</h1>
+            <p itemprop="description">Smart finance & investment tools</p>
+        </article>
 
-    <!-- Wealth Section -->
-    <div class="section-container wealth-section" id="wealthSection">
-        <button class="back-button" onclick="hideSections()">← Back</button>
+        <article class="main-option mind-option"
+                 role="button"
+                 aria-label="Mindfulness and Productivity Tools"
+                 onclick="showSection('mind')"
+                 itemscope
+                 itemtype="http://schema.org/CreativeWork">
+            <h1 itemprop="name">Mindfulness & Productivity</h1>
+            <p itemprop="description">Tools for focus and well-being</p>
+        </article>
+    </main>
+
+    <section class="section-container health-section"
+             id="healthSection"
+             aria-label="Health Management"
+             itemscope
+             itemtype="http://schema.org/HealthAndBeautyBusiness">
+        <button class="back-button" aria-label="Return to main menu" onclick="hideSections()">← Back</button>
         <div class="section-content">
-            <h2>Wealth Management</h2>
-            <div class="section-box">
-                <h3>CAGR Calculator</h3>
-                <p>Calculate compound annual growth rate</p>
-                <button class="action-button">Analyze Investments</button>
-            </div>
-            <div class="section-box">
-                <h3>Retirement Planner</h3>
-                <p>Comprehensive retirement planning tools</p>
-                <button class="action-button">Plan Retirement</button>
-            </div>
-            <div class="section-box">
-                <h3>Loan Calculator</h3>
-                <p>Advanced loan analysis tools</p>
-                <button class="action-button">Calculate Loans</button>
-            </div>
+            <h2 class="sr-only">Health Management Tools</h2>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/HowTo">
+                <h3 itemprop="name">AI Diet Planner</h3>
+                <p itemprop="description">Personalized meal plans for your nutrition goals.</p>
+                <button class="action-button" aria-label="Open Diet Planner">Start Planning</button>
+            </article>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/ExercisePlan">
+                <h3 itemprop="name">AI Workout Generator</h3>
+                <p itemprop="description">AI creates custom exercise routines for you.</p>
+                <button class="action-button" aria-label="Open Workout Planner">Get Started</button>
+            </article>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/Calculator">
+                <h3 itemprop="name">BMI Calculator</h3>
+                <p itemprop="description">Understand your body mass index and health status.</p>
+                <button class="action-button" aria-label="Calculate BMI">Check Now</button>
+            </article>
         </div>
-    </div>
+    </section>
+
+    <section class="section-container wealth-section"
+             id="wealthSection"
+             aria-label="Financial Planning"
+             itemscope
+             itemtype="http://schema.org/FinancialService">
+        <button class="back-button" aria-label="Return to main menu" onclick="hideSections()">← Back</button>
+        <div class="section-content">
+            <h2 class="sr-only">Financial Management Tools</h2>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/Calculator">
+                <h3 itemprop="name">CAGR Calculator</h3>
+                <p itemprop="description">Calculate compound annual growth rate of investments.</p>
+                <button class="action-button" aria-label="Analyze Investments">Calculate</button>
+            </article>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/FinancialProduct">
+                <h3 itemprop="name">Retirement Planner</h3>
+                <p itemprop="description">Plan your retirement savings with projections.</p>
+                <button class="action-button" aria-label="Plan Retirement">Start Planning</button>
+            </article>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/LoanCalculator">
+                <h3 itemprop="name">Loan Analyzer</h3>
+                <p itemprop="description">Calculate EMIs and analyze loan amortization.</p>
+                <button class="action-button" aria-label="Calculate Loans">Analyze</button>
+            </article>
+        </div>
+    </section>
+
+    <section class="section-container mind-section"
+             id="mindSection"
+             aria-label="Mindfulness and Productivity Tools"
+             itemscope
+             itemtype="http://schema.org/CreativeWork">
+        <button class="back-button" aria-label="Return to main menu" onclick="hideSections()">← Back</button>
+        <div class="section-content">
+            <h2 class="sr-only">Mindfulness and Productivity Tools</h2>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/Timer">
+                <h3 itemprop="name">Meditation Timer</h3>
+                <p itemprop="description">Guided meditation for focus and tranquility.</p>
+                <button class="action-button" aria-label="Start Meditation Timer">Begin Session</button>
+            </article>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/Journal">
+                <h3 itemprop="name">Gratitude Journal</h3>
+                <p itemprop="description">Reflect and cultivate positivity daily.</p>
+                <button class="action-button" aria-label="Open Gratitude Journal">Start Journaling</button>
+            </article>
+
+            <article class="section-box" itemscope itemtype="http://schema.org/Chart">
+                <h3 itemprop="name">Mood Tracker</h3>
+                <p itemprop="description">Track your mood and understand your emotional patterns.</p>
+                <button class="action-button" aria-label="Track Mood">Log Mood</button>
+            </article>
+        </div>
+    </section>
+
+    <div id="overlay" class="overlay" onclick="hideSections()"></div>
 
     <script>
+        // Section Navigation
         function showSection(section) {
             document.querySelector('.main-menu').style.display = 'none';
             document.getElementById(`${section}Section`).classList.add('active');
+            document.getElementById('overlay').classList.add('active'); /* Show overlay */
         }
 
         function hideSections() {
@@ -203,18 +897,29 @@
             document.querySelectorAll('.section-container').forEach(section => {
                 section.classList.remove('active');
             });
+            document.getElementById('overlay').classList.remove('active'); /* Hide overlay */
         }
 
-        // Add smooth transitions
+        // Interactive Elements - Example for action buttons (you can expand as needed)
         document.querySelectorAll('.action-button').forEach(button => {
-            button.style.transition = 'var(--transition)';
-            button.addEventListener('mouseenter', () => {
-                button.style.transform = 'translateY(-1px)';
-            });
-            button.addEventListener('mouseleave', () => {
-                button.style.transform = 'translateY(0)';
+            button.addEventListener('click', function(e) {
+                // Placeholder for action functionality
+                console.log(`Opening: ${this.previousElementSibling.textContent}`);
+                // In a real app, you would redirect or trigger a function here
             });
         });
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') hideSections();
+        });
+
+        // Service Worker Registration (optional - for offline capabilities)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js'); // Replace '/sw.js' with your service worker file
+            });
+        }
     </script>
 </body>
 </html>
