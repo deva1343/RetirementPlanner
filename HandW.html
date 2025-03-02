@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>d pal - Interactive Planner</title>
+    <style>
+        :root {
+            --health-color: #10B981;
+            --wealth-color: #3B82F6;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            background: #F3F4F6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .main-menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            height: 100vh;
+            padding: 2rem;
+        }
+
+        .main-option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .health-option {
+            background: var(--health-color);
+            color: white;
+        }
+
+        .wealth-option {
+            background: var(--wealth-color);
+            color: white;
+        }
+
+        .main-option:hover {
+            transform: scale(0.98);
+        }
+
+        .main-option h1 {
+            font-size: 3rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 2rem;
+            background: white;
+            transform: translateX(100%);
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+
+        .section-container.active {
+            transform: translateX(0);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #6B7280;
+        }
+
+        .section-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-top: 4rem;
+        }
+
+        .section-box {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #E5E7EB;
+            transition: var(--transition);
+        }
+
+        .section-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .health-section .section-box h3 {
+            color: var(--health-color);
+        }
+
+        .wealth-section .section-box h3 {
+            color: var(--wealth-color);
+        }
+
+        @media (max-width: 768px) {
+            .main-menu {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .main-option h1 {
+                font-size: 2rem;
+            }
+            
+            .section-content {
+                padding-top: 6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Selection Screen -->
+    <div class="main-menu">
+        <div class="main-option health-option" onclick="showSection('health')">
+            <h1>Health</h1>
+        </div>
+        <div class="main-option wealth-option" onclick="showSection('wealth')">
+            <h1>Wealth</h1>
+        </div>
+    </div>
+
+    <!-- Health Section -->
+    <div class="section-container health-section" id="healthSection">
+        <button class="back-button" onclick="hideSections()">← Back</button>
+        <div class="section-content">
+            <h2>Health Management</h2>
+            <div class="section-box">
+                <h3>Diet Planner</h3>
+                <p>Create personalized meal plans with nutritional tracking</p>
+                <button class="action-button">Open Planner</button>
+            </div>
+            <div class="section-box">
+                <h3>Workout Planner</h3>
+                <p>Custom exercise routines with progress tracking</p>
+                <button class="action-button">Start Training</button>
+            </div>
+            <div class="section-box">
+                <h3>BMI Calculator</h3>
+                <p>Calculate your Body Mass Index</p>
+                <button class="action-button">Calculate Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wealth Section -->
+    <div class="section-container wealth-section" id="wealthSection">
+        <button class="back-button" onclick="hideSections()">← Back</button>
+        <div class="section-content">
+            <h2>Wealth Management</h2>
+            <div class="section-box">
+                <h3>CAGR Calculator</h3>
+                <p>Calculate compound annual growth rate</p>
+                <button class="action-button">Analyze Investments</button>
+            </div>
+            <div class="section-box">
+                <h3>Retirement Planner</h3>
+                <p>Comprehensive retirement planning tools</p>
+                <button class="action-button">Plan Retirement</button>
+            </div>
+            <div class="section-box">
+                <h3>Loan Calculator</h3>
+                <p>Advanced loan analysis tools</p>
+                <button class="action-button">Calculate Loans</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(section) {
+            document.querySelector('.main-menu').style.display = 'none';
+            document.getElementById(`${section}Section`).classList.add('active');
+        }
+
+        function hideSections() {
+            document.querySelector('.main-menu').style.display = 'grid';
+            document.querySelectorAll('.section-container').forEach(section => {
+                section.classList.remove('active');
+            });
+        }
+
+        // Add smooth transitions
+        document.querySelectorAll('.action-button').forEach(button => {
+            button.style.transition = 'var(--transition)';
+            button.addEventListener('mouseenter', () => {
+                button.style.transform = 'translateY(-1px)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
