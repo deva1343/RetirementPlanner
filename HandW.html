@@ -6,16 +6,16 @@
     <link rel="manifest" href="/manifest.webmanifest">
 
     <!-- SEO Meta Tags -->
-    <title>dPal - AI Holistic Wellness Planner: Diet, Fitness, Finance & Mind</title>
-    <meta name="description" content="Optimize your life with dPal, the AI-driven holistic planner. Expert tools for personalized diet & nutrition plans, BMI tracking, AI workout routines, CAGR investment growth, loan & retirement calculators, plus mindfulness & productivity features for total well-being.">
-    <meta name="keywords" content="AI holistic wellness planner, life balance app, diet and nutrition planner, personalized meal plans, BMI calculator, body mass index tracker, AI workout generator, custom fitness routines, CAGR calculator, investment growth calculator, retirement planning tool, loan calculator, EMI calculator, amortization schedule, gratitude journal, mood tracker, meditation app, mindfulness tools, financial health, wellness app, productivity planner, digital life coach, AI driven wellness, personal finance, health and wealth management, balanced lifestyle app, mobile wellness platform">
+    <title>dPal - AI Holistic Wellness Planner: Personalized Diet, Fitness, Finance & Mindfulness</title>
+    <meta name="description" content="Achieve holistic wellness with dPal, an AI-driven planner for personalized diet & nutrition, BMI tracking, custom workouts, smart investment CAGR calculation, retirement & loan planning, and mindfulness practices.">
+    <meta name="keywords" content="AI holistic wellness planner, personalized diet plan, nutrition guide, BMI calculator, body mass index tracker, AI workout generator, custom fitness routines, CAGR calculator, investment growth calculator, retirement planning tool, loan calculator, EMI calculator, amortization schedule, mindfulness app, mood tracker, gratitude journal, mental wellness, financial health, wellness app, productivity planner, digital life coach, AI driven wellness, personal finance, health and wealth management, balanced lifestyle app, mobile wellness platform, diet and nutrition plan, investment planning, retirement calculator, loan analyzer">
     <link rel="canonical" href="https://www.yourdomain.com/dpal">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="dPal - AI Holistic Wellness Planner: Diet, Fitness, Finance & Mind">
-    <meta property="og:description" content="Achieve complete life balance with dPal - AI-powered planner for diet, fitness, wealth & mindfulness. Get personalized plans & smart tools for holistic well-being.">
+    <meta property="og:title" content="dPal - AI Holistic Wellness Planner: Diet, Fitness, Finance & Mind - Your AI Life Balance Companion">
+    <meta property="og:description" content="Find balance with dPal, the AI holistic planner. Get personalized diet & nutrition plans, BMI tracking, AI workouts, CAGR & loan calculators, retirement planning & mindfulness tools for complete well-being.">
     <meta property="og:url" content="https://www.yourdomain.com/dpal">
     <meta property="og:site_name" content="dPal Holistic Wellness Planner">
     <meta property="og:image" content="https://www.yourdomain.com/images/dpal-og-image-v3.jpg">
@@ -23,8 +23,8 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:description" content="Transform your well-being with dPal AI Holistic Planner! Diet, Fitness, Wealth & Mind tools in one app. #AIWellness #LifePlanner #HolisticHealth">
-    <meta name="twitter:title" content="dPal - AI Holistic Wellness Planner">
+    <meta name="twitter:description" content="Balance your life with dPal AI Holistic Planner! AI-powered tools for Diet, Fitness, Wealth & Mind. #AIWellness #HolisticHealth #LifeBalance #FinTech">
+    <meta name="twitter:title" content="dPal - AI Holistic Wellness Planner | Diet, Fitness, Finance & Mind Tools">
     <meta name="twitter:site" content="@dPalApp">
     <meta name="twitter:image" content="https://www.yourdomain.com/images/dpal-twitter-card-v3.jpg">
     <meta name="twitter:image:alt" content="dPal AI Holistic Wellness Planner App Interface">
@@ -35,11 +35,11 @@
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "dPal - AI Holistic Wellness Planner",
-        "description": "dPal is your AI-powered holistic life management companion, integrating tools for diet & nutrition, fitness, wealth building, and mindfulness to help you achieve a balanced and fulfilling lifestyle.",
+        "description": "dPal is your AI-powered holistic life management companion, integrating tools for personalized diet & nutrition planning, fitness, wealth building through smart investment analysis, loan management, retirement planning, and mindfulness to help you achieve a balanced and fulfilling lifestyle.",
         "applicationCategory": ["HealthApplication", "FinanceApplication", "ProductivityApplication"],
         "operatingSystem": "Web, Android, iOS",
         "url": "https://www.yourdomain.com/dpal",
-        "keywords": "AI holistic planner, diet nutrition app, fitness planner, workout generator, BMI calculator, CAGR calculator, retirement planner, loan calculator, mindfulness app, mood tracker, gratitude journal, wellness tools, financial planning, life balance, digital health coach",
+        "keywords": "AI holistic planner, diet nutrition app, fitness planner, workout generator, BMI calculator, CAGR calculator, retirement planner, loan calculator, mindfulness app, mood tracker, gratitude journal, wellness tools, financial planning, life balance, digital health coach, personalized meal plans, investment analysis, loan management, retirement savings",
         "image": "https://www.yourdomain.com/images/dpal-app-icon-v2.png",
         "brand": {
             "@type": "Brand",
@@ -66,6 +66,11 @@
             "price": "0.00",
             "priceCurrency": "USD",
             "availability": "https://schema.org/OnlineOnly"
+        },
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.yourdomain.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
         }
     }
     </script>
@@ -111,6 +116,7 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            color: white;
         }
 
         .main-option::before {
@@ -127,11 +133,12 @@
 
         .main-option:hover::before {
             opacity: 1;
+            transform: scale(1.02);
         }
 
-        .health-option { background: var(--health-color); color: white; }
-        .wealth-option { background: var(--wealth-color); color: white; }
-        .mind-option { background: var(--mind-color); color: white; }
+        .health-option { background: var(--health-color); }
+        .wealth-option { background: var(--wealth-color); }
+        .mind-option { background: var(--mind-color); }
 
         .popup-overlay {
             position: fixed;
@@ -175,6 +182,11 @@
             cursor: pointer;
             padding: 0.5rem;
             border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            background: #f1f5f9;
         }
 
         .section-grid {
@@ -189,6 +201,12 @@
             border: 1px solid #e2e8f0;
             position: relative;
             overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
         }
 
         .meditation-timer {
@@ -344,23 +362,25 @@
     <script>
         // Service Worker Registration
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('Service Worker registered'))
-                .catch(err => console.log('Service Worker failed', err));
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
         }
 
         // Local Storage Manager
         const Storage = {
-            get: (key) => JSON.parse(localStorage.getItem(key)) || null,
-            set: (key, value) => localStorage.setItem(key, JSON.stringify(value)),
-            clear: (key) => localStorage.removeItem(key)
+            get: (key) => JSON.parse(localStorage.getItem(`dpal-${key}`)) || null,
+            set: (key, value) => localStorage.setItem(`dpal-${key}`, JSON.stringify(value)),
+            clear: (key) => localStorage.removeItem(`dpal-${key}`)
         };
 
-        // Meditation Timer
+        // Meditation Timer Logic
         let timer;
         let startTime;
         let elapsed = 0;
-        let bestTime = Storage.get('bestMeditation') || 0;
+        let bestTime = Storage.get('meditation-best') || 0;
 
         function updateTimerDisplay() {
             const totalSeconds = Math.floor(elapsed / 1000);
@@ -375,7 +395,7 @@
             document.getElementById('best-time').textContent = `${minutes}:${seconds}`;
         }
 
-        // Mood Tracker
+        // Mood Tracker Logic
         function logMood(mood) {
             const entry = {
                 mood,
@@ -383,14 +403,14 @@
                 timestamp: Date.now()
             };
             
-            const history = Storage.get('moodHistory') || [];
+            const history = Storage.get('mood-history') || [];
             history.push(entry);
-            Storage.set('moodHistory', history);
+            Storage.set('mood-history', history);
             updateMoodHistory();
         }
 
         function updateMoodHistory() {
-            const history = Storage.get('moodHistory') || [];
+            const history = Storage.get('mood-history') || [];
             const display = history.slice(-5).reverse().map(entry => `
                 <div class="mood-entry">
                     <span>${getMoodEmoji(entry.mood)}</span>
@@ -420,7 +440,7 @@
             const totalSeconds = Math.floor(elapsed / 1000);
             if (totalSeconds > bestTime) {
                 bestTime = totalSeconds;
-                Storage.set('bestMeditation', bestTime);
+                Storage.set('meditation-best', bestTime);
                 updateBestTime();
             }
             elapsed = 0;
@@ -431,11 +451,18 @@
 
         // Popup Management
         function showPopup(section) {
-            document.getElementById(`${section}Popup`).style.display = 'flex';
+            const popup = document.getElementById(`${section}Popup`);
+            const content = popup.querySelector('.popup-content');
+            popup.style.display = 'flex';
+            setTimeout(() => content.classList.add('active'), 10);
         }
 
         function hidePopup() {
-            document.querySelectorAll('.popup-overlay').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.popup-overlay').forEach(popup => {
+                const content = popup.querySelector('.popup-content');
+                content.classList.remove('active');
+                setTimeout(() => popup.style.display = 'none', 300);
+            });
         }
 
         // Initialize
@@ -443,6 +470,11 @@
             updateBestTime();
             updateMoodHistory();
         };
+
+        // Close popups with ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') hidePopup();
+        });
     </script>
 </body>
 </html>
