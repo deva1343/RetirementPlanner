@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebApplication">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Personalized Scientific Diet Planner | Achieve Your Nutrition Goals</title>
+    <meta name="description" content="Generate a free, personalized diet plan based on scientific calculations. Input your age, weight, height, activity level, and fitness goals to get a detailed nutrition plan. Optimize your health and fitness journey with our advanced diet planner.">
+    <meta name="keywords" content="diet planner, nutrition plan, personalized diet, scientific diet, meal plan generator, calorie calculator, macro calculator, weight loss diet, muscle gain diet, healthy eating, nutrition calculator, fitness diet plan">
+    <link rel="canonical" href="https://dpal.site/scientific-diet-planner"> <meta name="robots" content="index, follow"> <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Personalized Scientific Diet Planner | Free Nutrition Plan Generator">
+    <meta property="og:description" content="Get your free, custom diet plan based on scientific principles. Achieve your weight loss, muscle gain, or maintenance goals with our advanced nutrition planner.">
+    <meta property="og:url" content="https://dpal.site/scientific-diet-planner"> <meta property="og:site_name" content="Scientific Diet Planner">
+    <meta property="og:image" content="https://dpal.site/images/diet-planner-og-image.jpg"> <meta property="og:image:alt" content="Preview of the Scientific Diet Planner Interface">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Create your personalized diet plan using science-backed calculations. Reach your fitness goals with a nutrition plan tailored to you. #DietPlanner #Nutrition #Fitness">
+    <meta name="twitter:title" content="Scientific Diet Planner - Your Free AI Nutritionist">
+    <meta name="twitter:site" content="@YourTwitterHandle"> <meta name="twitter:image" content="https://dpal.site/images/diet-planner-twitter-card.jpg"> <meta name="twitter:image:alt" content="Scientific Diet Planner Tool Preview">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Scientific Diet Planner",
+        "description": "Generate personalized diet plans based on scientific principles. Calculate your Total Daily Energy Expenditure (TDEE) and macronutrient needs to achieve your fitness goals, whether it's weight loss, muscle gain, or weight maintenance. This tool provides a detailed nutrition plan considering your age, weight, height, gender, activity level, and dietary preferences.",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Browser, Web",
+        " большей частью": "Web-based application accessible on all modern browsers",
+        "url": "https://dpal.site/scientific-diet-planner", "keywords": "diet planner, nutrition plan, personalized diet, scientific diet, meal plan generator, calorie calculator, macro calculator, weight loss diet, muscle gain diet, healthy eating",
+        "image": "https://dpal.site/images/diet-planner-app-icon.png", "creator": {
+            "@type": "Organization",
+            "name": "Your Organization Name", "url": "https://dpal.site" },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Your Organization Name", "url": "https://dpal.site" },
+        "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/OnlineOnly"
+        },
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://dpal.site/search?q={search_term_string}", "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
+    <style>
+        :root {
+            --primary: #3B82F6;
+            --secondary: #60A5FA;
+            --accent: #F59E0B;
+            --background: #F8FAFC;
+            --text: #1E293B;
+            --card-bg: #FFFFFF;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --radius: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .grid-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--card-bg);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .unit-toggle {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .radio-item input[type="radio"] {
+            width: 1.2rem;
+            height: 1.2rem;
+            accent-color: var(--primary);
+        }
+
+        .height-ft-in {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .diet-plan {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+            display: none;
+        }
+
+        .meal-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--accent);
+        }
+
+        .supplement-card {
+            background: linear-gradient(145deg, #f0f4ff, #ffffff);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 2px solid #bfdbfe;
+        }
+
+        .macros-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .macro-item {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+        }
+
+        .timing-info {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .portion-size {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
+        .meal-portions {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin: 1rem 0;
+        }
+
+        .portion-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                border-radius: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .height-ft-in {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Advanced Nutrition Planner</h1>
+
+        <form id="dietForm">
+            <div class="grid-form">
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" required min="16" max="80">
+                </div>
+
+                <div class="form-group">
+                    <label>Weight</label>
+                    <div class="unit-toggle">
+                        <label class="radio-item">
+                            <input type="radio" name="weightUnit" value="kg" checked> kg
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="weightUnit" value="lb"> lb
+                        </label>
+                    </div>
+                    <div class="unit-group active" data-unit="kg">
+                        <input type="number" id="weightKg" step="0.1" required>
+                    </div>
+                    <div class="unit-group" data-unit="lb">
+                        <input type="number" id="weightLb" step="0.1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Height</label>
+                    <div class="unit-toggle">
+                        <label class="radio-item">
+                            <input type="radio" name="heightUnit" value="cm" checked> cm
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="heightUnit" value="ft"> ft/in
+                        </label>
+                    </div>
+                    <div class="unit-group active" data-unit="cm">
+                        <input type="number" id="heightCm" required>
+                    </div>
+                    <div class="unit-group" data-unit="ft">
+                        <div class="height-ft-in">
+                            <input type="number" id="heightFt" placeholder="Feet" min="0" required>
+                            <input type="number" id="heightIn" placeholder="Inches" min="0" max="11" step="1" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" required>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="activity">Activity Level</label>
+                    <select id="activity" required>
+                        <option value="1.2">Sedentary</option>
+                        <option value="1.375">Light Exercise</option>
+                        <option value="1.55">Moderate Exercise</option>
+                        <option value="1.725">Active</option>
+                        <option value="1.9">Very Active</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="goal">Fitness Goal</label>
+                    <select id="goal" required>
+                        <option value="loss">Weight Loss</option>
+                        <option value="maintain">Maintenance</option>
+                        <option value="gain">Weight Gain</option>
+                        <option value="muscle_gain">Muscle Building</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Dietary Restrictions</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="allergy" value="dairy"> Dairy
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="allergy" value="nuts"> Nuts
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="allergy" value="gluten"> Gluten
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="allergy" value="seafood"> Seafood
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="allergy" value="egg"> Egg
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit">Generate Nutrition Plan</button>
+        </form>
+
+        <div id="dietPlan" class="diet-plan">
+            <div class="plan-header">
+                <h2>Your Personalized Nutrition Plan</h2>
+                <div class="hydration-alert" id="hydrationInfo"></div>
+            </div>
+            <div id="planDetails"></div>
+            <button class="reset-btn" onclick="location.reload()">Start Over</button>
+        </div>
+    </div>
+
+    <script>
+        // Comprehensive Meal Database
+        const mealDatabase = {
+            breakfast: {
+                muscleGain: [
+                    {
+                        name: "Proatmeal Power Bowl",
+                        desc: "Steel-cut oats with whey protein and berries",
+                        calories: 550,
+                        protein: 40,
+                        carbs: 65,
+                        fat: 12,
+                        timing: "Within 30 mins of waking",
+                        portion: {
+                            "Oats": "80g (dry)",
+                            "Whey Protein": "1 scoop (30g)",
+                            "Almond Butter": "15g",
+                            "Mixed Berries": "100g"
+                        },
+                        nutrients: ["Complex Carbs", "BCAAs", "Antioxidants"],
+                        allergens: ["nuts"],
+                        cooking: "Cook oats, mix with protein powder, top with toppings"
+                    },
+                    {
+                        name: "Bodybuilder's Breakfast Burrito",
+                        desc: "Whole wheat tortilla with egg whites, chicken, and avocado",
+                        calories: 600,
+                        protein: 55,
+                        carbs: 45,
+                        fat: 18,
+                        portion: {
+                            "Egg Whites": "200g",
+                            "Grilled Chicken": "100g",
+                            "Avocado": "50g",
+                            "Whole Wheat Tortilla": "1 large"
+                        },
+                        nutrients: ["Complete Protein", "Healthy Fats"],
+                        allergens: ["egg", "gluten"],
+                        cooking: "Scramble egg whites, grill chicken, assemble burrito"
+                    }
+                ]
+            },
+            // Other meal categories...
+        };
+
+        // Scientific Calculations
+        class NutritionCalculator {
+            static calculateTDEE(age, weight, height, gender, activity) {
+                let bmr = gender === 'male'
+                    ? (10 * weight) + (6.25 * height) - (5 * age) + 5
+                    : (10 * weight) + (6.25 * height) - (5 * age) - 161;
+                return bmr * activity;
+            }
+
+            static muscleGainMacros(weight) {
+                return {
+                    protein: Math.round(weight * 2.2),
+                    carbs: Math.round(weight * 4.5),
+                    fat: Math.round(weight * 1)
+                };
+            }
+
+            static hydrationRequirement(weight, activityLevel) {
+                const base = 35 * weight;
+                const activityAdd = activityLevel > 1.5 ? 500 : 250;
+                return Math.round((base + activityAdd) / 1000 * 10) / 10;
+            }
+        }
+
+        // Meal Planning Logic
+        class MealPlanner {
+            constructor(allergies, goal) {
+                this.allergies = allergies;
+                this.goal = goal;
+            }
+
+            filterMeals(meals) {
+                return meals.filter(meal =>
+                    !meal.allergens?.some(a => this.allergies.includes(a))
+                );
+            }
+
+            createMuscleGainPlan(weight, tdee, activity) {
+                const plan = {
+                    hydration: NutritionCalculator.hydrationRequirement(weight, activity),
+                    meals: [],
+                    supplements: [
+                        "Whey Protein: 25-40g post-workout",
+                        "Creatine Monohydrate: 5g/day",
+                        "Beta-Alanine: 3-6g/day",
+                        "Caffeine: 3-6mg/kg pre-workout"
+                    ]
+                };
+
+                // Add meal selection logic here
+                return plan;
+            }
+        }
+
+        // UI Rendering
+        class PlanRenderer {
+            static displayMuscleGain(plan) {
+                let html = `
+                    <div class="supplement-card">
+                        <h3>Supplement Protocol</h3>
+                        <ul>${plan.supplements.map(s => `<li>${s}</li>`).join('')}</ul>
+                    </div>
+                `;
+                document.getElementById('planDetails').innerHTML = html;
+                document.getElementById('hydrationInfo').textContent = `💧 Daily Hydration Target: ${plan.hydration}L`;
+            }
+        }
+
+        // Event Handlers
+        document.getElementById('dietForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Collect inputs
+            const age = parseInt(document.getElementById('age').value);
+            const weight = parseFloat(document.getElementById('weightKg').value);
+            const height = parseFloat(document.getElementById('heightCm').value);
+            const gender = document.getElementById('gender').value;
+            const activity = parseFloat(document.getElementById('activity').value);
+            const goal = document.getElementById('goal').value;
+            const allergies = Array.from(document.querySelectorAll('input[name="allergy"]:checked'))
+                .map(el => el.value);
+
+            // Calculate values
+            const tdee = NutritionCalculator.calculateTDEE(age, weight, height, gender, activity);
+            const planner = new MealPlanner(allergies, goal);
+            const plan = planner.createMuscleGainPlan(weight, tdee, activity);
+
+            // Display results
+            if(goal === 'muscle_gain') PlanRenderer.displayMuscleGain(plan);
+            document.getElementById('dietPlan').style.display = 'block';
+        });
+
+        // Unit Conversion Handlers
+        document.querySelectorAll('input[name="weightUnit"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const kgGroup = document.querySelector('[data-unit="kg"]');
+                const lbGroup = document.querySelector('[data-unit="lb"]');
+                const kgInput = document.getElementById('weightKg');
+                const lbInput = document.getElementById('weightLb');
+
+                if (this.value === 'kg') {
+                    kgGroup.classList.add('active');
+                    lbGroup.classList.remove('active');
+                    if (lbInput.value) kgInput.value = (lbInput.value * 0.453592).toFixed(1);
+                } else {
+                    lbGroup.classList.add('active');
+                    kgGroup.classList.remove('active');
+                    if (kgInput.value) lbInput.value = (kgInput.value * 2.20462).toFixed(1);
+                }
+            });
+        });
+
+        document.querySelectorAll('input[name="heightUnit"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const cmGroup = document.querySelector('[data-unit="cm"]');
+                const ftGroup = document.querySelector('[data-unit="ft"]');
+                const cmInput = document.getElementById('heightCm');
+                const ftInput = document.getElementById('heightFt');
+                const inInput = document.getElementById('heightIn');
+
+                if (this.value === 'cm') {
+                    cmGroup.classList.add('active');
+                    ftGroup.classList.remove('active');
+                    if (ftInput.value && inInput.value) {
+                        cmInput.value = ((ftInput.value * 12 + inInput.value) * 2.54).toFixed(1);
+                    }
+                } else {
+                    ftGroup.classList.add('active');
+                    cmGroup.classList.remove('active');
+                    if (cmInput.value) {
+                        const totalInches = cmInput.value / 2.54;
+                        ftInput.value = Math.floor(totalInches / 12);
+                        inInput.value = Math.round(totalInches % 12);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
