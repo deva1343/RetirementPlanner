@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dpal-v3';
+const CACHE_NAME = 'dpal-v1';
 const ASSETS = [
   '/',
   '/index.html',
@@ -8,16 +8,16 @@ const ASSETS = [
   '/icons/icon-512.png'
 ];
 
-self.addEventListener('install', (e) => {
-  e.waitUntil(
+self.addEventListener('install', (event) => {
+  event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(ASSETS))
   );
 });
 
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request)
-      .then(response => response || fetch(e.request))
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
   );
 });
