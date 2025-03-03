@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Loan Calculator - Estimate Loan Payments & Amortization</title>
+    <meta name="description" content="Calculate loan payments, total interest, and amortization schedules with our advanced loan calculator. Plan your finances with detailed breakdowns and charts.">
+    <meta name="keywords" content="loan calculator, EMI calculator, home loan calculator, car loan calculator, personal loan calculator, amortization schedule, loan payment, interest calculation, financial planning">
+    <meta name="author" content="[Your Name or Organization Name]">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Advanced Loan Calculator - Project Your Loan Repayments">
+    <meta property="og:description" content="Estimate your loan EMIs, see the amortization schedule, and understand your repayment plan. Use our advanced loan calculator for effective financial planning!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="[Your Website URL Here - e.g., https://www.example.com/loan-calculator]">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        /* Reusing the CSS from the SIP Calculator - style.css - Consistent UI */
+        :root {
+            --primary-color: #2E7D32; /* Forest Green Primary */
+            --primary-color-dark: #1B5E20; /* Darker Green Hover */
+            --secondary-color: #AEEA00; /* Lime Accent */
+            --background-color: #F1F8E9; /* Light Green Background */
+            --card-color: #FFFFFF; /* White Card */
+            --text-primary: #222222; /* Dark Text */
+            --text-secondary: #555555; /* Medium Text */
+            --border-radius: 12px;
+            --box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+            --font-family: 'Nunito Sans', sans-serif; /* Modern Font */
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 30px;
+            color: var(--text-primary);
+        }
+
+        .container {
+            background-color: var(--card-color);
+            padding: 45px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 35px;
+            font-size: 2.8rem;
+            letter-spacing: 0.8px;
+        }
+
+        .input-section {
+            display: grid;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        label {
+            text-align: left;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        input {
+            padding: 16px 20px;
+            border: 2px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--card-color);
+            border: none;
+            padding: 16px 28px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 700; /* Stronger font weight */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3); /* More prominent shadow */
+            margin-top: 15px;
+            display: inline-block;
+            letter-spacing: 0.6px;
+        }
+
+        button:hover {
+            background-color: var(--primary-color-dark);
+        }
+
+        button:active {
+            transform: scale(0.97); /* More noticeable press effect */
+        }
+
+        .result-section {
+            margin-top: 45px;
+            padding: 35px;
+            background-color: var(--card-color); /* White background for results */
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .result-heading {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-weight: bold;
+            text-transform: uppercase; /* Uppercase heading */
+            letter-spacing: 1px;
+        }
+
+        .detailed-results {
+            width: 100%;
+            margin-bottom: 35px;
+            overflow-x: auto; /* Enable horizontal scroll for table on mobile */
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            min-width: 650px; /* Increased min-width for Loan Table */
+        }
+
+        .results-table th, .results-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--background-color);
+            font-size: 0.95rem; /* Slightly smaller font in table */
+        }
+
+        .results-table th {
+            font-weight: bold;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+        }
+
+        .results-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* Light grey for even rows */
+        }
+
+        .highlight-value {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .chart-container {
+            width: 98%;
+            max-width: 750px;
+            height: 450px; /* Increased chart height */
+            margin-bottom: 35px;
+            /* Display chart and table side-by-side on larger screens */
+        }
+
+        #loanChart {
+            width: 100%;
+            height: 100%;
+        }
+
+
+        .summary-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background-color: var(--background-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .metric-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+
+        .note-section {
+            text-align: left;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-top: 25px;
+            border-top: 2px dashed var(--secondary-color); /* Stronger dashed line */
+            padding-top: 20px;
+        }
+
+        /* Responsive adjustments for mobile */
+        @media (max-width: 768px) {
+            .container {
+                padding: 35px;
+            }
+
+            h1 {
+                font-size: 2.4rem;
+                margin-bottom: 30px;
+            }
+
+            .input-section {
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+
+            label {
+                font-size: 1rem;
+                margin-bottom: 8px;
+            }
+
+            input, button, .result-heading, .result-value, .note-section {
+                font-size: 1rem;
+            }
+
+
+            .chart-container {
+                height: 350px; /* Slightly reduce chart height on smaller screens */
+                margin-bottom: 25px; /* Reduce margin below chart */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 25px;
+            }
+
+            .input-section {
+                gap: 15px;
+                margin-bottom: 25px;
+            }
+
+            label, input, button, .result-heading, .result-value, .note-section {
+                font-size: 0.9rem;
+            }
+             button {
+                padding: 12px 24px;
+            }
+            .chart-container {
+                height: 300px; /* Further reduce chart height on very small screens */
+                margin-bottom: 20px; /* Reduce margin even more */
+            }
+            .results-table th, .results-table td {
+                padding: 8px 10px; /* Reduce table cell padding on smaller screens */
+                font-size: 0.85rem; /* Further reduce table font size */
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Advanced Loan Calculator</h1>
+        <div class="input-section">
+            <div class="input-group">
+                <label for="loanAmount">Loan Amount (₹)</label>
+                <input type="number" id="loanAmount" placeholder="Enter loan amount" value="500000">
+            </div>
+            <div class="input-group">
+                <label for="interestRate">Annual Interest Rate (%)</label>
+                <input type="number" id="interestRate" placeholder="Enter annual rate" value="10">
+            </div>
+            <div class="input-group">
+                <label for="loanPeriod">Loan Term (Years)</label>
+                <input type="number" id="loanPeriod" placeholder="Loan period in years" value="5">
+            </div>
+            <div class="input-group">
+                <label for="extraPayment">Extra Monthly Payment (₹) <small>(Optional)</small></label>
+                <input type="number" id="extraPayment" placeholder="Optional extra payment" value="0">
+            </div>
+            <button id="calculateLoan">Calculate Loan</button>
+        </div>
+
+        <div class="result-section">
+            <h2 class="result-heading">Loan Payment Summary</h2>
+
+            <div class="summary-metrics">
+                <div class="metric-card">
+                    <div class="metric-value" id="monthlyEMI">₹ 0</div>
+                    <div class="metric-label">Monthly EMI (Est.)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="totalInterest">₹ 0</div>
+                    <div class="metric-label">Total Interest (Est.)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="totalPayment">₹ 0</div>
+                    <div class="metric-label">Total Payment (Loan + Interest)</div>
+                </div>
+                 <div class="metric-card">
+                    <div class="metric-value" id="effectiveInterestRate">-- %</div>
+                    <div class="metric-label">Effective Interest Rate</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="loanChart"></canvas>
+            </div>
+
+
+            <div class="detailed-results">
+                <h3>Year-wise Amortization Schedule</h3>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>Starting Balance</th>
+                            <th>Principal Paid</th>
+                            <th>Interest Paid</th>
+                            <th>Ending Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody id="yearlyAmortizationBody">
+                        <tr>
+                            <td colspan="5">Calculated loan amortization will appear here</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="note-section">
+                <p><strong>Important Notes:</strong></p>
+                <ul>
+                    <li>This advanced loan calculator provides an estimated loan amortization schedule and payment summary.</li>
+                    <li><strong>Extra Monthly Payment:</strong>  Adding an extra payment each month can significantly reduce your loan term and total interest.</li>
+                    <li><strong>Effective Interest Rate:</strong> This is a simplified representation. Actual interest calculations may vary based on the lender's methodology.</li>
+                    <li><strong>Disclaimer:</strong> This calculator is for illustrative purposes only and does not constitute financial advice. Consult with a financial institution for precise loan terms and calculations.</li>
+                </ul>
+            </div>
+
+            <div class="note-section">
+                <p><strong>Important Learning Note & Disclaimer:</strong></p>
+                <p>This loan calculator is designed for educational purposes to help you understand loan calculations and amortization. <strong>It is not intended to provide financial advice, and the results should not be considered as a suggestion to take out any specific loan.</strong> Loan decisions should be made after consulting with a qualified financial advisor and understanding your own financial circumstances.  Loan terms and interest rates can vary, and actual loan costs may differ from calculator projections.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+         document.addEventListener('DOMContentLoaded', function() {
+            const loanAmountInput = document.getElementById('loanAmount');
+            const interestRateInput = document.getElementById('interestRate');
+            const loanPeriodInput = document.getElementById('loanPeriod');
+            const extraPaymentInput = document.getElementById('extraPayment');
+            const calculateLoanButton = document.getElementById('calculateLoan');
+
+            const monthlyEMIDisplay = document.getElementById('monthlyEMI');
+            const totalInterestDisplay = document.getElementById('totalInterest');
+            const totalPaymentDisplay = document.getElementById('totalPayment');
+            const effectiveInterestRateDisplay = document.getElementById('effectiveInterestRate');
+            const yearlyAmortizationBody = document.getElementById('yearlyAmortizationBody');
+            const loanChartCanvas = document.getElementById('loanChart').getContext('2d');
+
+
+            let loanChart;
+
+
+            calculateLoanButton.addEventListener('click', function() {
+                const loanAmount = parseFloat(loanAmountInput.value);
+                const annualInterestRate = parseFloat(interestRateInput.value) / 100;
+                const loanPeriodYears = parseInt(loanPeriodInput.value);
+                const extraMonthlyPayment = parseFloat(extraPaymentInput.value);
+
+
+                if (isNaN(loanAmount) || isNaN(annualInterestRate) || isNaN(loanPeriodYears) || loanAmount <= 0 || annualInterestRate < 0 || loanPeriodYears <= 0) {
+                    alert("Please enter valid loan details.");
+                    return;
+                }
+
+                const monthlyInterestRate = annualInterestRate / 12;
+                const numberOfPayments = loanPeriodYears * 12;
+                let monthlyEMI = 0;
+
+                if (annualInterestRate > 0) {
+                    monthlyEMI = loanAmount * monthlyInterestRate * Math.pow((1 + monthlyInterestRate), numberOfPayments) / (Math.pow((1 + monthlyInterestRate), numberOfPayments) - 1);
+                } else {
+                    monthlyEMI = loanAmount / numberOfPayments; // For 0% interest loans
+                }
+
+
+                let totalInterest = 0;
+                let remainingBalance = loanAmount;
+                let yearlyAmortizationData = [];
+                let yearlyPrincipalPaid = 0;
+                let yearlyInterestPaid = 0;
+                let yearStartBalance = loanAmount;
+
+
+                yearlyAmortizationBody.innerHTML = ''; // Clear previous table
+
+
+                for (let year = 1; year <= loanPeriodYears; year++) {
+                    yearlyPrincipalPaid = 0;
+                    yearlyInterestPaid = 0;
+                    yearStartBalance = remainingBalance;
+
+
+                    for (let month = 1; month <= 12 && remainingBalance > 0; month++) {
+                        let interestPayment = remainingBalance * monthlyInterestRate;
+                        let principalPayment = monthlyEMI - interestPayment;
+
+                        if (principalPayment > remainingBalance) { // Last payment scenario
+                            principalPayment = remainingBalance;
+                            monthlyEMI = principalPayment + interestPayment; // Recalculate EMI for last payment
+                        }
+
+
+                        principalPayment += extraMonthlyPayment; // Apply extra payment to principal
+                        if (principalPayment > remainingBalance) {
+                            principalPayment = remainingBalance; // Cap principal payment to remaining balance
+                        }
+
+
+                        interestPayment = remainingBalance * monthlyInterestRate; // Recalculate interest after extra principal payment
+                        monthlyEMI = principalPayment + interestPayment; // Recalculate EMI after extra principal payment
+
+
+                        remainingBalance -= principalPayment;
+
+
+                        totalInterest += interestPayment;
+                        yearlyPrincipalPaid += principalPayment;
+                        yearlyInterestPaid += interestPayment;
+
+
+                    }
+                     yearlyAmortizationData.push({
+                        year: year,
+                        startBalance: yearStartBalance,
+                        principalPaid: yearlyPrincipalPaid,
+                        interestPaid: yearlyInterestPaid,
+                        endBalance: remainingBalance >=0 ? remainingBalance : 0 // Ensure balance doesn't go negative in table
+                    });
+                }
+
+
+                const totalPayment = loanAmount + totalInterest;
+                const effectiveAnnualRate = (Math.pow((totalPayment / loanAmount), (1/loanPeriodYears)) - 1) * 100;
+
+
+                monthlyEMIDisplay.textContent = '₹ ' + monthlyEMI.toFixed(0);
+                totalInterestDisplay.textContent = '₹ ' + totalInterest.toFixed(0);
+                totalPaymentDisplay.textContent = '₹ ' + totalPayment.toFixed(0);
+                effectiveInterestRateDisplay.textContent = effectiveAnnualRate.toFixed(2) + ' %';
+
+
+                populateAmortizationTable(yearlyAmortizationData);
+                updateLoanChart(yearlyAmortizationData);
+
+            });
+
+
+            function populateAmortizationTable(yearlyAmortizationData) {
+                let tableRowsHTML = '';
+                yearlyAmortizationData.forEach(yearData => {
+                    tableRowsHTML += `
+                        <tr>
+                            <td>Year ${yearData.year}</td>
+                            <td>₹ ${yearData.startBalance.toFixed(0)}</td>
+                            <td>₹ ${yearData.principalPaid.toFixed(0)}</td>
+                            <td>₹ ${yearData.interestPaid.toFixed(0)}</td>
+                            <td class="highlight-value">₹ ${yearData.endBalance.toFixed(0)}</td>
+                        </tr>
+                    `;
+                });
+                yearlyAmortizationBody.innerHTML = tableRowsHTML;
+            }
+
+
+            function updateLoanChart(yearlyAmortizationData) {
+                const labels = yearlyAmortizationData.map(data => 'Year ' + data.year);
+                const principalValues = yearlyAmortizationData.map(data => data.principalPaid);
+                const interestValues = yearlyAmortizationData.map(data => data.interestPaid);
+
+
+                const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+                const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color').trim();
+
+
+                if (loanChart) {
+                    loanChart.destroy();
+                }
+
+
+                loanChart = new Chart(loanChartCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Principal Paid',
+                            data: principalValues,
+                            backgroundColor: primaryColor,
+                            borderColor: primaryColor,
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Interest Paid',
+                            data: interestValues,
+                            backgroundColor: secondaryColor,
+                            borderColor: secondaryColor,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                stacked: true,
+                                title: {
+                                    display: true,
+                                    text: 'Years',
+                                    color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim()
+                                },
+                                ticks: {color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim()}
+                            },
+                            y: {
+                                stacked: true,
+                                title: {
+                                    display: true,
+                                    text: 'Amount Paid (₹)',
+                                    color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim()
+                                },
+                                ticks: {
+                                    color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim(),
+                                    callback: function(value, index, values) {
+                                        if (value >= 100000) {
+                                          const formattedValue =  value >= 10000000 ? value / 10000000 + 'Cr' : value / 100000 + 'L';
+                                          return '₹' + formattedValue;
+                                        } else if (value >= 1000) {
+                                            return '₹' + value / 1000 + 'K';
+                                        }
+                                        return '₹' + value;
+                                      }
+                                }
+                            }
+                        },
+                         plugins: {
+                            legend: {
+                                display: true,
+                                labels: {
+                                    color: getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim()
+                                }
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--card-color').trim(),
+                                titleColor: getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim(),
+                                bodyColor: getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim(),
+                                borderColor: getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim(),
+                                borderWidth: 1,
+                                displayColors: true,
+                                callbacks: {
+                                     label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(context.parsed.y);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                });
+            }
+        });
+    </script>
+</body>
+</html>
