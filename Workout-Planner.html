@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Workout Planner with Local Timers</title>
+    <meta name="description" content="Workout planner with local timers. Interactive exercise routines with warm-up, cool-down, rest, and images for all body parts. Timers integrated for each exercise.">
+    <meta name="keywords" content="workout planner, local timers, exercise timers, countdown, warm-up, cool-down, rest, exercise plan, fitness routine, biceps workout, triceps workout, chest workout, back workout, shoulder workout, leg workout, abs workout, full body workout, exercise images">
+    <meta name="author" content="[Your Name or Organization Name]">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Workout Planner with Local Timers - Interactive Routines">
+    <meta property="og:description" content="Interactive workout planner with built-in exercise timers and local data storage. Features warm-up, cool-down, rest, and visual guides for all muscle groups.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="[Your Website URL Here - e.g., https://www.example.com/workout-planner]">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap">
+    <style>
+         /* Enhanced CSS - style.css - Interactive Workout Planner with Local Timers */
+        :root {
+            --primary-color: #27ae60; /* Emerald Green Primary */
+            --primary-color-dark: #219653; /* Darker Emerald Hover */
+            --secondary-color: #f1c40f; /* Yellow Accent */
+            --background-color: #f9f9f9; /* Off-White Background */
+            --card-color: #ffffff; /* White Card */
+            --text-primary: #333333; /* Dark Grey Text */
+            --text-secondary: #555555; /* Medium Grey Text */
+            --timer-color: #e74c3c; /* Red Timer Color */
+            --timer-background: #fadede; /* Light Red Timer Background */
+            --border-radius: 24px; /* Even more rounded corners */
+            --box-shadow: 0 16px 40px rgba(0,0,0,0.2); /* Stronger shadow */
+            --font-family: 'Nunito Sans', sans-serif; /* Modern Font */
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 30px;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--card-color);
+            padding: 60px; /* Increased container padding */
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: left;
+            width: 100%;
+            max-width: 1150px; /* Even wider container */
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 40px; /* Increased title margin */
+            font-size: 4rem; /* Larger title */
+            letter-spacing: 1.7px;
+            text-align: center;
+        }
+
+        .body-part-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 22px; /* Increased button gap */
+            margin-bottom: 50px; /* Increased button section margin */
+        }
+
+        .body-part-button {
+            background-color: var(--primary-color);
+            color: var(--card-color);
+            border: none;
+            padding: 18px 32px; /* Slightly larger buttons */
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1.3rem; /* Slightly larger button text */
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 9px 22px rgba(0,0,0,0.3); /* Enhanced button shadow */
+        }
+
+        .body-part-button:hover {
+            background-color: var(--primary-color-dark);
+        }
+
+        .body-part-button:active {
+            transform: scale(0.92);
+        }
+
+        h2 {
+            color: var(--primary-color-dark);
+            margin-top: 60px; /* Increased section heading margin */
+            margin-bottom: 35px; /* Increased section heading margin */
+            font-size: 3rem; /* Larger section headings */
+            border-bottom: 8px solid var(--secondary-color); /* Thicker accent line */
+            padding-bottom: 18px;
+        }
+
+        h3 {
+            color: var(--text-primary);
+            font-size: 2rem; /* Larger exercise names */
+            margin-top: 30px; /* Increased exercise name margin */
+            margin-bottom: 22px; /* Increased exercise name margin */
+        }
+
+        h4 {
+            color: var(--secondary-color); /* Accent color for warm-up/cool-down/rest headings */
+            font-size: 1.7rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-bottom: 2px dotted var(--text-secondary); /* Dotted line for these headings */
+            padding-bottom: 8px;
+        }
+
+
+        p, ul, ol {
+            color: var(--text-secondary);
+            font-size: 1.25rem; /* Slightly larger text */
+            line-height: 2;
+            margin-bottom: 28px; /* Increased paragraph margin */
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 50px; /* Further increased list indent */
+        }
+
+        .exercise-list li {
+            margin-bottom: 35px; /* Even more spacing in exercise lists */
+            display: flex;
+            align-items: start;
+            position: relative; /* For timer positioning */
+        }
+
+        .exercise-image {
+            width: 180px; /* Slightly wider exercise images */
+            height: auto;
+            margin-right: 40px; /* Increased spacing between image and text */
+            border-radius: var(--border-radius);
+            box-shadow: 0 7px 17px rgba(0,0,0,0.2); /* Enhanced image shadow */
+            display: block;
+        }
+
+        .exercise-text {
+            flex: 1;
+        }
+
+
+        .workout-section {
+            display: none;
+        }
+
+        .workout-section.active {
+            display: block;
+        }
+
+
+        .note-section {
+            text-align: left;
+            font-size: 1.1rem; /* Slightly larger note text */
+            color: var(--text-secondary);
+            line-height: 2;
+            margin-top: 60px; /* Further increased note section margin */
+            border-top: 2px dashed var(--secondary-color);
+            padding-top: 40px; /* Increased padding for notes */
+        }
+
+        /* Timer Styles */
+        .exercise-timer-container {
+            position: absolute;
+            top: -15px; /* Position above exercise text */
+            right: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .exercise-timer {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--timer-color);
+            background-color: var(--timer-background);
+            padding: 8px 12px;
+            border-radius: 12px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .start-timer-button {
+            background-color: var(--secondary-color);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+
+        .start-timer-button:hover {
+            background-color: #e0b800; /* Darker yellow on hover */
+        }
+
+        .start-timer-button:active {
+            transform: scale(0.95);
+        }
+
+
+        /* Responsive adjustments - Grid for buttons on smaller screens */
+        @media (max-width: 800px) {
+            .body-part-buttons {
+                display: grid; /* Change to grid layout for buttons */
+                grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Adjust min width */
+                gap: 18px; /* Adjust gap in grid layout */
+                max-width: 650px; /* Adjust max width of button grid if needed */
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .body-part-button {
+                padding: 16px; /* Adjust button padding in grid */
+                font-size: 1.1rem; /* Adjust button font size in grid */
+                text-align: center; /* Center text in grid buttons */
+            }
+        }
+
+
+        @media (max-width: 900px) {
+            .exercise-image {
+                width: 160px; /* Slightly smaller images on medium screens */
+                margin-right: 35px;
+            }
+        }
+
+
+        @media (max-width: 700px) { /* Further reduce image size and margins on smaller screens */
+            .exercise-list li {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .exercise-image {
+                width: 100%;
+                max-width: 320px;
+                height: auto;
+                margin-bottom: 25px;
+                margin-right: 0;
+            }
+
+             .container {
+                padding: 45px; /* Adjusted container padding */
+            }
+
+            h1 {
+                font-size: 3.5rem;
+                margin-bottom: 35px;
+            }
+
+            h2 {
+                font-size: 2.6rem;
+                margin-bottom: 25px;
+            }
+
+            h3, h4, p, ul, ol {
+                font-size: 1.15rem;
+            }
+
+            .exercise-timer-container {
+                top: -10px; /* Adjust timer position on smaller screens */
+                right: 5px;
+                gap: 6px;
+            }
+
+            .exercise-timer {
+                font-size: 1.2rem; /* Smaller timer text on smaller screens */
+                padding: 6px 10px;
+            }
+
+            .start-timer-button {
+                padding: 6px 12px; /* Smaller start button on smaller screens */
+                font-size: 0.9rem;
+            }
+        }
+
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 35px; /* Further adjusted container padding */
+            }
+
+            h1 {
+                font-size: 3rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 2.2rem;
+                margin-bottom: 20px;
+            }
+
+            h3, h4, p, ul, ol, .note-section, .body-part-button {
+                font-size: 1rem;
+            }
+            .body-part-button {
+                padding: 12px 18px; /* Even smaller buttons on very small screens */
+            }
+
+             .exercise-timer-container {
+                top: -8px; /* Further adjust timer position on very small screens */
+                right: 3px;
+                gap: 5px;
+            }
+
+            .exercise-timer {
+                font-size: 1rem; /* Even smaller timer text on very small screens */
+                padding: 5px 8px;
+            }
+
+            .start-timer-button {
+                padding: 5px 10px; /* Even smaller start button on very small screens */
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Interactive Workout Planner</h1>
+
+        <div class="body-part-buttons">
+            <button class="body-part-button" onclick="showWorkout('biceps')">Biceps</button>
+            <button class="body-part-button" onclick="showWorkout('triceps')">Triceps</button>
+            <button class="body-part-button" onclick="showWorkout('chest')">Chest</button>
+            <button class="body-part-button" onclick="showWorkout('back')">Back</button>
+            <button class="body-part-button" onclick="showWorkout('shoulders')">Shoulders</button>
+            <button class="body-part-button" onclick="showWorkout('legs')">Legs</button>
+            <button class="body-part-button" onclick="showWorkout('abs')">Abs</button>
+            <button class="body-part-button" onclick="showWorkout('fullBody')">Full Body</button>
+        </div>
+
+        <div id="biceps-workout" class="workout-section active">
+            <h2>Biceps Exercises</h2>
+
+            <div class="warm-up-section">
+                <h4>Warm-up</h4>
+                <p>Begin with 5-10 minutes of light cardio, such as arm circles, brisk walking, or light jogging. Follow with dynamic stretches like arm swings, and torso twists to prepare your biceps and upper body for the workout.</p>
+            </div>
+
+            <ul class="exercise-list">
+                <li>
+                    <img src="placeholder-bicep-curl.jpg" alt="Dumbbell Bicep Curl" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Dumbbell Bicep Curls</h3>
+                        <p>Stand with a dumbbell in each hand, palms facing forward. Curl the weights up to your shoulders, keeping your elbows still. Lower slowly. <strong>Sets: 3, Reps: 10-12</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                    <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-bicep-curl">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-bicep-curl')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-hammer-curl.jpg" alt="Hammer Curl" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Hammer Curls</h3>
+                        <p>Hold dumbbells with palms facing each other. Curl the weights up, keeping palms facing inwards throughout. Lower with control. <strong>Sets: 3, Reps: 10-12</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                    <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-hammer-curl">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-hammer-curl')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-concentration-curl.jpg" alt="Concentration Curl" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Concentration Curls</h3>
+                        <p>Sit on a bench, legs wider than shoulder-width, and lean forward. Place the back of your upper right arm against the inner right thigh. Curl the dumbbell up, focusing on your bicep. <strong>Sets: 3, Reps: 12-15</strong> (each arm). <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-concentration-curl">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-concentration-curl')">Start</button>
+                    </div>
+                </li>
+                 <li>
+                    <img src="placeholder-cable-curl.jpg" alt="Cable Curl" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Cable Curls</h3>
+                        <p>Attach a straight bar to a low cable pulley. Stand facing the machine, shoulder-width apart. Curl the bar upwards towards your shoulders, keeping elbows close to your body. Lower slowly. <strong>Sets: 3, Reps: 12-15</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-cable-curl">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-cable-curl')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-incline-curl.jpg" alt="Incline Dumbbell Curl" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Incline Dumbbell Curls</h3>
+                        <p>Sit on an incline bench with a dumbbell in each hand, arms hanging down, palms facing forward. Curl the weights up, maintaining your upper arm position. Lower slowly. <strong>Sets: 3, Reps: 10-12</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-incline-curl">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-incline-curl')">Start</button>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="cool-down-section">
+                <h4>Cool-down</h4>
+                <p>Finish your biceps workout with 5-10 minutes of static stretching. Focus on stretching your biceps and forearms. Examples include bicep stretch against a wall and forearm extensor stretch. Hold each stretch for 20-30 seconds.</p>
+            </div>
+        </div>
+
+        <div id="triceps-workout" class="workout-section">
+            <h2>Triceps Exercises</h2>
+
+             <div class="warm-up-section">
+                <h4>Warm-up</h4>
+                <p>Start with 5-10 minutes of light cardio like jumping jacks or arm rotations to increase blood flow. Include dynamic stretches such as arm circles, and triceps stretches to prepare your triceps and upper body.</p>
+            </div>
+
+            <ul class="exercise-list">
+                <li>
+                    <img src="placeholder-bench-dip.jpg" alt="Bench Dip" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Triceps Dips (Bench Dips)</h3>
+                        <p>Use a bench or chair. Place your hands shoulder-width apart on the edge, fingers pointing forward. Extend your legs out. Lower your body by bending your elbows, then push back up. <strong>Sets: 3, Reps: As many as possible (AMRAP)</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                    <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-bench-dip">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-bench-dip')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-close-grip-bench-press.jpg" alt="Close-Grip Bench Press" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Close-Grip Bench Press</h3>
+                        <p>Lie on a bench, grip the barbell with hands closer than shoulder-width. Lower the bar to your chest, keeping elbows tucked in. Push the bar back up. <strong>Sets: 3, Reps: 8-10</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                    <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-close-grip-bench-press">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-close-grip-bench-press')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-overhead-triceps-extension.jpg" alt="Overhead Triceps Extension" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Overhead Triceps Extension (Dumbbell)</h3>
+                        <p>Hold a dumbbell with both hands and extend it overhead. Lower the weight behind your head by bending your elbows, then extend back up. <strong>Sets: 3, Reps: 12-15</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-overhead-triceps-extension">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-overhead-triceps-extension')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-cable-pushdown.jpg" alt="Cable Pushdown" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Cable Pushdowns</h3>
+                        <p>Attach a rope handle to a high cable pulley. Grip the rope with palms facing each other. Keeping elbows tucked in, push the rope down until your arms are fully extended. Control the weight back up. <strong>Sets: 3, Reps: 12-15</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-cable-pushdown">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-cable-pushdown')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-skullcrusher.jpg" alt="Skullcrusher" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Skullcrushers (Lying Triceps Extensions)</h3>
+                        <p>Lie on a bench holding a barbell or dumbbells with arms extended above you. Keeping upper arms stationary, lower the weight towards your forehead by bending your elbows. Extend back up. <strong>Sets: 3, Reps: 10-12</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-skullcrusher">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-skullcrusher')">Start</button>
+                    </div>
+                </li>
+            </ul>
+
+             <div class="cool-down-section">
+                <h4>Cool-down</h4>
+                <p>Conclude with 5-10 minutes of static stretches focusing on your triceps and shoulders. Try overhead triceps stretch and cross-body shoulder stretch, holding each for 20-30 seconds to improve flexibility and reduce muscle tension.</p>
+            </div>
+        </div>
+
+        <div id="chest-workout" class="workout-section">
+            <h2>Chest Exercises</h2>
+
+             <div class="warm-up-section">
+                <h4>Warm-up</h4>
+                <p>Warm up for 5-10 minutes with light cardio such as jumping jacks or arm rotations. Perform dynamic chest stretches like arm swings, and chest wall stretch to prepare your chest muscles for exercise.</p>
+            </div>
+
+            <ul class="exercise-list">
+                <li>
+                    <img src="placeholder-bench-press.jpg" alt="Bench Press" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Bench Press (Barbell or Dumbbell)</h3>
+                        <p>Lie on a bench. For barbell, grip slightly wider than shoulder-width. For dumbbells, hold in each hand. Lower weight to chest, then push back up. <strong>Sets: 3, Reps: 8-12</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-bench-press">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-bench-press')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-incline-push-up.jpg" alt="Incline Push-Up" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Push-Ups (Classic or Incline)</h3>
+                        <p>Classic push-ups: Hands shoulder-width apart, body straight. Lower chest to the floor, push back up. Incline push-ups (easier): Hands on elevated surface. <strong>Sets: 3, Reps: As many as possible (AMRAP)</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-push-up">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-push-up')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-dumbbell-flye.jpg" alt="Dumbbell Flye" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Dumbbell Flyes</h3>
+                        <p>Lie on a bench with dumbbells in each hand, arms extended above chest, palms facing each other. Lower arms out to the sides in an arc, keeping a slight bend in elbows. Bring weights back up to starting position. <strong>Sets: 3, Reps: 10-12</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-dumbbell-flye">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-dumbbell-flye')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-incline-dumbbell-press.jpg" alt="Incline Dumbbell Press" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Incline Dumbbell Press</h3>
+                        <p>Lie on an incline bench with dumbbells. Lower weights to your upper chest, then press back up. <strong>Sets: 3, Reps: 8-12</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-incline-dumbbell-press">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-incline-dumbbell-press')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-cable-crossover.jpg" alt="Cable Crossover" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Cable Crossovers</h3>
+                        <p>Stand in the center of a cable crossover machine. Grip the handles of high pulleys. Keeping a slight bend in your elbows, bring your hands together in front of you in a wide arc. Control the return. <strong>Sets: 3, Reps: 12-15</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-cable-crossover">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-cable-crossover')">Start</button>
+                    </div>
+                </li>
+            </ul>
+
+             <div class="cool-down-section">
+                <h4>Cool-down</h4>
+                <p>Cool down with 5-10 minutes of static chest and shoulder stretches. Pectoral stretch and doorway chest stretch are effective. Hold each stretch for 20-30 seconds to help muscle recovery.</p>
+            </div>
+        </div>
+
+        <div id="back-workout" class="workout-section">
+            <h2>Back Exercises</h2>
+
+             <div class="warm-up-section">
+                <h4>Warm-up</h4>
+                <p>Begin with 5-10 minutes of light cardio like rowing or jumping jacks to get your blood flowing. Incorporate dynamic back stretches such as cat-cow stretches and torso rotations to prepare your back muscles.</p>
+            </div>
+
+            <ul class="exercise-list">
+                <li>
+                    <img src="placeholder-pull-up.jpg" alt="Pull-Up" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Pull-Ups (or Lat Pulldowns)</h3>
+                        <p>Pull-ups (advanced): Grip a pull-up bar with an overhand grip, slightly wider than shoulder-width. Hang and pull yourself up until your chin is over the bar. Lat pulldowns (beginner-friendly): Use a lat pulldown machine, pull the bar down to your chest. <strong>Sets: 3, Reps: As many as possible (AMRAP) for Pull-ups, 10-12 for Lat pulldowns</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-pull-up">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-pull-up')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-bent-over-row.jpg" alt="Bent-Over Row" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Bent-Over Rows (Barbell or Dumbbell)</h3>
+                        <p>Bent-Over Barbell Rows: Bend at the hips, keeping back straight, and row a barbell towards your lower chest. Dumbbell Rows: Support yourself on a bench with one hand and knee, row a dumbbell with the other arm. <strong>Sets: 3, Reps: 8-12</strong> (each arm for dumbbell rows). <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-bent-over-row">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-bent-over-row')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-seated-cable-row.jpg" alt="Seated Cable Row" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Seated Cable Rows</h3>
+                        <p>Sit at a seated cable row machine, feet against the rests, knees slightly bent. Pull the handle towards your torso, squeezing your back muscles. <strong>Sets: 3, Reps: 12-15</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-seated-cable-row">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-seated-cable-row')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-lat-pulldown.jpg" alt="Lat Pulldown" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Lat Pulldowns</h3>
+                        <p>Use a lat pulldown machine, sit with knees under the pads. Grip the bar with a wide overhand grip and pull it down to your chest, squeezing your back muscles. Control the bar back up. <strong>Sets: 3, Reps: 10-12</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-lat-pulldown">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-lat-pulldown')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-back-extension.jpg" alt="Back Extension" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Back Extensions (Hyperextensions)</h3>
+                        <p>Use a back extension bench. Position yourself with hips on the pad, legs secured. Lower your torso towards the floor, keeping your back straight. Extend back up, engaging your lower back muscles. <strong>Sets: 3, Reps: 15-20</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-back-extension">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-back-extension')">Start</button>
+                    </div>
+                </li>
+            </ul>
+
+             <div class="cool-down-section">
+                <h4>Cool-down</h4>
+                <p>Finish with 5-10 minutes of static back stretches like child’s pose and seated back twist. Hold each stretch for 20-30 seconds to promote back muscle recovery and flexibility.</p>
+            </div>
+        </div>
+
+        <div id="shoulders-workout" class="workout-section">
+            <h2>Shoulder Exercises</h2>
+
+             <div class="warm-up-section">
+                <h4>Warm-up</h4>
+                <p>Warm up for 5-10 minutes with light cardio, focusing on arm and shoulder movements such as arm circles and torso twists. Include dynamic shoulder stretches like arm swings and shoulder rotations to prepare your shoulder muscles.</p>
+            </div>
+
+            <ul class="exercise-list">
+                <li>
+                    <img src="placeholder-overhead-press.jpg" alt="Overhead Press" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Overhead Press (Barbell or Dumbbell)</h3>
+                        <p>Stand or sit, and press a barbell or dumbbells straight overhead. Lower with control to shoulder level. <strong>Sets: 3, Reps: 8-12</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-overhead-press">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-overhead-press')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-lateral-raise.jpg" alt="Lateral Raise" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Lateral Raises</h3>
+                        <p>Stand with dumbbells in hand, arms at your sides. Raise your arms out to the sides until shoulder level, keeping a slight bend in elbows. Lower slowly. <strong>Sets: 3, Reps: 12-15</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-lateral-raise">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-lateral-raise')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-front-raise.jpg" alt="Front Raise" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Front Raises</h3>
+                        <p>Stand with a dumbbell in each hand, palms facing your thighs. Raise one or both arms straight in front of you until shoulder level. Lower slowly. <strong>Sets: 3, Reps: 12-15</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-front-raise">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-front-raise')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-rear-delt-flye.jpg" alt="Rear Delt Flye" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Rear Delt Flyes (Reverse Dumbbell Flyes)</h3>
+                        <p>Bend forward at the hips, keeping back straight, with dumbbells in each hand, palms facing each other. Raise your arms out to the sides, squeezing your rear deltoids. Lower with control. <strong>Sets: 3, Reps: 12-15</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-rear-delt-flye">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-rear-delt-flye')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-face-pull.jpg" alt="Face Pull" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Face Pulls</h3>
+                        <p>Attach a rope handle to a high cable pulley. Grip the ends of the rope with an overhand grip. Pull the rope towards your face, separating your hands as you pull and externally rotating your shoulders. <strong>Sets: 3, Reps: 15-20</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-face-pull">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-face-pull')">Start</button>
+                    </div>
+                </li>
+            </ul>
+
+             <div class="cool-down-section">
+                <h4>Cool-down</h4>
+                <p>Cool down with 5-10 minutes of static shoulder stretches. Cross-body shoulder stretch and overhead triceps stretch will help in shoulder muscle recovery. Hold each for 20-30 seconds.</p>
+            </div>
+        </div>
+
+        <div id="legs-workout" class="workout-section">
+            <h2>Leg Exercises</h2>
+
+             <div class="warm-up-section">
+                <h4>Warm-up</h4>
+                <p>Start with 5-10 minutes of light cardio such as brisk walking or high knees. Include dynamic leg stretches like leg swings, hip circles, and torso twists to prepare your leg muscles and joints.</p>
+            </div>
+
+            <ul class="exercise-list">
+                 <li>
+                    <img src="placeholder-squat.jpg" alt="Squat" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Squats (Bodyweight or Barbell)</h3>
+                        <p>Bodyweight squats: Stand with feet shoulder-width apart, squat down as if sitting in a chair, keeping back straight. Barbell squats (advanced): Place a barbell across your upper back, squat down maintaining form. <strong>Sets: 3, Reps: 10-15</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-squat">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-squat')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-lunge.jpg" alt="Lunge" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Lunges (Forward or Walking)</h3>
+                        <p>Forward lunges: Step forward with one leg, bending both knees to 90 degrees. Push back to starting position and repeat on the other leg. Walking lunges: Step forward and lunge, then step through with the back leg into another lunge, alternating legs as you walk. <strong>Sets: 3, Reps: 10-12</strong> (each leg). <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-lunge">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-lunge')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-calf-raise.jpg" alt="Calf Raise" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Calf Raises (Standing or Seated)</h3>
+                        <p>Standing calf raises: Stand on a slightly elevated surface (like a step), heels hanging off. Rise up onto your toes, feeling the stretch in your calves. Seated calf raises: Sit with weight on your thighs, raise up onto your toes. <strong>Sets: 3, Reps: 15-20</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-calf-raise">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-calf-raise')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-leg-press.jpg" alt="Leg Press" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Leg Press</h3>
+                        <p>Using a leg press machine, place your feet shoulder-width apart on the platform. Press the platform away from you, extending your legs, but without locking your knees. Lower slowly. <strong>Sets: 3, Reps: 10-15</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-leg-press">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-leg-press')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-hamstring-curl.jpg" alt="Hamstring Curl" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Hamstring Curls (Leg Curls)</h3>
+                        <p>Using a hamstring curl machine (lying or seated), curl your legs up towards your glutes, flexing your hamstrings. Control the weight back down. <strong>Sets: 3, Reps: 12-15</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-hamstring-curl">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-hamstring-curl')">Start</button>
+                    </div>
+                </li>
+            </ul>
+
+             <div class="cool-down-section">
+                <h4>Cool-down</h4>
+                <p>Cool down with 5-10 minutes of static leg stretches, including quadriceps stretch, hamstring stretch, and calf stretch. Hold each stretch for 20-30 seconds to improve leg muscle flexibility and aid recovery.</p>
+            </div>
+        </div>
+
+        <div id="abs-workout" class="workout-section">
+            <h2>Abs Exercises</h2>
+
+             <div class="warm-up-section">
+                <h4>Warm-up</h4>
+                <p>Warm up for 5-10 minutes with light cardio like torso twists and brisk walking. Include dynamic core stretches such as hip circles and cat-cow stretches to prepare your core muscles for the workout.</p>
+            </div>
+
+            <ul class="exercise-list">
+                <li>
+                    <img src="placeholder-crunch.jpg" alt="Crunch" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Crunches</h3>
+                        <p>Lie on your back with knees bent and feet flat. Place hands behind your head or across your chest. Curl your upper body towards your knees, lifting your shoulders off the floor. Lower slowly. <strong>Sets: 3, Reps: 15-20</strong>. <strong>Rest: 30-45 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-crunch">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-crunch')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-leg-raise.jpg" alt="Leg Raise" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Leg Raises</h3>
+                        <p>Lie flat on your back, legs extended. Place hands under your glutes for support. Lift your legs straight up towards the ceiling, keeping them straight or slightly bent. Lower slowly. <strong>Sets: 3, Reps: 15-20</strong>. <strong>Rest: 30-45 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-leg-raise">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-leg-raise')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-plank.jpg" alt="Plank" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Plank</h3>
+                        <p>Start in a push-up position, but rest on your forearms instead of hands. Keep your body in a straight line from head to heels, engaging your core. Hold for time. <strong>Sets: 3, Hold: 30-60 seconds</strong>. <strong>Rest: 30-45 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-plank">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-plank')">Start</button>
+                    </div>
+                </li>
+                 <li>
+                    <img src="placeholder-russian-twist.jpg" alt="Russian Twist" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Russian Twists</h3>
+                        <p>Sit on the floor with knees bent, feet slightly off the ground, and lean back slightly. Hold a weight or medicine ball (optional). Twist your torso from side to side, touching the weight (or hands) to the floor on each side. <strong>Sets: 3, Reps: 15-20</strong> (each side). <strong>Rest: 30-45 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-russian-twist">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-russian-twist')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-bicycle-crunch.jpg" alt="Bicycle Crunch" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Bicycle Crunches</h3>
+                        <p>Lie on your back with hands behind your head. Bring knees towards your chest and alternate bringing your elbow to the opposite knee while extending the other leg straight out. <strong>Sets: 3, Reps: 15-20</strong> (each side). <strong>Rest: 30-45 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-bicycle-crunch">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-bicycle-crunch')">Start</button>
+                    </div>
+                </li>
+            </ul>
+
+             <div class="cool-down-section">
+                <h4>Cool-down</h4>
+                <p>Cool down with 5-10 minutes of static core stretches like cobra stretch and side stretches. Hold each stretch for 20-30 seconds to relax your core muscles and improve flexibility.</p>
+            </div>
+        </div>
+
+        <div id="fullBody-workout" class="workout-section">
+            <h2>Full Body Workout</h2>
+            <p>This full body routine targets major muscle groups in each workout. It's efficient for overall fitness and can be done 2-3 times a week with rest days.</p>
+
+             <div class="warm-up-section">
+                <h4>Warm-up</h4>
+                <p>Begin with a 5-10 minute full body warm-up. Start with light cardio such as jogging in place or jumping jacks, followed by dynamic stretches like arm circles, leg swings, and torso rotations to prepare your entire body.</p>
+            </div>
+
+            <ul class="exercise-list">
+                <li>
+                    <img src="placeholder-fullbody-squat.jpg" alt="Squat" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Squats</h3>
+                        <p><strong>Sets: 3, Reps: 10-12</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-fullbody-squat">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-fullbody-squat')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-fullbody-pushup.jpg" alt="Push-Up" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Push-Ups</h3>
+                        <p><strong>Sets: 3, Reps: As many as possible (AMRAP)</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-fullbody-pushup">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-fullbody-pushup')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-fullbody-row.jpg" alt="Bent-Over Row" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Bent-Over Rows</h3>
+                        <p><strong>Sets: 3, Reps: 8-12</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-fullbody-row">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-fullbody-row')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-fullbody-overhead-press.jpg" alt="Overhead Press" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Overhead Press</h3>
+                        <p><strong>Sets: 3, Reps: 8-12</strong>. <strong>Rest: 60-90 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-fullbody-overhead-press">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-fullbody-overhead-press')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-fullbody-plank.jpg" alt="Plank" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Plank</h3>
+                        <p><strong>Sets: 3, Hold: 30-60 seconds</strong>. <strong>Rest: 30-45 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-fullbody-plank">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-fullbody-plank')">Start</button>
+                    </div>
+                </li>
+                <li>
+                    <img src="placeholder-fullbody-crunch.jpg" alt="Crunch" class="exercise-image">
+                    <div class="exercise-text">
+                        <h3>Crunches</h3>
+                        <p><strong>Sets: 3, Reps: 15-20</strong>. <strong>Rest: 30-45 seconds between sets.</strong></p>
+                    </div>
+                     <div class="exercise-timer-container">
+                        <span class="exercise-timer" id="timer-fullbody-crunch">Ready</span>
+                        <button class="start-timer-button" onclick="startExerciseTimer('timer-fullbody-crunch')">Start</button>
+                    </div>
+                </li>
+            </ul>
+
+             <div class="cool-down-section">
+                <h4>Cool-down</h4>
+                <p>Conclude with a 5-10 minute full body cool-down, incorporating static stretches for major muscle groups worked, such as quadriceps, hamstrings, back, chest, and shoulders. Hold each stretch for 20-30 seconds.</p>
+            </div>
+        </div>
+
+
+        <div class="note-section">
+            <p><strong>Important Workout Notes:</strong></p>
+            <ul>
+                <li><strong>Warm-up:</strong> Always begin with the recommended warm-up before each workout to prepare your muscles and joints.</li>
+                <li><strong>Cool-down:</strong> Finish with the suggested cool-down stretches to improve flexibility and aid muscle recovery.</li>
+                <li><strong>Proper Form:</strong> Focus on maintaining correct form over lifting heavy weight to prevent injuries. Watch videos and/or consult a trainer to learn proper technique for each exercise. <strong>Images are placeholders. Refer to reliable fitness resources for correct form before adding weight.</strong></li>
+                <li><strong>Rest:</strong> Adhere to the recommended rest times between sets to optimize muscle recovery and workout effectiveness.</li>
+                <li><strong>Progression:</strong> As you get stronger, you can increase the weight, reps, or sets.</li>
+                <li><strong>Listen to your body:</strong> If you feel pain, stop the exercise.</li>
+                <li><strong>Workout Frequency:</strong> For muscle growth, aim to workout each muscle group 2-3 times per week with rest days in between.</li>
+                <li><strong>Customize:</strong> Adjust sets, reps, exercises, warm-up, and cool-down based on your fitness level, goals, and preferences. This is a sample plan, feel free to modify it.</li>
+            </ul>
+        </div>
+
+        <div class="note-section">
+            <p><strong>Important Learning Note & Disclaimer:</strong></p>
+            <p>This workout planner is designed for educational purposes and provides general exercise information for various body parts, including warm-up, cool-down, and rest guidelines. <strong>It is not intended as a personalized workout plan or fitness advice, and should not be considered a suggestion to perform these exercises without proper guidance.</strong>  Always consult with a qualified fitness professional or healthcare provider before starting any new workout routine, especially if you are new to exercise or have any pre-existing health conditions. They can ensure the exercises are suitable for your individual fitness level, health status, and goals.  Exercise involves risks of injury, and it is your responsibility to exercise safely and appropriately. <strong>The exercise images are placeholders and for illustrative purposes only. Do not rely on these images for exercise form. Always verify proper form from trusted fitness resources before attempting any exercise, especially with weights.</strong></p>
+        </div>
+
+    </div>
+
+   <script>
+    // Object to store active timers and their intervals
+    const activeTimers = {};
+
+    function showWorkout(bodyPart) {
+        stopAllTimers(); // Stop all timers when switching workouts
+        const workoutSections = document.querySelectorAll('.workout-section');
+        workoutSections.forEach(section => {
+            section.classList.remove('active');
+        });
+
+        const selectedWorkout = document.getElementById(`${bodyPart}-workout`);
+        if (selectedWorkout) {
+            selectedWorkout.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        showWorkout('biceps');
+        initializeTimerButtons();
+    });
+
+    function initializeTimerButtons() {
+        document.querySelectorAll('.start-timer-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const timerId = this.previousElementSibling.id;
+                startExerciseTimer(timerId);
+            });
+        });
+    }
+
+    function startExerciseTimer(timerId) {
+        const timerSpan = document.getElementById(timerId);
+        if (!timerSpan) return;
+
+        // Clear existing timer if it's running
+        if (activeTimers[timerId]) {
+            clearInterval(activeTimers[timerId].interval);
+            timerSpan.textContent = "Ready";
+            delete activeTimers[timerId];
+            return;
+        }
+
+        // Get rest time from data attribute or default to 60 seconds
+        const exerciseItem = timerSpan.closest('li');
+        const restTime = exerciseItem.dataset.restTime || 60;
+        let timeLeft = parseInt(restTime);
+
+        timerSpan.textContent = timeLeft;
+        timerSpan.style.color = 'var(--timer-color)';
+
+        activeTimers[timerId] = {
+            interval: setInterval(() => {
+                timeLeft--;
+                timerSpan.textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(activeTimers[timerId].interval);
+                    timerSpan.textContent = "Done!";
+                    timerSpan.style.color = 'var(--primary-color)';
+                    playCompletionSound();
+                    delete activeTimers[timerId];
+
+                    // Reset to Ready after 5 seconds
+                    setTimeout(() => {
+                        timerSpan.textContent = "Ready";
+                        timerSpan.style.color = 'var(--timer-color)';
+                    }, 5000);
+                }
+            }, 1000)
+        };
+    }
+
+    function stopAllTimers() {
+        Object.keys(activeTimers).forEach(timerId => {
+            clearInterval(activeTimers[timerId].interval);
+            const timerSpan = document.getElementById(timerId);
+            if (timerSpan) {
+                timerSpan.textContent = "Ready";
+                timerSpan.style.color = 'var(--timer-color)';
+            }
+        });
+        activeTimers = {};
+    }
+
+    function playCompletionSound() {
+        // Simple beep sound using Web Audio API
+        const context = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = context.createOscillator();
+        const gainNode = context.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(context.destination);
+        
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(800, context.currentTime);
+        gainNode.gain.setValueAtTime(0.1, context.currentTime);
+        
+        oscillator.start();
+        oscillator.stop(context.currentTime + 0.5);
+    }
+
+    // Optional: Add keyboard shortcuts for accessibility
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Space') {
+            const activeSection = document.querySelector('.workout-section.active');
+            const firstTimerButton = activeSection?.querySelector('.start-timer-button');
+            firstTimerButton?.click();
+        }
+    });
+</script>
+</body>
+</html>
