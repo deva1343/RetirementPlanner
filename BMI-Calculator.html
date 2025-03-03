@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator - Visual Speedometer</title>
+    <style>
+        /* style.css - Enhanced CSS for awesome UI with Speedometer - Mobile Responsive */
+        :root {
+            --primary-color: #29ABE2;
+            --primary-color-dark: #1D78AA;
+            --secondary-color: #34495E;
+            --background-color: #E8F0FE;
+            --card-color: #FFFFFF;
+            --text-primary: #222B3E;
+            --text-secondary: #555555;
+            --border-radius: 12px;
+            --box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --underweight-color: #ffc107;
+            --normal-color: #28a745;
+            --overweight-color: #ff9800;
+            --obese-color: #dc3545;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-primary);
+        }
+
+        .container {
+            background-color: var(--card-color);
+            padding: 30px; /* Reduced padding for better mobile view */
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            width: 95%; /* Use more of the screen width on mobile */
+            max-width: 700px;
+            margin: 10px; /* Added margin around container on mobile */
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 25px; /* Reduced margin */
+            font-size: 2rem; /* Slightly smaller title on mobile */
+            letter-spacing: 0.5px;
+        }
+
+        .input-section {
+            display: grid;
+            gap: 15px; /* Reduced gap */
+            margin-bottom: 25px; /* Reduced margin */
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            text-align: left;
+            font-weight: 600;
+            margin-bottom: 6px; /* Reduced margin */
+            color: var(--text-primary);
+            font-size: 0.95rem; /* Slightly smaller label font */
+        }
+
+        input, select {
+            padding: 10px 12px; /* Reduced padding in inputs */
+            border: 1px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+            font-size: 0.9rem; /* Smaller input font size */
+            color: var(--text-primary);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        select {
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position-x: 95%; /* Adjusted background position */
+            background-position-y: 5px;
+            padding-right: 2rem; /* Reduced padding */
+        }
+
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--card-color);
+            border: none;
+            padding: 12px 20px; /* Reduced button padding */
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem; /* Slightly smaller button font */
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin-top: 8px; /* Reduced margin */
+        }
+
+        button:hover {
+            background-color: var(--primary-color-dark);
+        }
+
+        .result-section {
+            margin-top: 25px; /* Reduced margin */
+            padding: 20px; /* Reduced padding */
+            background-color: var(--background-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .result-text {
+            font-size: 1.1rem; /* Smaller result text */
+            margin-bottom: 8px; /* Reduced margin */
+            color: var(--text-primary);
+        }
+
+        .result-text span {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .chart-container {
+            width: 100%; /* Take full width in result section */
+            max-width: 350px; /* Further reduced max width for speedometer on mobile */
+            height: 300px; /* Adjusted height for mobile */
+            margin-bottom: 20px; /* Reduced margin */
+            position: relative;
+        }
+
+        #bmiChart {
+            position: relative;
+        }
+
+        #bmi-value-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em; /* Adjusted BMI value font size for mobile */
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+
+        #health-interpretation {
+            text-align: center;
+            font-size: 0.9rem; /* Smaller interpretation font */
+            color: var(--text-secondary);
+            line-height: 1.5; /* Adjusted line height */
+        }
+        #bmi-category {
+            font-size: 1.3rem; /* Slightly smaller category text */
+            font-weight: bold;
+            text-transform: capitalize;
+            display: block;
+            margin-top: 8px; /* Reduced margin */
+            margin-bottom: 12px; /* Reduced margin */
+        }
+
+        /* Responsive adjustments for mobile - further refined for smaller screens */
+        @media (max-width: 600px) { /* Breakpoint for smaller mobiles */
+            .container {
+                padding: 20px; /* Even less padding on very small screens */
+            }
+
+            h1 {
+                font-size: 1.7rem; /* Even smaller title */
+                margin-bottom: 20px; /* Further reduced margin */
+            }
+
+            .input-section {
+                gap: 12px; /* Even smaller gap */
+                margin-bottom: 20px; /* Further reduced margin */
+            }
+
+            label {
+                font-size: 0.9rem; /* Even smaller label font */
+                margin-bottom: 5px; /* Further reduced margin */
+            }
+
+            input, select, button, .result-text, #health-interpretation {
+                font-size: 0.85rem; /* Even smaller text */
+            }
+             button {
+                padding: 10px 16px; /* Even smaller button padding */
+            }
+
+            .chart-container {
+                max-width: 280px; /* Even smaller chart for very small screens */
+                height: 250px; /* Even smaller chart height */
+                margin-bottom: 15px; /* Further reduced margin */
+            }
+             #bmi-value-display {
+                font-size: 1.6rem; /* Even smaller BMI value font */
+            }
+             #bmi-category {
+                font-size: 1.2rem; /* Even smaller category text */
+                margin-bottom: 10px; /* Further reduced margin */
+            }
+             .result-text {
+                margin-bottom: 6px; /* Further reduced margin */
+            }
+        }
+    </style>
+    <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
+    <script src="[https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation](https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation)"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>BMI Calculator</h1>
+        <div class="input-section">
+            <div class="input-group">
+                <label for="weight">Weight</label>
+                <div style="display: flex;">
+                    <input type="number" id="weight" placeholder="Enter weight" style="border-radius: 12px 0 0 12px; border-right: none;">
+                    <select id="weightUnit" style="border-radius: 0 12px 12px 0;">
+                        <option value="kg">kg</option>
+                        <option value="lb">lb</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="height">Height</label>
+                <div style="display: flex;">
+                    <input type="number" id="height" placeholder="Enter height" style="border-radius: 12px 0 0 12px; border-right: none;">
+                    <select id="heightUnit" style="border-radius: 0 12px 12px 0;">
+                        <option value="cm">cm</option>
+                        <option value="ft">feet</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="age">Age (Optional)</label>
+                <input type="number" id="age" placeholder="Enter age (optional)">
+            </div>
+
+            <div class="input-group">
+                <label for="gender">Gender (Optional)</label>
+                <select id="gender">
+                    <option value="">Select Gender (optional)</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <button id="calculate">Calculate BMI</button>
+        </div>
+
+        <div class="result-section">
+            <div class="result-text">
+                Your BMI is: <span id="bmi-value">0.0</span>
+            </div>
+            <div id="bmi-category" class="bmi-category">Category: <span></span></div>
+
+            <div class="chart-container">
+                <canvas id="bmiChart"></canvas>
+                <div id="bmi-value-display"></div> </div>
+            <div id="health-interpretation" class="result-text">
+            </div>
+        </div>
+    </div>
+    <script>
+        /* script.js - Integrated Javascript with speedometer chart - Mobile Responsive */
+        document.addEventListener('DOMContentLoaded', function() {
+            const weightInput = document.getElementById('weight');
+            const weightUnitSelect = document.getElementById('weightUnit');
+            const heightInput = document.getElementById('height');
+            const heightUnitSelect = document.getElementById('heightUnit');
+            const ageInput = document.getElementById('age');
+            const genderSelect = document.getElementById('gender');
+            const calculateButton = document.getElementById('calculate');
+            const bmiValueDisplay = document.getElementById('bmi-value');
+            const bmiCategoryDisplay = document.getElementById('bmi-category');
+            const healthInterpretationDisplay = document.getElementById('health-interpretation');
+            const bmiChartCanvas = document.getElementById('bmiChart').getContext('2d');
+            const bmiValueDisplayCenter = document.getElementById('bmi-value-display');
+            let bmiChart;
+
+            calculateButton.addEventListener('click', function() {
+                let weight = parseFloat(weightInput.value);
+                let height = parseFloat(heightInput.value);
+                const weightUnit = weightUnitSelect.value;
+                const heightUnit = heightUnitSelect.value;
+                const age = parseInt(ageInput.value);
+                const gender = genderSelect.value;
+
+                if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
+                    alert("Please enter valid weight and height.");
+                    return;
+                }
+
+                if (weightUnit === 'lb') {
+                    weight *= 0.453592;
+                }
+
+                if (heightUnit === 'cm') {
+                    height /= 100;
+                } else if (heightUnit === 'ft') {
+                    height *= 0.3048;
+                }
+
+                const bmi = weight / (height * height);
+                const bmiValue = bmi.toFixed(1);
+                bmiValueDisplay.textContent = bmiValue;
+                bmiValueDisplayCenter.textContent = bmiValue;
+
+                let category = '';
+                let interpretation = '';
+                let segmentColor = '';
+
+                if (bmi < 18.5) {
+                    category = 'Underweight';
+                    interpretation = "Your BMI is in the underweight range. It's important to ensure you're getting enough nutrients. Consider consulting a healthcare professional or a nutritionist for advice on healthy weight gain.";
+                    segmentColor = 'var(--underweight-color)';
+                } else if (bmi >= 18.5 && bmi < 25) {
+                    category = 'Normal weight';
+                    interpretation = "Your BMI is in the normal weight range, which is great! Maintaining a healthy lifestyle is key to staying in this range.";
+                    segmentColor = 'var(--normal-color)';
+                } else if (bmi >= 25 && bmi < 30) {
+                    category = 'Overweight';
+                    interpretation = "Your BMI is in the overweight range. It might be beneficial to think about lifestyle adjustments including diet and exercise to move towards a healthier weight.";
+                    segmentColor = 'var(--overweight-color)';
+                } else {
+                    category = 'Obese';
+                    interpretation = "Your BMI is in the obese range. This range is associated with higher health risks. It's recommended to consult with a healthcare provider to discuss weight management and health improvement strategies.";
+                    segmentColor = 'var(--obese-color)';
+                }
+
+                bmiCategoryDisplay.innerHTML = `Category: <span style="color: ${segmentColor};">${category}</span>`;
+                healthInterpretationDisplay.textContent = interpretation;
+                updateSpeedometerChart(bmiValue, categoryColor);
+            });
+
+
+            function updateSpeedometerChart(bmiValue, categoryColor) {
+                const bmiRanges = [18.5, 25, 30];
+                const data = {
+                    datasets: [{
+                        data: [bmiValue, 40 - bmiValue],
+                        backgroundColor: [
+                            categoryColor,
+                            '#e0e0e0'
+                        ],
+                        borderWidth: 0,
+                        cutout: '80%',
+                        circumference: 180,
+                        rotation: 270,
+                        offset: 0,
+
+                    }]
+                };
+
+                const options = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    },
+                    scales: {
+                        x: { display: false },
+                        y: { display: false }
+                    }
+                };
+
+
+                if (bmiChart) {
+                    bmiChart.destroy();
+                }
+
+                bmiChart = new Chart(bmiChartCanvas, {
+                    type: 'doughnut',
+                    data: data,
+                    options: options,
+
+                });
+            }
+        });
+    </script>
+</body>
+</html>
