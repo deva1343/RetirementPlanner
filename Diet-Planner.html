@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebApplication">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Personalized Scientific Diet Planner | Achieve Your Nutrition Goals</title>
     <meta name="description" content="Generate a free, personalized diet plan based on scientific calculations. Input your age, weight, height, activity level, and fitness goals to get a detailed nutrition plan. Optimize your health and fitness journey with our advanced diet planner.">
     <meta name="keywords" content="diet planner, nutrition plan, personalized diet, scientific diet, meal plan generator, calorie calculator, macro calculator, weight loss diet, muscle gain diet, healthy eating, nutrition calculator, fitness diet plan">
@@ -48,29 +47,37 @@
     }
     </script>
 
+    <title>Advanced Diet Planner</title>
     <style>
         :root {
-            --primary: #3B82F6;
-            --secondary: #60A5FA;
-            --accent: #F59E0B;
-            --background: #F8FAFC;
-            --text: #1E293B;
-            --card-bg: #FFFFFF;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --radius: 1rem;
+            /* Updated color palette inspired by Whimsical */
+            --primary: #5046e5; /* A softer primary blue, similar to Whimsical */
+            --secondary: #746bff; /* A lighter secondary blue */
+            --accent: #ff6f61; /* A muted coral accent color for warmth */
+            --background: #f7f9fc; /* Light, slightly warm background */
+            --text: #343a40; /* Dark gray for text, good contrast but not too harsh */
+            --card-bg: #ffffff; /* White for cards to keep it clean */
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            --radius: 0.75rem; /* Slightly less rounded corners for a modern look */
+
+            /* Typography - keeping 'Inter' but adjusting */
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --heading-font-weight: 700; /* Slightly less bold for headings */
+            --body-font-weight: 400;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: var(--font-family);
+            font-weight: var(--body-font-weight);
         }
 
         body {
             background: var(--background);
             color: var(--text);
-            line-height: 1.6;
+            line-height: 1.7; /* Slightly increased line height for better readability */
             min-height: 100vh;
             padding: 2rem;
         }
@@ -81,83 +88,72 @@
             background: var(--card-bg);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            padding: 2.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 8px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            padding: 3rem; /* Increased padding for more whitespace */
         }
 
         h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
+            font-size: 2.25rem; /* Slightly smaller and softer heading */
+            font-weight: var(--heading-font-weight);
             color: var(--primary);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem; /* Reduced margin */
             text-align: center;
         }
 
         .grid-form {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 2rem; /* Increased gap for more spacing */
+            margin-bottom: 2.5rem; /* Increased margin */
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem; /* Increased margin */
         }
 
         label {
             display: block;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+            font-weight: 500; /* Slightly less bold label */
+            margin-bottom: 0.6rem;
             color: var(--text);
-            font-size: 0.9rem;
+            font-size: 0.95rem; /* Slightly larger label */
         }
 
         input, select {
             width: 100%;
-            padding: 0.875rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 0.75rem;
+            padding: 1rem; /* Increased padding for inputs and selects */
+            border: 1px solid #ced4da; /* Lighter border for inputs and selects */
+            border-radius: 0.5rem; /* Less rounded input corners */
             font-size: 1rem;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease;
             background: var(--card-bg);
         }
 
         input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            border-color: var(--secondary); /* Highlight color on focus */
+            outline: none; /* Remove default focus outline */
+            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2); /* Subtle focus shadow */
         }
+
 
         .unit-toggle {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: 1.25rem; /* Increased gap in unit toggle */
+            margin: 0.75rem 0; /* Increased margin */
         }
 
         .radio-item {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
         }
 
         .radio-item input[type="radio"] {
-            width: 1.2rem;
-            height: 1.2rem;
+            width: 1.1rem;
+            height: 1.1rem;
             accent-color: var(--primary);
         }
 
-        .height-ft-in {
+        .height-inputs {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
@@ -167,111 +163,189 @@
             background: var(--primary);
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 0.75rem;
-            font-size: 1rem;
-            font-weight: 600;
+            padding: 1.1rem 2.25rem; /* Adjusted button padding */
+            border-radius: 0.5rem; /* Less rounded button corners */
+            font-size: 1.05rem; /* Slightly larger button text */
+            font-weight: 500; /* Slightly less bold button text */
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform for button interaction */
             width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
+            box-shadow: var(--shadow); /* Added shadow to button */
         }
 
         button:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
+            background-color: var(--secondary); /* Lighter shade on hover */
+            transform: scale(1.02); /* Slight scale up on hover for interaction */
         }
 
+        button:active {
+            transform: scale(1); /* Reset scale when active/clicked */
+            background-color: var(--primary); /* Revert to primary color on active */
+        }
+
+
         .diet-plan {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 2px solid #e2e8f0;
+            margin-top: 3rem; /* Increased margin */
+            padding-top: 2.5rem; /* Increased padding */
             display: none;
         }
 
-        .meal-card {
+        .plan-section {
             background: var(--card-bg);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            border-radius: var(--radius);
+            padding: 2rem; /* Increased padding in plan sections */
+            margin-bottom: 2rem; /* Increased margin */
             box-shadow: var(--shadow);
+        }
+
+        .plan-section h2, .plan-section h3 {
+            font-weight: var(--heading-font-weight);
+            margin-bottom: 1.25rem; /* Increased margin for section headings */
+            color: var(--primary); /* Section headings in primary color */
+        }
+
+        .meal-card {
+            padding: 1.25rem; /* Increased padding in meal cards */
+            margin: 1.25rem 0; /* Increased margin */
             border-left: 4px solid var(--accent);
+            background: #f8fafc;
+            border-radius: 0.5rem;
         }
 
         .supplement-card {
-            background: linear-gradient(145deg, #f0f4ff, #ffffff);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border: 2px solid #bfdbfe;
+            background: #e8f4f8;
+            padding: 1.25rem; /* Increased padding */
+            border-radius: 0.5rem;
+            margin: 1.25rem 0; /* Increased margin */
         }
 
-        .macros-grid {
+        .macro-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+            gap: 1.5rem; /* Increased gap */
+            margin: 1.5rem 0; /* Increased margin */
         }
 
         .macro-item {
             text-align: center;
-            padding: 1.5rem;
-            border-radius: 1rem;
+            padding: 1.25rem; /* Increased padding */
             background: var(--card-bg);
+            border-radius: 0.5rem;
             box-shadow: var(--shadow);
         }
 
-        .timing-info {
-            color: var(--primary);
+        .macro-item h4 {
             font-weight: 600;
             margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            color: var(--secondary); /* Macro item headings in secondary color */
         }
 
-        .portion-size {
-            color: #64748b;
-            font-size: 0.9rem;
-            margin: 0.5rem 0;
-        }
+        /* Media Query for Mobile Devices (Screens less than 768px wide) */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 1rem; /* Reduce body padding on mobile */
+            }
 
-        .meal-portions {
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: 0.75rem;
-            margin: 1rem 0;
-        }
-
-        .portion-item {
-            display: flex;
-            justify-content: space-between;
-            margin: 0.5rem 0;
-        }
-
-        @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
-                border-radius: 1rem;
+                padding: 1.5rem; /* Reduce container padding on mobile */
+                margin: 1rem; /* Add margin to container on mobile */
             }
 
             h1 {
-                font-size: 2rem;
+                font-size: 1.8rem; /* Smaller heading on mobile */
+                margin-bottom: 1rem; /* Reduce heading margin on mobile */
             }
 
-            .height-ft-in {
-                grid-template-columns: 1fr;
+            .grid-form {
+                grid-template-columns: 1fr; /* Stack form items vertically on mobile */
+                gap: 1.5rem; /* Adjust gap for stacked items */
+                margin-bottom: 2rem; /* Reduce form margin on mobile */
             }
+
+            .form-group {
+                margin-bottom: 1.25rem; /* Reduce form group margin on mobile */
+            }
+
+            label {
+                font-size: 0.9rem; /* Slightly smaller label font on mobile */
+            }
+
+            input, select, button {
+                padding: 0.9rem; /* Slightly reduce padding for form elements on mobile */
+                font-size: 0.95rem; /* Slightly reduce font size for form elements on mobile */
+                border-radius: 0.4rem; /* Slightly less rounded corners on mobile */
+            }
+
+            .unit-toggle {
+                gap: 1rem; /* Adjust unit toggle gap on mobile */
+                margin: 0.5rem 0; /* Reduce unit toggle margin on mobile */
+            }
+
+            .height-inputs {
+                grid-template-columns: 1fr; /* Stack height inputs on mobile */
+                gap: 0.75rem; /* Adjust gap for stacked height inputs */
+            }
+
+            button {
+                padding: 1rem 2rem; /* Adjust button padding on mobile */
+                font-size: 1rem; /* Adjust button font size on mobile */
+            }
+
+            .diet-plan {
+                margin-top: 2rem; /* Reduce diet plan top margin on mobile */
+                padding-top: 2rem; /* Reduce diet plan top padding on mobile */
+            }
+
+            .plan-section {
+                padding: 1.5rem; /* Reduce plan section padding on mobile */
+                margin-bottom: 1.5rem; /* Reduce plan section margin on mobile */
+            }
+
+            .plan-section h2 {
+                font-size: 1.6rem; /* Smaller section heading on mobile */
+            }
+
+            .plan-section h3 {
+                font-size: 1.25rem; /* Smaller subsection heading on mobile */
+            }
+
+            .meal-card, .supplement-card {
+                padding: 1rem; /* Reduce meal/supplement card padding on mobile */
+                margin: 1rem 0; /* Reduce meal/supplement card margin on mobile */
+            }
+
+            .macro-grid {
+                gap: 1rem; /* Reduce macro grid gap on mobile */
+                margin: 1rem 0; /* Reduce macro grid margin on mobile */
+            }
+
+            .macro-item {
+                padding: 1rem; /* Reduce macro item padding on mobile */
+            }
+
+            .macro-item h4 {
+                font-size: 0.9rem; /* Smaller macro item heading on mobile */
+            }
+             /* Make radio buttons and checkboxes larger and easier to tap */
+            .radio-item input[type="radio"],
+            .radio-item input[type="checkbox"] {
+                width: 1.4rem; /* Larger radio/checkbox */
+                height: 1.4rem;
+            }
+            .radio-item label {
+                font-size: 1rem; /* Adjust label size next to radio/checkbox */
+            }
+            .unit-toggle {
+                flex-direction: column; /* Stack unit toggle options vertically on mobile */
+                align-items: flex-start; /* Align items to the start */
+            }
+
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Advanced Nutrition Planner</h1>
+        <h1>Advanced Diet Planner</h1>
 
         <form id="dietForm">
             <div class="grid-form">
@@ -290,12 +364,7 @@
                             <input type="radio" name="weightUnit" value="lb"> lb
                         </label>
                     </div>
-                    <div class="unit-group active" data-unit="kg">
-                        <input type="number" id="weightKg" step="0.1" required>
-                    </div>
-                    <div class="unit-group" data-unit="lb">
-                        <input type="number" id="weightLb" step="0.1">
-                    </div>
+                    <input type="number" id="weight" step="0.1" required>
                 </div>
 
                 <div class="form-group">
@@ -308,13 +377,13 @@
                             <input type="radio" name="heightUnit" value="ft"> ft/in
                         </label>
                     </div>
-                    <div class="unit-group active" data-unit="cm">
+                    <div id="heightCmGroup">
                         <input type="number" id="heightCm" required>
                     </div>
-                    <div class="unit-group" data-unit="ft">
-                        <div class="height-ft-in">
-                            <input type="number" id="heightFt" placeholder="Feet" min="0" required>
-                            <input type="number" id="heightIn" placeholder="Inches" min="0" max="11" step="1" required>
+                    <div id="heightFtGroup" style="display: none;">
+                        <div class="height-inputs">
+                            <input type="number" id="heightFt" placeholder="Feet" min="0">
+                            <input type="number" id="heightIn" placeholder="Inches" min="0" max="11" step="1">
                         </div>
                     </div>
                 </div>
@@ -339,231 +408,155 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="goal">Fitness Goal</label>
+                    <label for="goal">Diet Goal</label>
                     <select id="goal" required>
                         <option value="loss">Weight Loss</option>
                         <option value="maintain">Maintenance</option>
                         <option value="gain">Weight Gain</option>
-                        <option value="muscle_gain">Muscle Building</option>
+                        <option value="muscle">Muscle Building</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label>Dietary Restrictions</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-item">
+                    <div class="unit-toggle">
+                        <label class="radio-item">
                             <input type="checkbox" name="allergy" value="dairy"> Dairy
                         </label>
-                        <label class="checkbox-item">
+                        <label class="radio-item">
                             <input type="checkbox" name="allergy" value="nuts"> Nuts
                         </label>
-                        <label class="checkbox-item">
+                        <label class="radio-item">
                             <input type="checkbox" name="allergy" value="gluten"> Gluten
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="allergy" value="seafood"> Seafood
-                        </label>
-                        <label class="checkbox-item">
-                            <input type="checkbox" name="allergy" value="egg"> Egg
                         </label>
                     </div>
                 </div>
             </div>
 
-            <button type="submit">Generate Nutrition Plan</button>
+            <button type="submit">Generate Diet Plan</button>
         </form>
 
         <div id="dietPlan" class="diet-plan">
-            <div class="plan-header">
-                <h2>Your Personalized Nutrition Plan</h2>
-                <div class="hydration-alert" id="hydrationInfo"></div>
+            <div class="plan-section">
+                <h2>Your Personalized Diet Plan</h2>
+                <div id="planSummary" class="macro-grid"></div>
             </div>
-            <div id="planDetails"></div>
-            <button class="reset-btn" onclick="location.reload()">Start Over</button>
+
+            <div class="plan-section">
+                <h3>Daily Meal Plan</h3>
+                <div id="mealPlan"></div>
+            </div>
+
+            <div class="plan-section">
+                <h3>Supplement Guide</h3>
+                <div id="supplements"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Comprehensive Meal Database
-        const mealDatabase = {
-            breakfast: {
-                muscleGain: [
-                    {
-                        name: "Proatmeal Power Bowl",
-                        desc: "Steel-cut oats with whey protein and berries",
-                        calories: 550,
-                        protein: 40,
-                        carbs: 65,
-                        fat: 12,
-                        timing: "Within 30 mins of waking",
-                        portion: {
-                            "Oats": "80g (dry)",
-                            "Whey Protein": "1 scoop (30g)",
-                            "Almond Butter": "15g",
-                            "Mixed Berries": "100g"
-                        },
-                        nutrients: ["Complex Carbs", "BCAAs", "Antioxidants"],
-                        allergens: ["nuts"],
-                        cooking: "Cook oats, mix with protein powder, top with toppings"
-                    },
-                    {
-                        name: "Bodybuilder's Breakfast Burrito",
-                        desc: "Whole wheat tortilla with egg whites, chicken, and avocado",
-                        calories: 600,
-                        protein: 55,
-                        carbs: 45,
-                        fat: 18,
-                        portion: {
-                            "Egg Whites": "200g",
-                            "Grilled Chicken": "100g",
-                            "Avocado": "50g",
-                            "Whole Wheat Tortilla": "1 large"
-                        },
-                        nutrients: ["Complete Protein", "Healthy Fats"],
-                        allergens: ["egg", "gluten"],
-                        cooking: "Scramble egg whites, grill chicken, assemble burrito"
-                    }
-                ]
-            },
-            // Other meal categories...
-        };
+        // Unit Conversion Functions
+        function convertWeight(weight, fromUnit) {
+            return fromUnit === 'kg' ? weight * 2.20462 : weight * 0.453592;
+        }
 
-        // Scientific Calculations
-        class NutritionCalculator {
-            static calculateTDEE(age, weight, height, gender, activity) {
-                let bmr = gender === 'male'
-                    ? (10 * weight) + (6.25 * height) - (5 * age) + 5
-                    : (10 * weight) + (6.25 * height) - (5 * age) - 161;
-                return bmr * activity;
-            }
-
-            static muscleGainMacros(weight) {
+        function convertHeight(height, fromUnit) {
+            if(fromUnit === 'cm') {
+                const totalInches = height / 2.54;
                 return {
-                    protein: Math.round(weight * 2.2),
-                    carbs: Math.round(weight * 4.5),
-                    fat: Math.round(weight * 1)
+                    feet: Math.floor(totalInches / 12),
+                    inches: Math.round(totalInches % 12)
                 };
             }
-
-            static hydrationRequirement(weight, activityLevel) {
-                const base = 35 * weight;
-                const activityAdd = activityLevel > 1.5 ? 500 : 250;
-                return Math.round((base + activityAdd) / 1000 * 10) / 10;
-            }
+            return (height.feet * 12 + height.inches) * 2.54;
         }
 
-        // Meal Planning Logic
-        class MealPlanner {
-            constructor(allergies, goal) {
-                this.allergies = allergies;
-                this.goal = goal;
-            }
+        // Toggle Visibility
+        document.querySelectorAll('input[name="heightUnit"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                document.getElementById('heightCmGroup').style.display =
+                    radio.value === 'cm' ? 'block' : 'none';
+                document.getElementById('heightFtGroup').style.display =
+                    radio.value === 'ft' ? 'block' : 'none';
+            });
+        });
 
-            filterMeals(meals) {
-                return meals.filter(meal =>
-                    !meal.allergens?.some(a => this.allergies.includes(a))
-                );
-            }
+        // Real-time Conversions
+        document.getElementById('weight').addEventListener('input', function() {
+            const unit = document.querySelector('input[name="weightUnit"]:checked').value;
+            const converted = convertWeight(this.value, unit === 'kg' ? 'lb' : 'kg');
+            console.log(`Converted weight: ${converted.toFixed(1)} ${unit === 'kg' ? 'lb' : 'kg'}`);
+        });
 
-            createMuscleGainPlan(weight, tdee, activity) {
-                const plan = {
-                    hydration: NutritionCalculator.hydrationRequirement(weight, activity),
-                    meals: [],
-                    supplements: [
-                        "Whey Protein: 25-40g post-workout",
-                        "Creatine Monohydrate: 5g/day",
-                        "Beta-Alanine: 3-6g/day",
-                        "Caffeine: 3-6mg/kg pre-workout"
-                    ]
-                };
-
-                // Add meal selection logic here
-                return plan;
-            }
-        }
-
-        // UI Rendering
-        class PlanRenderer {
-            static displayMuscleGain(plan) {
-                let html = `
-                    <div class="supplement-card">
-                        <h3>Supplement Protocol</h3>
-                        <ul>${plan.supplements.map(s => `<li>${s}</li>`).join('')}</ul>
-                    </div>
-                `;
-                document.getElementById('planDetails').innerHTML = html;
-                document.getElementById('hydrationInfo').textContent = `💧 Daily Hydration Target: ${plan.hydration}L`;
-            }
-        }
-
-        // Event Handlers
-        document.getElementById('dietForm').addEventListener('submit', (e) => {
+        // Diet Planning Logic
+        document.getElementById('dietForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // Collect inputs
+            // Collect Data
             const age = parseInt(document.getElementById('age').value);
-            const weight = parseFloat(document.getElementById('weightKg').value);
-            const height = parseFloat(document.getElementById('heightCm').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const weightUnit = document.querySelector('input[name="weightUnit"]:checked').value;
+            const heightUnit = document.querySelector('input[name="heightUnit"]:checked').value;
             const gender = document.getElementById('gender').value;
             const activity = parseFloat(document.getElementById('activity').value);
             const goal = document.getElementById('goal').value;
-            const allergies = Array.from(document.querySelectorAll('input[name="allergy"]:checked'))
-                .map(el => el.value);
 
-            // Calculate values
-            const tdee = NutritionCalculator.calculateTDEE(age, weight, height, gender, activity);
-            const planner = new MealPlanner(allergies, goal);
-            const plan = planner.createMuscleGainPlan(weight, tdee, activity);
+            // Convert to metric
+            const weightKg = weightUnit === 'kg' ? weight : weight * 0.453592;
+            let heightCm;
+            if(heightUnit === 'cm') {
+                heightCm = parseFloat(document.getElementById('heightCm').value);
+            } else {
+                const feet = parseFloat(document.getElementById('heightFt').value);
+                const inches = parseFloat(document.getElementById('heightIn').value);
+                heightCm = (feet * 12 + inches) * 2.54;
+            }
 
-            // Display results
-            if(goal === 'muscle_gain') PlanRenderer.displayMuscleGain(plan);
+            // Calculate TDEE
+            const bmr = gender === 'male'
+                ? 88.362 + (13.397 * weightKg) + (4.799 * heightCm) - (5.677 * age)
+                : 447.593 + (9.247 * weightKg) + (3.098 * heightCm) - (4.330 * age);
+
+            const tdee = bmr * activity;
+            let calories = tdee;
+
+            switch(goal) {
+                case 'loss': calories -= 500; break;
+                case 'gain': calories += 500; break;
+                case 'muscle': calories += 300; break;
+            }
+
+            // Generate Plan
+            const plan = {
+                calories: Math.round(calories),
+                protein: Math.round(weightKg * (goal === 'muscle' ? 2.2 : 1.8)),
+                carbs: Math.round((calories * 0.4) / 4),
+                fat: Math.round((calories * 0.25) / 9),
+                meals: [],
+                supplements: []
+            };
+
+            // Display Results
+            document.getElementById('planSummary').innerHTML = `
+                <div class="macro-item">
+                    <h4>Calories</h4>
+                    <p>${plan.calories} kcal</p>
+                </div>
+                <div class="macro-item">
+                    <h4>Protein</h4>
+                    <p>${plan.protein}g</p>
+                </div>
+                <div class="macro-item">
+                    <h4>Carbs</h4>
+                    <p>${plan.carbs}g</p>
+                </div>
+                <div class="macro-item">
+                    <h4>Fat</h4>
+                    <p>${plan.fat}g</p>
+                </div>
+            `;
+
             document.getElementById('dietPlan').style.display = 'block';
-        });
-
-        // Unit Conversion Handlers
-        document.querySelectorAll('input[name="weightUnit"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const kgGroup = document.querySelector('[data-unit="kg"]');
-                const lbGroup = document.querySelector('[data-unit="lb"]');
-                const kgInput = document.getElementById('weightKg');
-                const lbInput = document.getElementById('weightLb');
-
-                if (this.value === 'kg') {
-                    kgGroup.classList.add('active');
-                    lbGroup.classList.remove('active');
-                    if (lbInput.value) kgInput.value = (lbInput.value * 0.453592).toFixed(1);
-                } else {
-                    lbGroup.classList.add('active');
-                    kgGroup.classList.remove('active');
-                    if (kgInput.value) lbInput.value = (kgInput.value * 2.20462).toFixed(1);
-                }
-            });
-        });
-
-        document.querySelectorAll('input[name="heightUnit"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const cmGroup = document.querySelector('[data-unit="cm"]');
-                const ftGroup = document.querySelector('[data-unit="ft"]');
-                const cmInput = document.getElementById('heightCm');
-                const ftInput = document.getElementById('heightFt');
-                const inInput = document.getElementById('heightIn');
-
-                if (this.value === 'cm') {
-                    cmGroup.classList.add('active');
-                    ftGroup.classList.remove('active');
-                    if (ftInput.value && inInput.value) {
-                        cmInput.value = ((ftInput.value * 12 + inInput.value) * 2.54).toFixed(1);
-                    }
-                } else {
-                    ftGroup.classList.add('active');
-                    cmGroup.classList.remove('active');
-                    if (cmInput.value) {
-                        const totalInches = cmInput.value / 2.54;
-                        ftInput.value = Math.floor(totalInches / 12);
-                        inInput.value = Math.round(totalInches % 12);
-                    }
-                }
-            });
         });
     </script>
 </body>
