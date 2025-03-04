@@ -12,6 +12,7 @@
             --secondary: #3498db;
             --success: #27ae60;
             --background: #f8f9fa;
+            --error: #e74c3c;
         }
 
         body {
@@ -20,6 +21,16 @@
             margin: 0 auto;
             padding: 2rem;
             background: var(--background);
+        }
+
+        #errorContainer {
+            display: none;
+            background: #ffeeee;
+            color: var(--error);
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 2px solid var(--error);
+            border-radius: 8px;
         }
 
         .tax-app {
@@ -136,34 +147,11 @@
             color: var(--primary);
             margin: 0.5rem 0;
         }
-
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: help;
-        }
-
-        .tooltiptext {
-            visibility: hidden;
-            width: 200px;
-            background: #333;
-            color: #fff;
-            text-align: center;
-            padding: 5px;
-            border-radius: 4px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -100px;
-        }
-
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-        }
     </style>
 </head>
 <body>
+    <div id="errorContainer"></div>
+    
     <div class="tax-app">
         <div class="input-section">
             <h1>Advanced Tax Calculator 🇮🇳</h1>
@@ -198,14 +186,11 @@
             <h2>Deductions</h2>
             <div class="input-group">
                 <label>80C Investments (₹):</label>
-                <input type="number" id="80c" max="150000" placeholder="Max ₹1.5 lakh">
+                <input type="number" id="80c" placeholder="Max ₹1.5 lakh">
             </div>
             <div class="input-group">
                 <label>Medical Insurance (80D) (₹):</label>
                 <input type="number" id="80d" placeholder="Max ₹75k">
-                <span class="tooltip">ℹ️
-                    <span class="tooltiptext">₹25k for below 60, ₹50k for seniors</span>
-                </span>
             </div>
             <div class="input-group">
                 <label>Education Loan (80E) (₹):</label>
@@ -221,9 +206,9 @@
 
         <div class="results-section">
             <div class="result-tabs">
-                <button class="tab-button active" onclick="showTab('summary')">Summary</button>
-                <button class="tab-button" onclick="showTab('detailed')">Detailed</button>
-                <button class="tab-button" onclick="showTab('compare')">Compare</button>
+                <button class="tab-button active" data-tab="summary">Summary</button>
+                <button class="tab-button" data-tab="detailed">Detailed</button>
+                <button class="tab-button" data-tab="compare">Compare</button>
             </div>
 
             <div id="summaryTab" class="result-tab">
@@ -322,6 +307,7 @@
 
 <script>
 const { jsPDF } = window.jspdf;
+let taxChart = null;
 
 class TaxCalculator {
     constructor() {
@@ -442,117 +428,136 @@ class TaxCalculator {
     }
 }
 
+// DOM Handling
 document.addEventListener('DOMContentLoaded', () => {
-    let taxChart = null;
     const calculateBtn = document.getElementById('calculateBtn');
     const downloadBtn = document.getElementById('downloadBtn');
+    const tabs = document.querySelectorAll('.tab-button');
+
+    function showError(message) {
+        const errorContainer = document.getElementById('errorContainer');
+        errorContainer.textContent = `Error: ${message}`;
+        errorContainer.style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+
+    function clearErrors() {
+        document.getElementById('errorContainer').style.display = 'none';
+    }
 
     function showTab(tabName) {
         document.querySelectorAll('.result-tab').forEach(tab => tab.style.display = 'none');
-        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-        
-        document.getElementById(`${tabName}Tab`).style.display = 'block';
-        event.currentTarget.classList.add('active');
+        document.querySelector(`#${tabName}Tab`).style.display = 'block';
+        tabs.forEach(tab => tab.classList.remove('active'));
+        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
     }
 
-    function validateInputs(data) {
-        const errors = [];
-        if(!document.getElementById('dob').value) errors.push("Date of Birth is required");
-        if(isNaN(data.grossSalary)) errors.push("Gross Salary must be a number");
-        if(data.deductions80C > 150000) errors.push("80C deduction exceeds limit");
-        
-        if(errors.length > 0) {
-            alert("Errors:\n" + errors.join("\n"));
-            throw new Error("Validation failed");
-        }
+    function formatCurrency(value) {
+        return '₹' + value.toLocaleString('en-IN', { maximumFractionDigits: 0 });
     }
 
-    function calculateTax() {
-        try {
-            const dob = new Date(document.getElementById('dob').value);
-            const age = new Date().getFullYear() - dob.getFullYear();
-            
-            const inputData = {
-                grossSalary: parseFloat(document.getElementById('grossSalary').value) || 0,
-                basicSalary: parseFloat(document.getElementById('grossSalary').value) || 0,
-                hraReceived: parseFloat(document.getElementById('hraReceived').value) || 0,
-                rentPaid: parseFloat(document.getElementById('rentPaid').value) || 0,
-                metroCity: document.getElementById('metroCity').value,
-                deductions80C: parseFloat(document.getElementById('80c').value) || 0,
-                deductions80D: parseFloat(document.getElementById('80d').value) || 0,
-                deductions80E: parseFloat(document.getElementById('80e').value) || 0,
-                deductions24b: parseFloat(document.getElementById('24b').value) || 0,
-                age: age
-            };
+    function updateResults(oldRegime, newRegime, inputData) {
+        // Update Summary Tab
+        document.getElementById('regimeRecommendation').textContent = 
+            oldRegime.tax < newRegime.tax ? 'Old Regime' : 'New Regime';
+        document.getElementById('taxSavings').innerHTML = `
+            <small>Potential Savings: ${formatCurrency(Math.abs(oldRegime.tax - newRegime.tax))}</small>
+        `;
 
-            validateInputs(inputData);
-            
-            const calculator = new TaxCalculator();
-            const oldRegime = calculator.calculateOldRegime(inputData);
-            const newRegime = calculator.calculateNewRegime(inputData);
+        // Update Detailed Tab
+        document.getElementById('oldGrossIncome').textContent = formatCurrency(inputData.grossSalary);
+        document.getElementById('newGrossIncome').textContent = formatCurrency(inputData.grossSalary);
+        document.getElementById('oldTotalDeductions').textContent = formatCurrency(
+            inputData.grossSalary - oldRegime.taxableIncome
+        );
+        document.getElementById('newTotalDeductions').textContent = formatCurrency(
+            this.taxConfig.newRegime.standardDeduction
+        );
+        document.getElementById('oldTaxableIncome').textContent = formatCurrency(oldRegime.taxableIncome);
+        document.getElementById('newTaxableIncome').textContent = formatCurrency(newRegime.taxableIncome);
+        document.getElementById('oldTotalTax').textContent = formatCurrency(oldRegime.tax);
+        document.getElementById('newTotalTax').textContent = formatCurrency(newRegime.tax);
+        document.getElementById('oldSurcharge').textContent = formatCurrency(oldRegime.surcharge);
+        document.getElementById('newSurcharge').textContent = formatCurrency(newRegime.surcharge);
 
-            // Update Results
-            document.getElementById('oldGrossIncome').textContent = formatCurrency(inputData.grossSalary);
-            document.getElementById('newGrossIncome').textContent = formatCurrency(inputData.grossSalary);
-            document.getElementById('oldTotalDeductions').textContent = formatCurrency(oldRegime.taxableIncome - inputData.grossSalary);
-            document.getElementById('newTotalDeductions').textContent = formatCurrency(50000);
-            document.getElementById('oldTaxableIncome').textContent = formatCurrency(oldRegime.taxableIncome);
-            document.getElementById('newTaxableIncome').textContent = formatCurrency(newRegime.taxableIncome);
-            document.getElementById('oldTotalTax').textContent = formatCurrency(oldRegime.tax);
-            document.getElementById('newTotalTax').textContent = formatCurrency(newRegime.tax);
-            document.getElementById('oldSurcharge').textContent = formatCurrency(oldRegime.surcharge);
-            document.getElementById('newSurcharge').textContent = formatCurrency(newRegime.surcharge);
+        // Update Compare Tab
+        document.getElementById('oldEffectiveRate').textContent = 
+            `${((oldRegime.tax / inputData.grossSalary) * 100).toFixed(1)}%`;
+        document.getElementById('newEffectiveRate').textContent = 
+            `${((newRegime.tax / inputData.grossSalary) * 100).toFixed(1)}%`;
+        document.getElementById('oldMonthly').textContent = 
+            formatCurrency((inputData.grossSalary - oldRegime.tax) / 12);
+        document.getElementById('newMonthly').textContent = 
+            formatCurrency((inputData.grossSalary - newRegime.tax) / 12);
 
-            const savings = Math.abs(oldRegime.tax - newRegime.tax);
-            const recommendation = oldRegime.tax < newRegime.tax ? 
-                'Old Regime' : 'New Regime';
-            
-            document.getElementById('regimeRecommendation').textContent = recommendation;
-            document.getElementById('taxSavings').innerHTML = `
-                <small>Potential Savings: ${formatCurrency(savings)}</small>
-            `;
-
-            // Update effective rates
-            document.getElementById('oldEffectiveRate').textContent = 
-                `${((oldRegime.tax / inputData.grossSalary) * 100).toFixed(1)}%`;
-            document.getElementById('newEffectiveRate').textContent = 
-                `${((newRegime.tax / inputData.grossSalary) * 100).toFixed(1)}%`;
-
-            // Update monthly take-home
-            document.getElementById('oldMonthly').textContent = 
-                formatCurrency((inputData.grossSalary - oldRegime.tax) / 12);
-            document.getElementById('newMonthly').textContent = 
-                formatCurrency((inputData.grossSalary - newRegime.tax) / 12);
-
-            // Update chart
-            if(taxChart) taxChart.destroy();
-            taxChart = new Chart(document.getElementById('taxChart'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['Tax Paid', 'Take Home'],
-                    datasets: [{
-                        data: [oldRegime.tax, inputData.grossSalary - oldRegime.tax],
-                        backgroundColor: ['#e74c3c', '#2ecc71']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'bottom' },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return ' ₹' + context.parsed.toLocaleString('en-IN');
-                                }
+        // Update Chart
+        if(taxChart) taxChart.destroy();
+        taxChart = new Chart(document.getElementById('taxChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Tax Paid', 'Take Home'],
+                datasets: [{
+                    data: [oldRegime.tax, inputData.grossSalary - oldRegime.tax],
+                    backgroundColor: ['#e74c3c', '#2ecc71']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => {
+                                return ` ${formatCurrency(context.parsed)}`;
                             }
                         }
                     }
                 }
-            });
+            }
+        });
+    }
+
+    function calculateTax() {
+        try {
+            clearErrors();
+            
+            // Validate inputs
+            const dobInput = document.getElementById('dob');
+            const grossSalaryInput = document.getElementById('grossSalary');
+            
+            if(!dobInput.value) throw new Error('Date of Birth is required');
+            if(!grossSalaryInput.value || parseFloat(grossSalaryInput.value) <= 0) {
+                throw new Error('Please enter valid Gross Salary');
+            }
+
+            // Parse inputs
+            const dob = new Date(dobInput.value);
+            const age = new Date().getFullYear() - dob.getFullYear();
+            const inputData = {
+                grossSalary: parseFloat(grossSalaryInput.value),
+                basicSalary: parseFloat(grossSalaryInput.value),
+                hraReceived: parseFloat(document.getElementById('hraReceived').value) || 0,
+                rentPaid: parseFloat(document.getElementById('rentPaid').value) || 0,
+                metroCity: document.getElementById('metroCity').value,
+                deductions80C: Math.min(parseFloat(document.getElementById('80c').value) || 0, 150000),
+                deductions80D: Math.min(parseFloat(document.getElementById('80d').value) || 0, age >= 60 ? 50000 : 25000),
+                deductions80E: parseFloat(document.getElementById('80e').value) || 0,
+                deductions24b: Math.min(parseFloat(document.getElementById('24b').value) || 0, 200000),
+                age: age
+            };
+
+            // Perform calculations
+            const calculator = new TaxCalculator();
+            const oldRegime = calculator.calculateOldRegime(inputData);
+            const newRegime = calculator.calculateNewRegime(inputData);
+
+            // Show results
+            showTab('summary');
+            updateResults(oldRegime, newRegime, inputData);
 
         } catch (error) {
-            console.error('Calculation error:', error);
-            alert('Error in calculation. Please check your inputs.');
+            showError(error.message);
         }
     }
 
@@ -561,34 +566,17 @@ document.addEventListener('DOMContentLoaded', () => {
         doc.setFontSize(18);
         doc.text('Tax Calculation Report', 20, 20);
         doc.setFontSize(12);
-        
-        // Add taxpayer info
-        doc.text(`Date of Birth: ${document.getElementById('dob').value}`, 20, 30);
-        doc.text(`Gross Salary: ${document.getElementById('grossSalary').value}`, 20, 40);
-        
-        // Add tax comparison
-        doc.text(`Old Regime Tax: ${document.getElementById('oldTotalTax').textContent}`, 20, 60);
-        doc.text(`New Regime Tax: ${document.getElementById('newTotalTax').textContent}`, 20, 70);
-        
-        // Add visual elements
-        doc.setFillColor(231, 76, 60);
-        doc.rect(20, 80, 50, 10, 'F');
-        doc.setFillColor(46, 204, 113);
-        doc.rect(20, 95, 50, 10, 'F');
-        
-        doc.text('Tax Paid', 75, 85);
-        doc.text('Take Home', 75, 100);
-        
+        doc.text(`Generated: ${new Date().toLocaleString()}`, 20, 30);
         doc.save('tax-report.pdf');
     }
 
     // Event Listeners
     calculateBtn.addEventListener('click', calculateTax);
     downloadBtn.addEventListener('click', generatePDF);
-
-    function formatCurrency(value) {
-        return '₹' + value.toLocaleString('en-IN', { maximumFractionDigits: 0 });
-    }
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => showTab(tab.dataset.tab));
+    });
 });
 </script>
 </body>
