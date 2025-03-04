@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Income Tax Helper</title>
+    <style>
+        /* tax_form16.css - Enhanced Styling for Form 16 Tax Helper (Comprehensive) */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+            width: 95%; /* Wider container */
+            max-width: 1200px; /* Increased max width */
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #3498db;
+            margin-top: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        section {
+            margin-top: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        select { /* Added style for select dropdown */
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #bdc3c7;
+            font-size: 1em;
+            width: calc(100% - 24px);
+            box-sizing: border-box;
+            margin-top: 5px;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="file"]:focus,
+        select:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+            outline: none;
+        }
+
+        select { /* Specific style adjustments for select */
+            appearance: none; /* Remove default appearance */
+            -webkit-appearance: none; /* For Safari */
+            -moz-appearance: none; /* For Firefox */
+            background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position-x: calc(100% - 10px);
+            background-position-y: 50%;
+            padding-right: 30px; /* Increased padding to accommodate arrow */
+        }
+
+        select::-ms-expand { /* IE and Edge */
+            display: none; /* Hide default arrow in IE/Edge */
+        }
+
+
+        button[type="submit"],
+        button[type="button"] {
+            background-color: #27ae60;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        button[type="submit"]:hover,
+        button[type="button"]:hover {
+            background-color: #219653;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: block;
+        }
+
+        #results-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+            border: 1px solid #ddd;
+        }
+
+        #results-section h2 {
+            color: #2c3e50;
+            border-bottom-color: #ddd;
+        }
+
+        #results-content {
+            font-size: 1.1em;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .result-item {
+            margin-bottom: 10px;
+        }
+
+        .result-label {
+            font-weight: bold;
+            color: #555;
+            display: block; /* Make labels block for better layout */
+            margin-bottom: 3px;
+        }
+
+        .result-value {
+            font-weight: normal; /* Reset font-weight for values */
+        }
+
+
+        .note-section {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-left: 5px solid #f39c12;
+            border-radius: 5px;
+            font-size: 0.95em;
+            color: #777;
+        }
+
+        .note-section p {
+            margin: 0;
+        }
+
+        .upload-section {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .upload-section input[type="file"] {
+            width: auto;
+            margin-top: 10px;
+        }
+
+        #processFileButton {
+            margin-top: 15px;
+        }
+
+        .section-container { /* Container for sections to add some spacing */
+            margin-bottom: 20px;
+        }
+
+        .allowance-group { /* Grouping for allowances */
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .allowance-group h3 {
+            margin-top: 0;
+            color: #777;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .deduction-group { /* Grouping for deductions */
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .deduction-group h3 {
+            margin-top: 0;
+            color: #777;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive table styling */
+        .tax-comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .tax-comparison-table th,
+        .tax-comparison-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .tax-comparison-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            h2 {
+                font-size: 1.2em;
+            }
+
+            input[type="text"],
+            input[type="number"],
+            input[type="file"],
+            select,
+            button[type="submit"],
+            button[type="button"] {
+                padding: 10px;
+                font-size: 1em;
+            }
+
+            .tax-comparison-table th,
+            .tax-comparison-table td {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Comprehensive Income Tax Helper</h1>
+        <form id="taxForm16">
+
+            <section class="upload-section">
+                <h2>Upload Form 16 (Optional)</h2>
+                <p>You can upload your Form 16 file to automatically fill in some details.</p>
+                <input type="file" id="form16File" name="form16File" accept=".pdf, .jpg, .jpeg, .png">
+                <button type="button" id="processFileButton">Process Form 16 File</button> <span id="file-error" class="error-message"></span>
+            </section>
+
+            <section class="section-container">
+                <h2>Basic Details</h2>
+                <div class="form-group">
+                    <label for="pan">PAN:</label>
+                    <input type="text" id="pan" name="pan" required>
+                    <span id="pan-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                    <span id="name-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Date of Birth (DD/MM/YYYY):</label>
+                    <input type="text" id="dob" name="dob" placeholder="DD/MM/YYYY">
+                    <span id="dob-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="filingStatus">Filing Status:</label>
+                    <select id="filingStatus" name="filingStatus">
+                        <option value="individual" selected>Individual</option>
+                    </select>
+                    <span id="filingStatus-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="residentialStatus">Residential Status:</label>
+                    <select id="residentialStatus" name="residentialStatus">
+                        <option value="resident" selected>Resident</option>
+                    </select>
+                    <span id="residentialStatus-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="taxRegime">Opting for New Tax Regime?</label>
+                    <select id="taxRegime" name="taxRegime" required>
+                        <option value="old">No (Old Regime)</option>
+                        <option value="new">Yes (New Regime)</option>
+                    </select>
+                    <span id="taxRegime-error" class="error-message"></span>
+                </div>
+            </section>
+
+            <section class="section-container">
+                <h2>Employer Details</h2>
+                <div class="form-group">
+                    <label for="employerTan">Employer TAN:</label>
+                    <input type="text" id="employerTan" name="employerTan" required>
+                    <span id="employerTan-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="employerName">Employer Name:</label>
+                    <input type="text" id="employerName" name="employerName" required>
+                    <span id="employerName-error" class="error-message"></span>
+                </div>
+            </section>
+
+            <section class="section-container">
+                <h2>Salary Income Details</h2>
+                <div class="form-group">
+                    <label for="grossSalary">Gross Salary:</label>
+                    <input type="number" id="grossSalary" name="grossSalary" value="0">
+                    <span id="grossSalary-error" class="error-message"></span>
+                </div>
+
+                <div class="allowance-group">
+                    <h3>Allowances Exempt under Section 10</h3>
+                    <div class="form-group">
+                        <label for="hraAllowance">House Rent Allowance (HRA):</label>
+                        <input type="number" id="hraAllowance" name="hraAllowance" value="0">
+                        <span id="hraAllowance-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="ltaAllowance">Leave Travel Allowance (LTA):</label>
+                        <input type="number" id="ltaAllowance" name="ltaAllowance" value="0">
+                        <span id="ltaAllowance-error" class="error-message"></span>
+                    </div>
+                    </div>
+
+                <div class="form-group">
+                    <label for="perquisites">Perquisites:</label>
+                    <input type="number" id="perquisites" name="perquisites" value="0">
+                    <span id="perquisites-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="profitsInLieuOfSalary">Profits in lieu of Salary:</label>
+                    <input type="number" id="profitsInLieuOfSalary" name="profitsInLieuOfSalary" value="0">
+                    <span id="profitsInLieuOfSalary-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="entertainmentAllowance">Entertainment Allowance (Govt. Employees):</label>
+                    <input type="number" id="entertainmentAllowance" name="entertainmentAllowance" value="0">
+                    <span id="entertainmentAllowance-error" class="error-message"></span>
+                </div>
+                 <div class="form-group">
+                    <label for="professionalTax">Professional Tax Paid:</label>
+                    <input type="number" id="professionalTax" name="professionalTax" value="0">
+                    <span id="professionalTax-error" class="error-message"></span>
+                </div>
+            </section>
+
+            <section class="section-container">
+                <h2>Income from House Property</h2>
+                <div class="form-group">
+                    <label for="annualValue">Annual Value of Property:</label>
+                    <input type="number" id="annualValue" name="annualValue" value="0">
+                    <span id="annualValue-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="interestOnHousingLoan">Interest on Housing Loan (Section 24b):</label>
+                    <input type="number" id="interestOnHousingLoan" name="interestOnHousingLoan" value="0">
+                    <span id="interestOnHousingLoan-error" class="error-message"></span>
+                </div>
+            </section>
+
+            <section class="section-container">
+                <h2>Capital Gains</h2>
+                <div class="form-group">
+                    <label for="shortTermCapitalGains">Short Term Capital Gains:</label>
+                    <input type="number" id="shortTermCapitalGains" name="shortTermCapitalGains" value="0">
+                    <span id="shortTermCapitalGains-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="longTermCapitalGains">Long Term Capital Gains:</label>
+                    <input type="number" id="longTermCapitalGains" name="longTermCapitalGains" value="0">
+                    <span id="longTermCapitalGains-error" class="error-message"></span>
+                </div>
+            </section>
+
+            <section class="section-container">
+                <h2>Income from Business or Profession</h2>
+                <div class="form-group">
+                    <label for="businessProfessionIncome">Net Income from Business or Profession:</label>
+                    <input type="number" id="businessProfessionIncome" name="businessProfessionIncome" value="0">
+                    <span id="businessProfessionIncome-error" class="error-message"></span>
+                </div>
+            </section>
+
+            <section class="section-container">
+                <h2>Income from Other Sources</h2>
+                <div class="form-group">
+                    <label for="interestIncome">Interest Income from Savings, FD etc.:</label>
+                    <input type="number" id="interestIncome" name="interestIncome" value="0">
+                    <span id="interestIncome-error" class="error-message"></span>
+                </div>
+                 <div class="form-group">
+                    <label for="dividendIncome">Dividend Income:</label>
+                    <input type="number" id="dividendIncome" name="dividendIncome" value="0">
+                    <span id="dividendIncome-error" class="error-message"></span>
+                </div>
+            </section>
+
+
+             <section class="section-container">
+                <h2>Deductions (Chapter VIA)</h2>
+
+                <div class="deduction-group">
+                    <h3>Section 80C, 80CCC, 80CCD(1) Deductions (Max ₹1.5 Lakh Combined)</h3>
+                    <div class="form-group">
+                        <label for="sec80c">Section 80C:</label>
+                        <input type="number" id="sec80c" name="sec80c" value="0">
+                        <span id="sec80c-error" class="error-message"></span>
+                    </div>
+                     <div class="form-group">
+                        <label for="sec80ccc">Section 80CCC (LIC Pension Plan):</label>
+                        <input type="number" id="sec80ccc" name="sec80ccc" value="0">
+                        <span id="sec80ccc-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="sec80ccd1">Section 80CCD(1) (NPS - Employee Contribution):</label>
+                        <input type="number" id="sec80ccd1" name="sec80ccd1" value="0">
+                        <span id="sec80ccd1-error" class="error-message"></span>
+                    </div>
+                    </div>
+
+
+                <div class="deduction-group">
+                    <h3>Section 80D - Medical Insurance</h3>
+                    <div class="form-group">
+                        <label for="sec80d">Section 80D (Medical Insurance Premium):</label>
+                        <input type="number" id="sec80d" name="sec80d" value="0">
+                        <span id="sec80d-error" class="error-message"></span>
+                    </div>
+                     <div class="form-group">
+                        <label for="sec80dd">Section 80DD (Medical treatment of dependent disabled relative):</label>
+                        <input type="number" id="sec80dd" name="sec80dd" value="0">
+                        <span id="sec80dd-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="sec80dde">Section 80DDB (Medical treatment of specified diseases):</label>
+                        <input type="number" id="sec80ddb" name="sec80ddb" value="0">
+                        <span id="sec80ddb-error" class="error-message"></span>
+                    </div>
+                    </div>
+
+
+                <div class="deduction-group">
+                    <h3>Other Deductions</h3>
+                     <div class="form-group">
+                        <label for="sec80ccd2">Section 80CCD(2) (Employer NPS Contribution):</label>
+                        <input type="number" id="sec80ccd2" name="sec80ccd2" value="0">
+                        <span id="sec80ccd2-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="sec80e">Section 80E (Interest on Education Loan):</label>
+                        <input type="number" id="sec80e" name="sec80e" value="0">
+                        <span id="sec80e-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="sec80g">Section 80G (Donations):</label>
+                        <input type="number" id="sec80g" name="sec80g" value="0">
+                        <span id="sec80g-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="sec80gga">Section 80GGA (Donations for scientific research or rural development):</label>
+                        <input type="number" id="sec80gga" name="sec80gga" value="0">
+                        <span id="sec80gga-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="sec80qqb">Section 80QQB (Royalty income of authors):</label>
+                        <input type="number" id="sec80qqb" name="sec80qqb" value="0">
+                        <span id="sec80qqb-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="sec80rrb">Section 80RRB (Royalty on patents):</label>
+                        <input type="number" id="sec80rrb" name="sec80rrb" value="0">
+                        <span id="sec80rrb-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="sec80tta">Section 80TTA (Savings Account Interest):</label>
+                        <input type="number" id="sec80tta" name="sec80tta" value="0">
+                        <span id="sec80tta-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="sec80ttb">Section 80TTB (Interest income for senior citizens):</label>
+                        <input type="number" id="sec80ttb" name="sec80ttb" value="0">
+                        <span id="sec80ttb-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="sec80u">Section 80U (Deduction for persons with disability):</label>
+                        <input type="number" id="sec80u" name="sec80u" value="0">
+                        <span id="sec80u-error" class="error-message"></span>
+                    </div>
+                     <div class="form-group">
+                        <label for="sec80ee">Section 80EE (Interest on loan for first home buyers):</label>
+                        <input type="number" id="sec80ee" name="sec80ee" value="0">
+                        <span id="sec80ee-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="sec80eea">Section 80EEA (Interest on loan for affordable housing):</label>
+                        <input type="number" id="sec80eea" name="sec80eea" value="0">
+                        <span id="sec80eea-error" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="sec80eeb">Section 80EEB (Interest paid on loan taken for purchase of electric vehicle):</label>
+                        <input type="number" id="sec80eeb" name="sec80eeb" value="0">
+                        <span id="sec80eeb-error" class="error-message"></span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-container">
+                <h2>Tax Paid & TDS Details</h2>
+                <div class="form-group">
+                    <label for="tdsSalary">TDS on Salary:</label>
+                    <input type="number" id="tdsSalary" name="tdsSalary" value="0">
+                    <span id="tdsSalary-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="tdsOthers">TDS on Other Income (if any):</label>
+                    <input type="number" id="tdsOthers" name="tdsOthers" value="0">
+                    <span id="tdsOthers-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="advanceTaxPaid">Advance Tax Paid:</label>
+                    <input type="number" id="advanceTaxPaid" name="advanceTaxPaid" value="0">
+                    <span id="advanceTaxPaid-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="selfAssessmentTaxPaid">Self-Assessment Tax Paid:</label>
+                    <input type="number" id="selfAssessmentTaxPaid" name="selfAssessmentTaxPaid" value="0">
+                    <span id="selfAssessmentTaxPaid-error" class="error-message"></span>
+                </div>
+            </section>
+
+            <button type="submit">Calculate Tax</button>
+
+            <section id="results-section" style="display:none;">
+                <h2>Tax Calculation Results</h2>
+                <div id="results-content">
+                    <table class="tax-comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Tax Regime</th>
+                                <th>Gross Salary</th>
+                                <th>Income from HP</th>
+                                <th>Capital Gains</th>
+                                <th>Business/Profession Income</th>
+                                <th>Other Income</th>
+                                <th>Gross Total Income</th>
+                                <th>Exempt Allowances</th>
+                                <th>Standard Deduction (Salary)</th>
+                                <th>Standard Deduction (HP)</th>
+                                <th>Net Income</th>
+                                <th>Chapter VI-A Deductions</th>
+                                <th>Taxable Income</th>
+                                <th>Tax Liability</th>
+                                <th>TDS</th>
+                                <th>Tax Paid</th>
+                                <th>Tax Payable/Refund</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tax-comparison-body">
+                            </tbody>
+                    </table>
+                    <div id="tax-saving-note" class="note-section" style="margin-top: 20px; border-color: #27ae60; background-color: #f2fdf7;">
+                        </div>
+                     </div>
+            </section>
+        </form>
+
+        <div class="note-section">
+            <p><strong>Note:</strong> This is a simplified tax helper. Actual tax calculation in India is complex and depends on various factors and tax laws. Consult a tax professional for accurate tax advice. <strong>Form 16 file upload processing is SIMULATED in this example and does not actually read data from PDF files.</strong> For real PDF processing, server-side implementation and advanced PDF parsing/OCR techniques would be required.</p>
+        </div>
+    </div>
+
+    <script>
+        // tax_form16.js - Enhanced JavaScript for Form 16 Tax Helper (Comprehensive Input Form) with SIMULATED File Upload Processing
+        document.getElementById('taxForm16').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            processTaxForm();
+        });
+
+        document.getElementById('processFileButton').addEventListener('click', function() {
+            resetErrorMessages();
+            const form16File = document.getElementById('form16File').files[0];
+            if (!form16File) {
+                showErrorMessage('file-error', 'Please upload Form 16 file first.');
+                return;
+            }
+
+            // ** Simulated Form 16 Data Extraction **
+            // ** In a real application, this is where you would parse the PDF/image file **
+            // ** and extract data. Here, we are using hardcoded sample data. **
+            const simulatedFormData = {
+                pan: "ABCDE1234F", // Sample PAN
+                name: "John Doe", // Sample Name
+                dob: "01/01/1980", // Sample DOB
+                filingStatus: "individual",
+                residentialStatus: "resident",
+                taxRegime: "old", // Old Regime by default - corrected to 'old'
+                employerTan: "PUN12345ABC", // Sample TAN
+                employerName: "Example Corp", // Sample Employer Name
+                grossSalary: 1200000, // Sample Gross Salary
+                hraAllowance: 250000, // Sample HRA
+                ltaAllowance: 15000, // Sample LTA
+                perquisites: 10000,
+                profitsInLieuOfSalary: 5000,
+                entertainmentAllowance: 0,
+                professionalTax: 2500,
+                annualValue: 300000, // Sample House Property Income
+                interestOnHousingLoan: 120000,
+                shortTermCapitalGains: 20000, // Sample Capital Gains
+                longTermCapitalGains: 30000,
+                businessProfessionIncome: 50000, // Sample Business Income
+                interestIncome: 10000,      // Sample Other Income
+                dividendIncome: 5000,
+                sec80c: 150000, // Sample Section 80C (full limit)
+                sec80ccc: 10000, // Sample 80CCC
+                sec80ccd1: 20000, // Sample 80CCD(1)
+                sec80d: 25000,  // Sample Section 80D
+                sec80dd: 10000, // Sample 80DD
+                sec80ddb: 15000, // Sample 80DDB
+                sec80ccd2: 50000, // Sample 80CCD(2)
+                sec80e: 10000,    // Sample 80E
+                sec80g: 10000,    // Sample 80G
+                sec80gga: 5000, // Sample 80GGA
+                sec80qqb: 0,     // Sample 80QQB
+                sec80rrb: 0,     // Sample 80RRB
+                sec80tta: 5000,  // Sample 80TTA
+                sec80ttb: 10000, // Sample 80TTB
+                sec80u: 0,      // Sample 80U
+                sec80ee: 0,      // Sample 80EE
+                sec80eea: 0,     // Sample 80EEA
+                sec80eeb: 0,     // Sample 80EEB
+                tdsSalary: 60000,    // Sample TDS
+                tdsOthers: 5000,    // Sample TDS on other income
+                advanceTaxPaid: 0,
+                selfAssessmentTaxPaid: 0
+            };
+
+            // ** Pre-fill the form with simulated data **
+            document.getElementById('pan').value = simulatedFormData.pan;
+            document.getElementById('name').value = simulatedFormData.name;
+            document.getElementById('dob').value = simulatedFormData.dob;
+            document.getElementById('filingStatus').value = simulatedFormData.filingStatus;
+            document.getElementById('residentialStatus').value = simulatedFormData.residentialStatus;
+            document.getElementById('taxRegime').value = simulatedFormData.taxRegime;
+            document.getElementById('employerTan').value = simulatedFormData.employerTan;
+            document.getElementById('employerName').value = simulatedFormData.employerName;
+            document.getElementById('grossSalary').value = simulatedFormData.grossSalary;
+            document.getElementById('hraAllowance').value = simulatedFormData.hraAllowance;
+            document.getElementById('ltaAllowance').value = simulatedFormData.ltaAllowance;
+            document.getElementById('perquisites').value = simulatedFormData.perquisites;
+            document.getElementById('profitsInLieuOfSalary').value = simulatedFormData.profitsInLieuOfSalary;
+            document.getElementById('entertainmentAllowance').value = simulatedFormData.entertainmentAllowance;
+            document.getElementById('professionalTax').value = simulatedFormData.professionalTax;
+
+            document.getElementById('annualValue').value = simulatedFormData.annualValue;
+            document.getElementById('interestOnHousingLoan').value = simulatedFormData.interestOnHousingLoan;
+            document.getElementById('shortTermCapitalGains').value = simulatedFormData.shortTermCapitalGains;
+            document.getElementById('longTermCapitalGains').value = simulatedFormData.longTermCapitalGains;
+            document.getElementById('businessProfessionIncome').value = simulatedFormData.businessProfessionIncome;
+            document.getElementById('interestIncome').value = simulatedFormData.interestIncome;
+            document.getElementById('dividendIncome').value = simulatedFormData.dividendIncome;
+
+
+            document.getElementById('sec80c').value = simulatedFormData.sec80c;
+            document.getElementById('sec80ccc').value = simulatedFormData.sec80ccc;
+            document.getElementById('sec80ccd1').value = simulatedFormData.sec80ccd1;
+            document.getElementById('sec80d').value = simulatedFormData.sec80d;
+            document.getElementById('sec80dd').value = simulatedFormData.sec80dd;
+            document.getElementById('sec80ddb').value = simulatedFormData.sec80ddb;
+            document.getElementById('sec80ccd2').value = simulatedFormData.sec80ccd2;
+            document.getElementById('sec80e').value = simulatedFormData.sec80e;
+            document.getElementById('sec80g').value = simulatedFormData.sec80g;
+            document.getElementById('sec80gga').value = simulatedFormData.sec80gga;
+            document.getElementById('sec80qqb').value = simulatedFormData.sec80qqb;
+            document.getElementById('sec80rrb').value = simulatedFormData.sec80rrb;
+            document.getElementById('sec80tta').value = simulatedFormData.sec80tta;
+            document.getElementById('sec80ttb').value = simulatedFormData.sec80ttb;
+            document.getElementById('sec80u').value = simulatedFormData.sec80u;
+            document.getElementById('sec80ee').value = simulatedFormData.sec80ee;
+            document.getElementById('sec80eea').value = simulatedFormData.sec80eea;
+            document.getElementById('sec80eeb').value = simulatedFormData.sec80eeb;
+
+
+            document.getElementById('tdsSalary').value = simulatedFormData.tdsSalary;
+            document.getElementById('tdsOthers').value = simulatedFormData.tdsOthers;
+            document.getElementById('advanceTaxPaid').value = simulatedFormData.advanceTaxPaid;
+            document.getElementById('selfAssessmentTaxPaid').value = simulatedFormData.selfAssessmentTaxPaid;
+
+
+            alert("Form 16 File Processing (SIMULATED):\n\nThis is a simulation. In a real application, we would have parsed your uploaded Form 16 file and extracted data to pre-fill the form. For this example, we've used sample data to demonstrate the pre-filling concept.");
+
+            // After "processing" the file (simulation), you might want to automatically trigger the tax calculation
+            processTaxForm(); // Call the function to calculate and display tax results
+
+        });
+
+
+        function processTaxForm() {
+            // Reset error messages
+            resetErrorMessages();
+
+            // Get form values and trim whitespace & sanitize inputs
+            const form16File = document.getElementById('form16File').files[0]; // Get the uploaded file - not used in this simulated version for actual processing
+            const pan = sanitizeInput(document.getElementById('pan').value.trim(), 'pan-error', 'PAN is required and should be alphanumeric.');
+            const name = sanitizeInput(document.getElementById('name').value.trim(), 'name-error', 'Name is required and should be text only.', 'text');
+            const dob = sanitizeInput(document.getElementById('dob').value.trim(), 'dob-error', 'Date of Birth should be in DD/MM/YYYY format.', 'date');
+            const filingStatus = document.getElementById('filingStatus').value;
+            const residentialStatus = document.getElementById('residentialStatus').value;
+            const taxRegime = document.getElementById('taxRegime').value;
+            const employerTan = sanitizeInput(document.getElementById('employerTan').value.trim(), 'employerTan-error', 'Employer TAN is required and should be alphanumeric.');
+            const employerName = sanitizeInput(document.getElementById('employerName').value.trim(), 'employerName-error', 'Employer Name is required and should be text only.', 'text');
+            const grossSalary = sanitizeNumberInput(document.getElementById('grossSalary').value, 'grossSalary-error', 'Gross Salary should be a valid number.');
+            const hraAllowance = sanitizeNumberInput(document.getElementById('hraAllowance').value, 'hraAllowance-error', 'HRA Allowance should be a valid number.');
+            const ltaAllowance = sanitizeNumberInput(document.getElementById('ltaAllowance').value, 'ltaAllowance-error', 'LTA Allowance should be a valid number.');
+            const perquisites = sanitizeNumberInput(document.getElementById('perquisites').value, 'perquisites-error', 'Perquisites should be a valid number.');
+            const profitsInLieuOfSalary = sanitizeNumberInput(document.getElementById('profitsInLieuOfSalary').value, 'profitsInLieuOfSalary-error', 'Profits in lieu of Salary should be a valid number.');
+            const entertainmentAllowance = sanitizeNumberInput(document.getElementById('entertainmentAllowance').value, 'entertainmentAllowance-error', 'Entertainment Allowance should be a valid number.');
+            const professionalTax = sanitizeNumberInput(document.getElementById('professionalTax').value, 'professionalTax-error', 'Professional Tax should be a valid number.');
+
+            //Income from House Property
+            const annualValue = sanitizeNumberInput(document.getElementById('annualValue').value, 'annualValue-error', 'Annual Value should be a valid number.');
+            const interestOnHousingLoan = sanitizeNumberInput(document.getElementById('interestOnHousingLoan').value, 'interestOnHousingLoan-error', 'Interest on Housing Loan should be a valid number.');
+
+            //Capital Gains
+            const shortTermCapitalGains = sanitizeNumberInput(document.getElementById('shortTermCapitalGains').value, 'shortTermCapitalGains-error', 'Short Term Capital Gains should be a valid number.');
+            const longTermCapitalGains = sanitizeNumberInput(document.getElementById('longTermCapitalGains').value, 'longTermCapitalGains-error', 'Long Term Capital Gains should be a valid number.');
+
+            //Business & Profession Income
+            const businessProfessionIncome = sanitizeNumberInput(document.getElementById('businessProfessionIncome').value, 'businessProfessionIncome-error', 'Business/Profession Income should be a valid number.');
+
+            //Income from Other Sources
+            const interestIncome = sanitizeNumberInput(document.getElementById('interestIncome').value, 'interestIncome-error', 'Interest Income should be a valid number.');
+            const dividendIncome = sanitizeNumberInput(document.getElementById('dividendIncome').value, 'dividendIncome-error', 'Dividend Income should be a valid number.');
+
+
+            //Deductions Chapter VIA
+            const sec80c = sanitizeNumberInput(document.getElementById('sec80c').value, 'sec80c-error', 'Section 80C should be a valid number.');
+            const sec80ccc = sanitizeNumberInput(document.getElementById('sec80ccc').value, 'sec80ccc-error', 'Section 80CCC should be a valid number.');
+            const sec80ccd1 = sanitizeNumberInput(document.getElementById('sec80ccd1').value, 'sec80ccd1-error', 'Section 80CCD(1) should be a valid number.');
+            const sec80d = sanitizeNumberInput(document.getElementById('sec80d').value, 'sec80d-error', 'Section 80D should be a valid number.');
+            const sec80dd = sanitizeNumberInput(document.getElementById('sec80dd').value, 'sec80dd-error', 'Section 80DD should be a valid number.');
+            const sec80ddb = sanitizeNumberInput(document.getElementById('sec80ddb').value, 'sec80ddb-error', 'Section 80DDB should be a valid number.');
+            const sec80ccd2 = sanitizeNumberInput(document.getElementById('sec80ccd2').value, 'sec80ccd2-error', 'Section 80CCD(2) should be a valid number.');
+            const sec80e = sanitizeNumberInput(document.getElementById('sec80e').value, 'sec80e-error', 'Section 80E should be a valid number.');
+            const sec80g = sanitizeNumberInput(document.getElementById('sec80g').value, 'sec80g-error', 'Section 80G should be a valid number.');
+            const sec80gga = sanitizeNumberInput(document.getElementById('sec80gga').value, 'sec80gga-error', 'Section 80GGA should be a valid number.');
+            const sec80qqb = sanitizeNumberInput(document.getElementById('sec80qqb').value, 'sec80qqb-error', 'Section 80QQB should be a valid number.');
+            const sec80rrb = sanitizeNumberInput(document.getElementById('sec80rrb').value, 'sec80rrb-error', 'Section 80RRB should be a valid number.');
+            const sec80tta = sanitizeNumberInput(document.getElementById('sec80tta').value, 'sec80tta-error', 'Section 80TTA should be a valid number.');
+            const sec80ttb = sanitizeNumberInput(document.getElementById('sec80ttb').value, 'sec80ttb-error', 'Section 80TTB should be a valid number.');
+            const sec80u = sanitizeNumberInput(document.getElementById('sec80u').value, 'sec80u-error', 'Section 80U should be a valid number.');
+            const sec80ee = sanitizeNumberInput(document.getElementById('sec80ee').value, 'sec80ee-error', 'Section 80EE should be a valid number.');
+            const sec80eea = sanitizeNumberInput(document.getElementById('sec80eea').value, 'sec80eea-error', 'Section 80EEA should be a valid number.');
+            const sec80eeb = sanitizeNumberInput(document.getElementById('sec80eeb').value, 'sec80eeb-error', 'Section 80EEB should be a valid number.');
+
+
+            //Tax Paid
+            const tdsSalary = sanitizeNumberInput(document.getElementById('tdsSalary').value, 'tdsSalary-error', 'TDS on Salary should be a valid number.');
+            const tdsOthers = sanitizeNumberInput(document.getElementById('tdsOthers').value, 'tdsOthers-error', 'TDS on Other Income should be a valid number.');
+            const advanceTaxPaid = sanitizeNumberInput(document.getElementById('advanceTaxPaid').value, 'advanceTaxPaid-error', 'Advance Tax Paid should be a valid number.');
+            const selfAssessmentTaxPaid = sanitizeNumberInput(document.getElementById('selfAssessmentTaxPaid').value, 'selfAssessmentTaxPaid-error', 'Self-Assessment Tax Paid should be a valid number.');
+
+
+            if (!pan || !name || !employerTan || !employerName ||
+                grossSalary === null || hraAllowance === null || ltaAllowance === null || perquisites === null || profitsInLieuOfSalary === null || entertainmentAllowance === null || professionalTax === null ||
+                annualValue === null || interestOnHousingLoan === null || shortTermCapitalGains === null || longTermCapitalGains === null || businessProfessionIncome === null || interestIncome === null || dividendIncome === null ||
+                sec80c === null || sec80ccc === null  || sec80ccd1 === null || sec80d === null || sec80dd === null || sec80ddb === null || sec80ccd2 === null || sec80e === null || sec80g === null || sec80gga === null || sec80qqb === null || sec80rrb === null || sec80tta === null || sec80ttb === null || sec80u === null || sec80ee === null || sec80eea === null || sec80eeb === null ||
+                tdsSalary === null || tdsOthers === null || advanceTaxPaid === null || selfAssessmentTaxPaid === null) {
+                return; // Stop submission if any validation fails
+            }
+
+
+            // ** Income Calculation **
+            const salaryIncome = grossSalary - perquisites - profitsInLieuOfSalary - professionalTax;
+            const incomeFromHouseProperty = Math.max(0, annualValue - (annualValue * 0.30) - interestOnHousingLoan); //Standard deduction of 30% of NAV
+            const capitalGainsIncome = shortTermCapitalGains + longTermCapitalGains;
+            const otherSourcesIncome = interestIncome + dividendIncome;
+            const grossTotalIncome = salaryIncome + incomeFromHouseProperty + capitalGainsIncome + businessProfessionIncome + otherSourcesIncome;
+
+
+            // ** Deductions Calculation **
+            const exemptAllowances = hraAllowance + ltaAllowance + entertainmentAllowance;
+            const standardDeductionSalary = 50000; //Standard deduction for Salary
+            const standardDeductionHP = 0; //Already factored in Income from House Property calculation (30% of NAV)
+
+            const totalDeductions80C_80CCD1_80CCC = Math.min(150000, sec80c + sec80ccc + sec80ccd1); // 80C, 80CCC, 80CCD(1) combined limit
+            const totalChapterVIADeductions_OldRegime = totalDeductions80C_80CCD1_80CCC + sec80d + sec80dd + sec80ddb + sec80ccd2 + sec80e + sec80g + sec80gga + sec80qqb + sec80rrb + sec80tta + sec80ttb + sec80u + sec80ee + sec80eea + sec80eeb; // Chapter VI-A Deductions for Old Regime
+
+
+            let netIncomeOldRegime = grossTotalIncome - exemptAllowances - standardDeductionSalary - standardDeductionHP; // Net Income before Chapter VI-A Deductions for Old Regime
+            let taxableIncomeOldRegime = Math.max(0, netIncomeOldRegime - totalChapterVIADeductions_OldRegime); // Taxable Income for Old Regime
+
+
+            let netIncomeNewRegime = grossTotalIncome - exemptAllowances - standardDeductionHP; // Net Income before standard deduction for New Regime (standard deduction of 75000 will be applied later)
+            let taxableIncomeNewRegime = Math.max(0, netIncomeNewRegime - 75000); // Taxable Income for New Regime (Standard deduction of 75000 under new regime)
+
+
+            // ** OLD REGIME TAX CALCULATION **
+            let estimatedTaxOldRegime = 0;
+            if (taxableIncomeOldRegime > 250000 && taxableIncomeOldRegime <= 500000) {
+                estimatedTaxOldRegime = (taxableIncomeOldRegime - 250000) * 0.05;
+            } else if (taxableIncomeOldRegime > 500000 && taxableIncomeOldRegime <= 1000000) {
+                estimatedTaxOldRegime = 12500 + (taxableIncomeOldRegime - 500000) * 0.20;
+            } else if (taxableIncomeOldRegime > 1000000) {
+                estimatedTaxOldRegime = 112500 + (taxableIncomeOldRegime - 1000000) * 0.30;
+            }
+             if (taxableIncomeOldRegime <= 500000) { //Rebate under 87A for old regime
+                estimatedTaxOldRegime = Math.max(0, estimatedTaxOldRegime - 12500);
+            }
+
+
+            // ** NEW REGIME TAX CALCULATION **
+            let estimatedTaxNewRegime = 0;
+             if (taxableIncomeNewRegime > 400000 && taxableIncomeNewRegime <= 800000) {
+                estimatedTaxNewRegime = (taxableIncomeNewRegime - 400000) * 0.05;
+            } else if (taxableIncomeNewRegime > 800000 && taxableIncomeNewRegime <= 1200000) {
+                estimatedTaxNewRegime = 20000 + (taxableIncomeNewRegime - 800000) * 0.10;
+            } else if (taxableIncomeNewRegime > 1200000 && taxableIncomeNewRegime <= 1600000) {
+                estimatedTaxNewRegime = 60000 + (taxableIncomeNewRegime - 1200000) * 0.15;
+            }
+            else if (taxableIncomeNewRegime > 1600000 && taxableIncomeNewRegime <= 2000000) {
+                estimatedTaxNewRegime = 120000 + (taxableIncomeNewRegime - 1600000) * 0.20;
+            }else if (taxableIncomeNewRegime > 2000000 && taxableIncomeNewRegime <= 2400000) {
+                estimatedTaxNewRegime = 200000 + (taxableIncomeNewRegime - 2000000) * 0.25;
+            }
+            else if (taxableIncomeNewRegime > 2400000) {
+                estimatedTaxNewRegime = 300000 + (taxableIncomeNewRegime - 2400000) * 0.30;
+            }
+             if (taxableIncomeNewRegime <= 700000) { //Rebate under 87A for new regime
+                estimatedTaxNewRegime = Math.max(0, estimatedTaxNewRegime - 25000);
+            }
+
+
+            const taxPayableRefundOldRegime = estimatedTaxOldRegime - tdsSalary - tdsOthers - advanceTaxPaid - selfAssessmentTaxPaid;
+            const taxPayableRefundNewRegime = estimatedTaxNewRegime - tdsSalary - tdsOthers- advanceTaxPaid - selfAssessmentTaxPaid;
+
+
+            // Display results in HTML Table (Enhanced to show both regimes)
+            displayResultsInTable({
+                grossSalary: grossSalary,
+                incomeFromHouseProperty: incomeFromHouseProperty,
+                capitalGainsIncome: capitalGainsIncome,
+                businessProfessionIncome: businessProfessionIncome,
+                otherSourcesIncome: otherSourcesIncome,
+                grossTotalIncome: grossTotalIncome,
+                exemptAllowances: exemptAllowances,
+                standardDeductionSalary: standardDeductionSalary,
+                standardDeductionHP: standardDeductionHP,
+                netIncome: netIncomeOldRegime, //Using Net Income before Chapter VIA for display in table
+                chapterVIADeductionsOldRegime: totalChapterVIADeductions_OldRegime,
+                taxableIncomeOldRegime: taxableIncomeOldRegime,
+                estimatedTaxOldRegime: estimatedTaxOldRegime,
+                taxPayableRefundOldRegime: taxPayableRefundOldRegime,
+                taxableIncomeNewRegime: taxableIncomeNewRegime,
+                estimatedTaxNewRegime: estimatedTaxNewRegime,
+                taxPayableRefundNewRegime: taxPayableRefundNewRegime,
+                tdsSalary: tdsSalary,
+                tdsOthers: tdsOthers,
+                taxPaidTotal: advanceTaxPaid + selfAssessmentTaxPaid // Combined tax paid
+            }, estimatedTaxOldRegime, estimatedTaxNewRegime); // Pass estimated taxes for comparison note
+        }
+
+
+        function resetErrorMessages() {
+            document.querySelectorAll('.error-message').forEach(span => {
+                span.textContent = ''; // Clear all error messages
+            });
+        }
+
+        function showErrorMessage(elementId, message) {
+            document.getElementById(elementId).textContent = message;
+        }
+
+
+        function sanitizeInput(value, errorElementId, errorMessage, type = 'alphanumeric') {
+            if (!value) {
+                showErrorMessage(errorElementId, errorMessage);
+                return null;
+            }
+            if (type === 'text' && !/^[a-zA-Z\s]+$/.test(value)) {
+                showErrorMessage(errorElementId, 'Input should contain text characters only.');
+                return null;
+            }
+             if (type === 'pan' && !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(value.toUpperCase())) {
+                showErrorMessage(errorElementId, 'PAN format is invalid.');
+                return null;
+            }
+            if (type === 'date') {
+                const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/((19|20)\d{2})$/;
+                if (!dateRegex.test(value)) {
+                    showErrorMessage(errorElementId, 'Date of Birth format is invalid. Use DD/MM/YYYY.');
+                    return null;
+                }
+                // Further date validity checks can be added here (e.g., valid day in month, leap year check)
+            }
+            return value;
+        }
+
+
+        function sanitizeNumberInput(value, errorElementId, errorMessage) {
+            const num = Number(value);
+            if (isNaN(num)) {
+                showErrorMessage(errorElementId, errorMessage);
+                return null;
+            }
+            return num;
+        }
+
+
+        function displayResultsInTable(results, estimatedTaxOldRegime, estimatedTaxNewRegime) {
+            const comparisonTableBody = document.getElementById('tax-comparison-body');
+            comparisonTableBody.innerHTML = ''; // Clear previous results
+
+            const regimes = [
+                {
+                    regime: 'Old Regime',
+                    grossSalary: results.grossSalary,
+                    incomeFromHouseProperty: results.incomeFromHouseProperty,
+                    capitalGainsIncome: results.capitalGainsIncome,
+                    businessProfessionIncome: results.businessProfessionIncome,
+                    otherSourcesIncome: results.otherSourcesIncome,
+                    grossTotalIncome: results.grossTotalIncome,
+                    exemptAllowances: results.exemptAllowances,
+                    standardDeductionSalary: results.standardDeductionSalary,
+                    standardDeductionHP: results.standardDeductionHP,
+                    netIncome: results.netIncome,
+                    chapterVIADeductions: results.chapterVIADeductionsOldRegime,
+                    taxableIncome: results.taxableIncomeOldRegime,
+                    estimatedTax: results.estimatedTaxOldRegime,
+                    tds: results.tdsSalary + results.tdsOthers,
+                    taxPaid: results.taxPaidTotal,
+                    taxPayableRefund: results.taxPayableRefundOldRegime
+                },
+                {
+                    regime: 'New Regime',
+                    grossSalary: results.grossSalary,
+                    incomeFromHouseProperty: results.incomeFromHouseProperty,
+                    capitalGainsIncome: results.capitalGainsIncome,
+                    businessProfessionIncome: results.businessProfessionIncome,
+                    otherSourcesIncome: results.otherSourcesIncome,
+                    grossTotalIncome: results.grossTotalIncome,
+                    exemptAllowances: results.exemptAllowances, // Exemptions are considered for calculation but may not be fully applicable in New Regime
+                    standardDeductionSalary: 75000, // Standard deduction of 75000 is applicable under new regime
+                    standardDeductionHP: results.standardDeductionHP, // **Corrected Line:** Access from results object
+                    netIncome: results.netIncome, // Net income calculation adjusted for New Regime context if needed
+                    chapterVIADeductions: 0, // No Chapter VI-A deductions in New Regime
+                    taxableIncome: results.taxableIncomeNewRegime,
+                    estimatedTax: results.estimatedTaxNewRegime,
+                    tds: results.tdsSalary + results.tdsOthers,
+                    taxPaid: results.taxPaidTotal,
+                    taxPayableRefund: results.taxPayableRefundNewRegime
+                }
+            ];
+
+            regimes.forEach(regimeData => {
+                const row = comparisonTableBody.insertRow();
+                row.insertCell().textContent = regimeData.regime;
+                row.insertCell().textContent = regimeData.grossSalary.toFixed(2);
+                row.insertCell().textContent = regimeData.incomeFromHouseProperty.toFixed(2);
+                row.insertCell().textContent = regimeData.capitalGainsIncome.toFixed(2);
+                row.insertCell().textContent = regimeData.businessProfessionIncome.toFixed(2);
+                row.insertCell().textContent = regimeData.otherSourcesIncome.toFixed(2);
+                row.insertCell().textContent = regimeData.grossTotalIncome.toFixed(2);
+                row.insertCell().textContent = regimeData.exemptAllowances.toFixed(2);
+                row.insertCell().textContent = regimeData.standardDeductionSalary.toFixed(2);
+                row.insertCell().textContent = regimeData.standardDeductionHP.toFixed(2);
+                row.insertCell().textContent = regimeData.netIncome.toFixed(2);
+                row.insertCell().textContent = regimeData.chapterVIADeductions.toFixed(2);
+                row.insertCell().textContent = regimeData.taxableIncome.toFixed(2);
+                row.insertCell().textContent = regimeData.estimatedTax.toFixed(2);
+                row.insertCell().textContent = regimeData.tds.toFixed(2);
+                row.insertCell().textContent = regimeData.taxPaid.toFixed(2);
+                row.insertCell().textContent = regimeData.taxPayableRefund.toFixed(2);
+            });
+
+
+            // Tax Saving Note
+            const taxSavingNoteDiv = document.getElementById('tax-saving-note');
+            taxSavingNoteDiv.innerHTML = ''; // Clear previous note
+            let noteText = "";
+            let isSavingInNewRegime = false;
+
+            if (estimatedTaxNewRegime < estimatedTaxOldRegime) {
+                const saving = estimatedTaxOldRegime - estimatedTaxNewRegime;
+                noteText = `Based on the calculation, the New Tax Regime results in a tax liability of ₹${estimatedTaxNewRegime.toFixed(2)}, while the Old Tax Regime results in ₹${estimatedTaxOldRegime.toFixed(2)}. The New Tax Regime may save you approximately ₹${saving.toFixed(2)} in taxes.`;
+                isSavingInNewRegime = true;
+            } else if (estimatedTaxOldRegime < estimatedTaxNewRegime) {
+                const saving =  estimatedTaxNewRegime - estimatedTaxOldRegime;
+                noteText = `Based on the calculation, the Old Tax Regime results in a tax liability of ₹${estimatedTaxOldRegime.toFixed(2)}, while the New Tax Regime results in ₹${estimatedTaxNewRegime.toFixed(2)}. The Old Tax Regime may save you approximately ₹${saving.toFixed(2)} in taxes.`;
+            } else {
+                noteText = "Both tax regimes result in approximately the same tax liability of ₹${estimatedTaxOldRegime.toFixed(2)} based on this calculation.";
+            }
+
+            taxSavingNoteDiv.innerHTML = `<p><strong>Tax Regime Comparison Note:</strong> ${noteText} This calculation is based on the tax slabs for FY 2024-25 / AY 2025-26 and is a simplified representation. Actual tax liability will vary based on applicable tax laws, deductions, and other factors. Capital Gains and Business/Profession income tax calculations are based on general rates and may not reflect specific scenarios or concessional rates. Consult a tax professional for personalized advice.</p>`;
+            if(isSavingInNewRegime){
+                 taxSavingNoteDiv.style.borderColor = '#27ae60'; // Green border for potential saving
+                 taxSavingNoteDiv.style.backgroundColor = '#f2fdf7'; // Light green background
+            } else {
+                taxSavingNoteDiv.style.borderColor = '#f39c12'; // Keep original orange/amber if no clear saving or saving in old regime
+                taxSavingNoteDiv.style.backgroundColor = '#f0f0f0'; // Keep original background
+            }
+
+
+            document.getElementById('results-section').style.display = 'block'; // Show results section
+        }
+    </script>
+</body>
+</html>
