@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Professional Tax Calculator - India</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -44,7 +44,7 @@
       background: white;
       padding: 2rem;
       border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .input-group {
@@ -55,7 +55,8 @@
       align-items: center;
     }
 
-    input, select {
+    input,
+    select {
       padding: 0.75rem;
       border: 2px solid #e0e0e0;
       border-radius: 8px;
@@ -63,7 +64,8 @@
       transition: border-color 0.3s ease;
     }
 
-    input:focus, select:focus {
+    input:focus,
+    select:focus {
       outline: none;
       border-color: var(--secondary);
     }
@@ -118,7 +120,8 @@
       text-align: left;
     }
 
-    .comparison-table td, .comparison-table th {
+    .comparison-table td,
+    .comparison-table th {
       padding: 1rem;
       border: 1px solid #e0e0e0;
     }
@@ -151,34 +154,34 @@
 </head>
 <body>
   <div id="errorContainer"></div>
-  
+
   <div class="tax-app">
     <div class="input-section">
       <h1>Professional Tax Calculator 🇮🇳</h1>
-      
+
       <div class="input-group">
         <label>Date of Birth:</label>
-        <input type="date" id="dob" required>
+        <input type="date" id="dob" required />
       </div>
 
       <div class="input-group">
         <label>Gross Salary (₹):</label>
-        <input type="number" id="grossSalary" placeholder="Annual income" required>
+        <input type="number" id="grossSalary" placeholder="Annual income" required />
       </div>
 
       <div class="input-group">
         <label>Basic Salary (₹):</label>
-        <input type="number" id="basicSalary" placeholder="Basic component" required>
+        <input type="number" id="basicSalary" placeholder="Basic component" required />
       </div>
 
       <h2>HRA Details</h2>
       <div class="input-group">
         <label>HRA Received (₹):</label>
-        <input type="number" id="hraReceived">
+        <input type="number" id="hraReceived" />
       </div>
       <div class="input-group">
         <label>Rent Paid (₹):</label>
-        <input type="number" id="rentPaid">
+        <input type="number" id="rentPaid" />
       </div>
       <div class="input-group">
         <label>Metro City:</label>
@@ -191,19 +194,19 @@
       <h2>Deductions</h2>
       <div class="input-group">
         <label>80C Investments (₹):</label>
-        <input type="number" id="80c" placeholder="Max ₹1.5 lakh">
+        <input type="number" id="80c" placeholder="Max ₹1.5 lakh" />
       </div>
       <div class="input-group">
         <label>Medical Insurance (80D) (₹):</label>
-        <input type="number" id="80d" placeholder="Max ₹75k">
+        <input type="number" id="80d" placeholder="Max ₹75k" />
       </div>
       <div class="input-group">
         <label>Education Loan (80E) (₹):</label>
-        <input type="number" id="80e" placeholder="No limit">
+        <input type="number" id="80e" placeholder="No limit" />
       </div>
       <div class="input-group">
         <label>Home Loan Interest (24b) (₹):</label>
-        <input type="number" id="24b" placeholder="Max ₹2 lakh">
+        <input type="number" id="24b" placeholder="Max ₹2 lakh" />
       </div>
 
       <button id="calculateBtn">Calculate Tax</button>
@@ -228,7 +231,7 @@
         </div>
       </div>
 
-      <div id="detailedTab" class="result-tab" style="display:none;">
+      <div id="detailedTab" class="result-tab" style="display: none;">
         <table class="comparison-table">
           <tr>
             <th>Component</th>
@@ -268,7 +271,7 @@
         </table>
       </div>
 
-      <div id="compareTab" class="result-tab" style="display:none;">
+      <div id="compareTab" class="result-tab" style="display: none;">
         <div class="metric-card">
           <div>Effective Tax Rate</div>
           <div class="metric-value">
@@ -276,7 +279,7 @@
             <span id="newEffectiveRate">-</span>
           </div>
         </div>
-        
+
         <div class="metric-card">
           <div>Monthly Take-home</div>
           <div class="metric-value">
@@ -304,8 +307,50 @@
         </table>
       </div>
 
+      <!-- Breakdown Section for Old Regime Deductions -->
+      <div id="breakdownSection" style="display: none;">
+        <h3>Old Regime Deduction Breakdown</h3>
+        <table class="comparison-table">
+          <tr>
+            <th>Deduction Component</th>
+            <th>Amount</th>
+          </tr>
+          <tr>
+            <td>HRA Exemption</td>
+            <td id="breakdownHRA">0</td>
+          </tr>
+          <tr>
+            <td>80C Deduction</td>
+            <td id="breakdown80C">0</td>
+          </tr>
+          <tr>
+            <td>80D Deduction</td>
+            <td id="breakdown80D">0</td>
+          </tr>
+          <tr>
+            <td>80E Deduction</td>
+            <td id="breakdown80E">0</td>
+          </tr>
+          <tr>
+            <td>Home Loan Interest (24b)</td>
+            <td id="breakdown24b">0</td>
+          </tr>
+          <tr>
+            <td>Standard Deduction</td>
+            <td id="breakdownStandard">0</td>
+          </tr>
+          <tr class="highlight">
+            <td>Total Deductions</td>
+            <td id="breakdownTotal">0</td>
+          </tr>
+        </table>
+      </div>
+
       <button id="downloadBtn" style="background: var(--success); margin-top: 1rem;">
         Download Full Report
+      </button>
+      <button id="resetBtn" style="background: var(--error); margin-top: 1rem;">
+        Reset
       </button>
     </div>
   </div>
@@ -364,47 +409,55 @@
       }
 
       calculateOldRegime(data) {
-        let taxableIncome = data.grossSalary;
-        const age = data.age;
-        
-        // Deductions
+        // Calculate individual deductions for breakdown
         const hraExemption = this.calculateHRAExemption(
           data.basicSalary,
           data.hraReceived,
           data.rentPaid,
           data.metroCity === 'yes'
         );
-        
-        taxableIncome -= hraExemption;
-        taxableIncome -= Math.min(data.deductions80C, this.taxConfig.oldRegime.deductions["80C"]);
-        taxableIncome -= Math.min(
+        const applied80C = Math.min(data.deductions80C, this.taxConfig.oldRegime.deductions["80C"]);
+        const applied80D = Math.min(
           data.deductions80D,
-          age >= 60 ? this.taxConfig.oldRegime.deductions["80D"].above60 
-                    : this.taxConfig.oldRegime.deductions["80D"].below60
+          data.age >= 60 ? this.taxConfig.oldRegime.deductions["80D"].above60 
+                         : this.taxConfig.oldRegime.deductions["80D"].below60
         );
-        taxableIncome -= data.deductions80E;
-        taxableIncome -= Math.min(data.deductions24b, this.taxConfig.oldRegime.deductions["24b"]);
-        taxableIncome -= this.taxConfig.oldRegime.deductions.standard;
-
-        let tax = this.applySlabs(Math.max(taxableIncome, 0), 'old');
+        const applied80E = data.deductions80E;
+        const applied24b = Math.min(data.deductions24b, this.taxConfig.oldRegime.deductions["24b"]);
+        const standardDeduction = this.taxConfig.oldRegime.deductions.standard;
+        
+        let taxableIncome = data.grossSalary - (hraExemption + applied80C + applied80D + applied80E + applied24b + standardDeduction);
+        taxableIncome = Math.max(taxableIncome, 0);
+        
+        let tax = this.applySlabs(taxableIncome, 'old');
         const surcharge = this.calculateSurcharge(tax, data.grossSalary);
         tax = (tax + surcharge) * (1 + this.taxConfig.cess);
         
         return {
-          taxableIncome: Math.max(taxableIncome, 0),
+          taxableIncome: taxableIncome,
           tax: tax,
-          surcharge: surcharge
+          surcharge: surcharge,
+          breakdown: {
+            hraExemption: hraExemption,
+            applied80C: applied80C,
+            applied80D: applied80D,
+            applied80E: applied80E,
+            applied24b: applied24b,
+            standardDeduction: standardDeduction,
+            totalDeductions: hraExemption + applied80C + applied80D + applied80E + applied24b + standardDeduction
+          }
         };
       }
 
       calculateNewRegime(data) {
         let taxableIncome = data.grossSalary - this.taxConfig.newRegime.standardDeduction;
-        let tax = this.applySlabs(Math.max(taxableIncome, 0), 'new');
+        taxableIncome = Math.max(taxableIncome, 0);
+        let tax = this.applySlabs(taxableIncome, 'new');
         const surcharge = this.calculateSurcharge(tax, data.grossSalary);
         tax = (tax + surcharge) * (1 + this.taxConfig.cess);
         
         return {
-          taxableIncome: Math.max(taxableIncome, 0),
+          taxableIncome: taxableIncome,
           tax: tax,
           surcharge: surcharge
         };
@@ -417,13 +470,9 @@
 
         for (const slab of slabs) {
           const currentLimit = slab.limit;
-          const taxableInSlab = Math.max(
-            Math.min(income, currentLimit) - previousLimit,
-            0
-          );
+          const taxableInSlab = Math.max(Math.min(income, currentLimit) - previousLimit, 0);
           tax += taxableInSlab * slab.rate;
           previousLimit = currentLimit;
-
           if (income <= currentLimit) break;
         }
         return tax;
@@ -446,6 +495,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       const calculateBtn = document.getElementById('calculateBtn');
       const downloadBtn = document.getElementById('downloadBtn');
+      const resetBtn = document.getElementById('resetBtn');
       const tabs = document.querySelectorAll('.tab-button');
 
       function showError(message) {
@@ -481,12 +531,8 @@
         // Update Detailed Tab
         document.getElementById('oldGrossIncome').textContent = formatCurrency(inputData.grossSalary);
         document.getElementById('newGrossIncome').textContent = formatCurrency(inputData.grossSalary);
-        document.getElementById('oldTotalDeductions').textContent = formatCurrency(
-          inputData.grossSalary - oldRegime.taxableIncome
-        );
-        document.getElementById('newTotalDeductions').textContent = formatCurrency(
-          inputData.grossSalary - newRegime.taxableIncome
-        );
+        document.getElementById('oldTotalDeductions').textContent = formatCurrency(inputData.grossSalary - oldRegime.taxableIncome);
+        document.getElementById('newTotalDeductions').textContent = formatCurrency(inputData.grossSalary - newRegime.taxableIncome);
         document.getElementById('oldTaxableIncome').textContent = formatCurrency(oldRegime.taxableIncome);
         document.getElementById('newTaxableIncome').textContent = formatCurrency(newRegime.taxableIncome);
         document.getElementById('oldTotalTax').textContent = formatCurrency(oldRegime.tax);
@@ -530,25 +576,38 @@
             }
           }
         });
+
+        // Update Deduction Breakdown Section (Old Regime Only)
+        if (oldRegime.breakdown) {
+          document.getElementById('breakdownHRA').textContent = formatCurrency(oldRegime.breakdown.hraExemption);
+          document.getElementById('breakdown80C').textContent = formatCurrency(oldRegime.breakdown.applied80C);
+          document.getElementById('breakdown80D').textContent = formatCurrency(oldRegime.breakdown.applied80D);
+          document.getElementById('breakdown80E').textContent = formatCurrency(oldRegime.breakdown.applied80E);
+          document.getElementById('breakdown24b').textContent = formatCurrency(oldRegime.breakdown.applied24b);
+          document.getElementById('breakdownStandard').textContent = formatCurrency(oldRegime.breakdown.standardDeduction);
+          document.getElementById('breakdownTotal').textContent = formatCurrency(oldRegime.breakdown.totalDeductions);
+          document.getElementById('breakdownSection').style.display = 'block';
+        }
       }
 
       function calculateTax() {
         try {
           clearErrors();
-          
+
           // Validate inputs
           const dobInput = document.getElementById('dob');
           const grossSalaryInput = document.getElementById('grossSalary');
           const basicSalaryInput = document.getElementById('basicSalary');
-          
+
           if (!dobInput.value) throw new Error('Date of Birth is required');
           const grossSalary = parseFloat(grossSalaryInput.value);
           const basicSalary = parseFloat(basicSalaryInput.value);
-          
+
           if (isNaN(grossSalary)) throw new Error('Invalid Gross Salary');
           if (grossSalary <= 0) throw new Error('Gross Salary must be positive');
           if (isNaN(basicSalary)) throw new Error('Invalid Basic Salary');
           if (basicSalary <= 0) throw new Error('Basic Salary must be positive');
+          if (basicSalary > grossSalary) throw new Error('Basic Salary cannot be greater than Gross Salary');
 
           // Parse inputs
           const dob = new Date(dobInput.value);
@@ -560,7 +619,7 @@
             rentPaid: parseFloat(document.getElementById('rentPaid').value) || 0,
             metroCity: document.getElementById('metroCity').value,
             deductions80C: Math.min(parseFloat(document.getElementById('80c').value) || 0, 150000),
-            deductions80D: Math.min(parseFloat(document.getElementById('80d').value) || 0, 
+            deductions80D: Math.min(parseFloat(document.getElementById('80d').value) || 0,
               age >= 60 ? 50000 : 25000),
             deductions80E: parseFloat(document.getElementById('80e').value) || 0,
             deductions24b: Math.min(parseFloat(document.getElementById('24b').value) || 0, 200000),
@@ -583,26 +642,101 @@
 
       function generatePDF() {
         const doc = new jsPDF();
+        let y = 10;
         doc.setFontSize(18);
-        doc.text('Tax Calculation Report', 20, 20);
+        doc.text("Tax Calculation Report", 10, y);
+        y += 10;
         doc.setFontSize(12);
         
-        // Add taxpayer info
-        doc.text("Date of Birth: " + document.getElementById('dob').value, 20, 30);
-        doc.text("Gross Salary: " + document.getElementById('grossSalary').value, 20, 40);
+        // Taxpayer Info
+        const dob = document.getElementById('dob').value;
+        const grossSalary = document.getElementById('grossSalary').value;
+        const basicSalary = document.getElementById('basicSalary').value;
+        doc.text("Taxpayer Information:", 10, y);
+        y += 7;
+        doc.text("Date of Birth: " + dob, 10, y);
+        y += 7;
+        doc.text("Gross Salary: " + grossSalary, 10, y);
+        y += 7;
+        doc.text("Basic Salary: " + basicSalary, 10, y);
+        y += 10;
         
-        // Add tax comparison
-        doc.text("Old Regime Tax: " + document.getElementById('oldTotalTax').textContent, 20, 60);
-        doc.text("New Regime Tax: " + document.getElementById('newTotalTax').textContent, 20, 70);
+        // Summary
+        const regimeRecommendation = document.getElementById('regimeRecommendation').textContent;
+        const taxSavings = document.getElementById('taxSavings').textContent;
+        doc.text("Summary:", 10, y);
+        y += 7;
+        doc.text("Recommended Regime: " + regimeRecommendation, 10, y);
+        y += 7;
+        doc.text("Potential Savings: " + taxSavings, 10, y);
+        y += 10;
         
-        // Add visual elements
-        doc.setFillColor(231, 76, 60);
-        doc.rect(20, 80, 50, 10, 'F');
-        doc.setFillColor(46, 204, 113);
-        doc.rect(20, 95, 50, 10, 'F');
+        // Detailed Analysis - Old Regime
+        doc.text("Detailed Analysis (Old Regime):", 10, y);
+        y += 7;
+        doc.text("Gross Income: " + document.getElementById('oldGrossIncome').textContent, 10, y);
+        y += 7;
+        doc.text("Total Deductions: " + document.getElementById('oldTotalDeductions').textContent, 10, y);
+        y += 7;
+        doc.text("Taxable Income: " + document.getElementById('oldTaxableIncome').textContent, 10, y);
+        y += 7;
+        doc.text("Income Tax: " + document.getElementById('oldIncomeTax').textContent, 10, y);
+        y += 7;
+        doc.text("Surcharge: " + document.getElementById('oldSurcharge').textContent, 10, y);
+        y += 7;
+        doc.text("Total Tax: " + document.getElementById('oldTotalTax').textContent, 10, y);
+        y += 10;
         
-        doc.text("Tax Paid", 75, 85);
-        doc.text("Take Home", 75, 100);
+        // Detailed Analysis - New Regime
+        doc.text("Detailed Analysis (New Regime):", 10, y);
+        y += 7;
+        doc.text("Gross Income: " + document.getElementById('newGrossIncome').textContent, 10, y);
+        y += 7;
+        doc.text("Total Deductions: " + document.getElementById('newTotalDeductions').textContent, 10, y);
+        y += 7;
+        doc.text("Taxable Income: " + document.getElementById('newTaxableIncome').textContent, 10, y);
+        y += 7;
+        doc.text("Income Tax: " + document.getElementById('newIncomeTax').textContent, 10, y);
+        y += 7;
+        doc.text("Surcharge: " + document.getElementById('newSurcharge').textContent, 10, y);
+        y += 7;
+        doc.text("Total Tax: " + document.getElementById('newTotalTax').textContent, 10, y);
+        y += 10;
+        
+        // Comparison
+        doc.text("Comparison:", 10, y);
+        y += 7;
+        doc.text("Effective Tax Rate (Old): " + document.getElementById('oldEffectiveRate').textContent, 10, y);
+        y += 7;
+        doc.text("Effective Tax Rate (New): " + document.getElementById('newEffectiveRate').textContent, 10, y);
+        y += 7;
+        doc.text("Monthly Take-home (Old): " + document.getElementById('oldMonthly').textContent, 10, y);
+        y += 7;
+        doc.text("Monthly Take-home (New): " + document.getElementById('newMonthly').textContent, 10, y);
+        y += 10;
+        
+        // Deduction Breakdown (Old Regime)
+        doc.text("Deduction Breakdown (Old Regime):", 10, y);
+        y += 7;
+        doc.text("HRA Exemption: " + document.getElementById('breakdownHRA').textContent, 10, y);
+        y += 7;
+        doc.text("80C Deduction: " + document.getElementById('breakdown80C').textContent, 10, y);
+        y += 7;
+        doc.text("80D Deduction: " + document.getElementById('breakdown80D').textContent, 10, y);
+        y += 7;
+        doc.text("80E Deduction: " + document.getElementById('breakdown80E').textContent, 10, y);
+        y += 7;
+        doc.text("Home Loan Interest (24b): " + document.getElementById('breakdown24b').textContent, 10, y);
+        y += 7;
+        doc.text("Standard Deduction: " + document.getElementById('breakdownStandard').textContent, 10, y);
+        y += 7;
+        doc.text("Total Deductions: " + document.getElementById('breakdownTotal').textContent, 10, y);
+        y += 10;
+        
+        // If the content is long, add new page
+        if (y > 280) {
+          doc.addPage();
+        }
         
         doc.save('tax-report.pdf');
       }
@@ -610,7 +744,26 @@
       // Event Listeners
       calculateBtn.addEventListener('click', calculateTax);
       downloadBtn.addEventListener('click', generatePDF);
-      
+      resetBtn.addEventListener('click', function() {
+        // Reset input fields
+        document.getElementById('dob').value = '';
+        document.getElementById('grossSalary').value = '';
+        document.getElementById('basicSalary').value = '';
+        document.getElementById('hraReceived').value = '';
+        document.getElementById('rentPaid').value = '';
+        document.getElementById('metroCity').value = 'yes';
+        document.getElementById('80c').value = '';
+        document.getElementById('80d').value = '';
+        document.getElementById('80e').value = '';
+        document.getElementById('24b').value = '';
+
+        // Hide results and breakdown
+        document.querySelectorAll('.result-tab').forEach(tab => tab.style.display = 'none');
+        if (taxChart) taxChart.destroy();
+        document.getElementById('breakdownSection').style.display = 'none';
+        clearErrors();
+      });
+
       tabs.forEach(tab => {
         tab.addEventListener('click', function() {
           showTab(this.dataset.tab);
