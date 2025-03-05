@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Responsive meta tag -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professional Tax Calculator - India</title>
+  <!-- Google Font for a modern look -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- html2canvas for capturing HTML sections -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --secondary: #3498db;
+      --success: #27ae60;
+      --error: #e74c3c;
+      --background: #f8f9fa;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: var(--background);
+    }
+
+    #errorContainer {
+      display: none;
+      background: #ffeeee;
+      color: var(--error);
+      padding: 1rem;
+      margin: 1rem 0;
+      border: 2px solid var(--error);
+      border-radius: 8px;
+    }
+
+    .tax-app {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .input-section, .results-section {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-group {
+      margin: 1rem 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    input,
+    select {
+      padding: 0.75rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--secondary);
+    }
+
+    button {
+      background: var(--secondary);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: transform 0.2s ease;
+      margin-right: 10px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    .result-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-button {
+      background: #f0f0f0;
+      color: #666;
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-button.active {
+      background: var(--secondary);
+      color: white;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      background: white;
+    }
+
+    .comparison-table th {
+      background: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: left;
+    }
+
+    .comparison-table td,
+    .comparison-table th {
+      padding: 1rem;
+      border: 1px solid #e0e0e0;
+    }
+
+    .highlight {
+      background: #e8f4f8;
+      font-weight: bold;
+    }
+
+    .chart-container {
+      height: 300px;
+      margin: 2rem 0;
+    }
+
+    .metric-card {
+      padding: 1rem;
+      background: #f8fafc;
+      border-radius: 8px;
+      margin: 1rem 0;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin: 0.5rem 0;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .tax-app {
+        grid-template-columns: 1fr;
+      }
+      .input-group {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="errorContainer"></div>
+
+  <div class="tax-app">
+    <div class="input-section">
+      <h1>Professional Tax Calculator 🇮🇳</h1>
+
+      <div class="input-group">
+        <label>Date of Birth:</label>
+        <input type="date" id="dob" required />
+      </div>
+
+      <div class="input-group">
+        <label>Gross Salary (₹):</label>
+        <input type="number" id="grossSalary" placeholder="Annual income" required />
+      </div>
+
+      <div class="input-group">
+        <label>Basic Salary (₹):</label>
+        <input type="number" id="basicSalary" placeholder="Basic component" required />
+      </div>
+
+      <h2>HRA Details</h2>
+      <div class="input-group">
+        <label>HRA Received (₹):</label>
+        <input type="number" id="hraReceived" />
+      </div>
+      <div class="input-group">
+        <label>Rent Paid (₹):</label>
+        <input type="number" id="rentPaid" />
+      </div>
+      <div class="input-group">
+        <label>Metro City:</label>
+        <select id="metroCity">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </div>
+
+      <h2>Deductions</h2>
+      <div class="input-group">
+        <label>80C Investments (₹):</label>
+        <input type="number" id="80c" placeholder="Max ₹1.5 lakh" />
+      </div>
+      <div class="input-group">
+        <label>Medical Insurance (80D) (₹):</label>
+        <input type="number" id="80d" placeholder="Max ₹75k" />
+      </div>
+      <div class="input-group">
+        <label>Education Loan (80E) (₹):</label>
+        <input type="number" id="80e" placeholder="No limit" />
+      </div>
+      <div class="input-group">
+        <label>Home Loan Interest (24b) (₹):</label>
+        <input type="number" id="24b" placeholder="Max ₹2 lakh" />
+      </div>
+
+      <button id="calculateBtn">Calculate Tax</button>
+    </div>
+
+    <div class="results-section">
+      <div class="result-tabs">
+        <button class="tab-button active" data-tab="summary">Summary</button>
+        <button class="tab-button" data-tab="detailed">Detailed</button>
+        <button class="tab-button" data-tab="compare">Compare</button>
+      </div>
+
+      <div id="summaryTab" class="result-tab">
+        <div class="chart-container">
+          <canvas id="taxChart"></canvas>
+        </div>
+
+        <div class="metric-card">
+          <div>Recommended Regime</div>
+          <div class="metric-value" id="regimeRecommendation">-</div>
+          <div id="taxSavings"></div>
+        </div>
+      </div>
+
+      <div id="detailedTab" class="result-tab" style="display: none;">
+        <table class="comparison-table">
+          <tr>
+            <th>Component</th>
+            <th>Old Regime</th>
+            <th>New Regime</th>
+          </tr>
+          <tr>
+            <td>Gross Income</td>
+            <td id="oldGrossIncome">0</td>
+            <td id="newGrossIncome">0</td>
+          </tr>
+          <tr>
+            <td>Total Deductions</td>
+            <td id="oldTotalDeductions">0</td>
+            <td id="newTotalDeductions">0</td>
+          </tr>
+          <tr class="highlight">
+            <td>Taxable Income</td>
+            <td id="oldTaxableIncome">0</td>
+            <td id="newTaxableIncome">0</td>
+          </tr>
+          <tr>
+            <td>Income Tax</td>
+            <td id="oldIncomeTax">0</td>
+            <td id="newIncomeTax">0</td>
+          </tr>
+          <tr>
+            <td>Surcharge</td>
+            <td id="oldSurcharge">0</td>
+            <td id="newSurcharge">0</td>
+          </tr>
+          <tr class="highlight">
+            <td>Total Tax</td>
+            <td id="oldTotalTax">0</td>
+            <td id="newTotalTax">0</td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="compareTab" class="result-tab" style="display: none;">
+        <div class="metric-card">
+          <div>Effective Tax Rate</div>
+          <div class="metric-value">
+            <span id="oldEffectiveRate">-</span> vs 
+            <span id="newEffectiveRate">-</span>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div>Monthly Take-home</div>
+          <div class="metric-value">
+            <span id="oldMonthly">-</span> vs 
+            <span id="newMonthly">-</span>
+          </div>
+        </div>
+
+        <table class="comparison-table">
+          <tr>
+            <th>Feature</th>
+            <th>Old Regime</th>
+            <th>New Regime</th>
+          </tr>
+          <tr>
+            <td>Deductions Available</td>
+            <td>70+ Sections</td>
+            <td>Limited</td>
+          </tr>
+          <tr>
+            <td>Standard Deduction</td>
+            <td>₹50,000</td>
+            <td>₹50,000</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Breakdown Section for Old Regime Deductions -->
+      <div id="breakdownSection" style="display: none;">
+        <h3>Old Regime Deduction Breakdown</h3>
+        <table class="comparison-table">
+          <tr>
+            <th>Deduction Component</th>
+            <th>Amount</th>
+          </tr>
+          <tr>
+            <td>HRA Exemption</td>
+            <td id="breakdownHRA">0</td>
+          </tr>
+          <tr>
+            <td>80C Deduction</td>
+            <td id="breakdown80C">0</td>
+          </tr>
+          <tr>
+            <td>80D Deduction</td>
+            <td id="breakdown80D">0</td>
+          </tr>
+          <tr>
+            <td>80E Deduction</td>
+            <td id="breakdown80E">0</td>
+          </tr>
+          <tr>
+            <td>Home Loan Interest (24b)</td>
+            <td id="breakdown24b">0</td>
+          </tr>
+          <tr>
+            <td>Standard Deduction</td>
+            <td id="breakdownStandard">0</td>
+          </tr>
+          <tr class="highlight">
+            <td>Total Deductions</td>
+            <td id="breakdownTotal">0</td>
+          </tr>
+        </table>
+      </div>
+
+      <button id="downloadBtn" style="background: var(--success); margin-top: 1rem;">
+        Download Full Report
+      </button>
+      <button id="resetBtn" style="background: var(--error); margin-top: 1rem;">
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const { jsPDF } = window.jspdf;
+    let taxChart = null;
+
+    class TaxCalculator {
+      constructor() {
+        this.taxConfig = {
+          oldRegime: {
+            slabs: [
+              { limit: 250000, rate: 0 },
+              { limit: 500000, rate: 0.05 },
+              { limit: 1000000, rate: 0.2 },
+              { limit: Infinity, rate: 0.3 }
+            ],
+            deductions: {
+              "80C": 150000,
+              "80D": { below60: 25000, above60: 50000 },
+              "80E": Infinity,
+              "24b": 200000,
+              standard: 50000
+            }
+          },
+          newRegime: {
+            slabs: [
+              { limit: 300000, rate: 0 },
+              { limit: 600000, rate: 0.05 },
+              { limit: 900000, rate: 0.1 },
+              { limit: 1200000, rate: 0.15 },
+              { limit: 1500000, rate: 0.2 },
+              { limit: Infinity, rate: 0.3 }
+            ],
+            standardDeduction: 50000
+          },
+          cess: 0.04,
+          surcharge: {
+            5000000: 0.10,
+            10000000: 0.15,
+            20000000: 0.25,
+            50000000: 0.37
+          }
+        };
+      }
+
+      calculateHRAExemption(basic, hraReceived, rentPaid, isMetro) {
+        const metroPercentage = isMetro ? 0.5 : 0.4;
+        const exemptAmount = Math.min(
+          hraReceived,
+          rentPaid - (basic * 0.1),
+          basic * metroPercentage
+        );
+        return Math.max(exemptAmount, 0);
+      }
+
+      calculateOldRegime(data) {
+        // Calculate individual deductions for breakdown
+        const hraExemption = this.calculateHRAExemption(
+          data.basicSalary,
+          data.hraReceived,
+          data.rentPaid,
+          data.metroCity === 'yes'
+        );
+        const applied80C = Math.min(data.deductions80C, this.taxConfig.oldRegime.deductions["80C"]);
+        const applied80D = Math.min(
+          data.deductions80D,
+          data.age >= 60 ? this.taxConfig.oldRegime.deductions["80D"].above60 
+                         : this.taxConfig.oldRegime.deductions["80D"].below60
+        );
+        const applied80E = data.deductions80E;
+        const applied24b = Math.min(data.deductions24b, this.taxConfig.oldRegime.deductions["24b"]);
+        const standardDeduction = this.taxConfig.oldRegime.deductions.standard;
+        
+        let taxableIncome = data.grossSalary - (hraExemption + applied80C + applied80D + applied80E + applied24b + standardDeduction);
+        taxableIncome = Math.max(taxableIncome, 0);
+        
+        let tax = this.applySlabs(taxableIncome, 'old');
+        const surcharge = this.calculateSurcharge(tax, data.grossSalary);
+        tax = (tax + surcharge) * (1 + this.taxConfig.cess);
+        
+        return {
+          taxableIncome: taxableIncome,
+          tax: tax,
+          surcharge: surcharge,
+          breakdown: {
+            hraExemption: hraExemption,
+            applied80C: applied80C,
+            applied80D: applied80D,
+            applied80E: applied80E,
+            applied24b: applied24b,
+            standardDeduction: standardDeduction,
+            totalDeductions: hraExemption + applied80C + applied80D + applied80E + applied24b + standardDeduction
+          }
+        };
+      }
+
+      calculateNewRegime(data) {
+        let taxableIncome = data.grossSalary - this.taxConfig.newRegime.standardDeduction;
+        taxableIncome = Math.max(taxableIncome, 0);
+        let tax = this.applySlabs(taxableIncome, 'new');
+        const surcharge = this.calculateSurcharge(tax, data.grossSalary);
+        tax = (tax + surcharge) * (1 + this.taxConfig.cess);
+        
+        return {
+          taxableIncome: taxableIncome,
+          tax: tax,
+          surcharge: surcharge
+        };
+      }
+
+      applySlabs(income, regime) {
+        const slabs = this.taxConfig[`${regime}Regime`].slabs;
+        let tax = 0;
+        let previousLimit = 0;
+
+        for (const slab of slabs) {
+          const currentLimit = slab.limit;
+          const taxableInSlab = Math.max(Math.min(income, currentLimit) - previousLimit, 0);
+          tax += taxableInSlab * slab.rate;
+          previousLimit = currentLimit;
+          if (income <= currentLimit) break;
+        }
+        return tax;
+      }
+
+      calculateSurcharge(tax, grossIncome) {
+        const thresholds = Object.keys(this.taxConfig.surcharge)
+          .map(Number)
+          .sort((a, b) => b - a);
+        
+        for (const threshold of thresholds) {
+          if (grossIncome > threshold) {
+            return tax * this.taxConfig.surcharge[threshold];
+          }
+        }
+        return 0;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const calculateBtn = document.getElementById('calculateBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const tabs = document.querySelectorAll('.tab-button');
+
+      function showError(message) {
+        const errorContainer = document.getElementById('errorContainer');
+        errorContainer.innerHTML = "<strong>Error:</strong> " + message +
+          "<br><small>Please check your inputs and try again</small>";
+        errorContainer.style.display = "block";
+        window.scrollTo(0, 0);
+      }
+
+      function clearErrors() {
+        document.getElementById('errorContainer').style.display = 'none';
+      }
+
+      function showTab(tabName) {
+        document.querySelectorAll('.result-tab').forEach(tab => tab.style.display = 'none');
+        document.querySelector("#" + tabName + "Tab").style.display = 'block';
+        tabs.forEach(tab => tab.classList.remove('active'));
+        document.querySelector("[data-tab='" + tabName + "']").classList.add('active');
+      }
+
+      function formatCurrency(value) {
+        return "₹" + value.toLocaleString('en-IN', { maximumFractionDigits: 0 });
+      }
+
+      function updateResults(oldRegime, newRegime, inputData) {
+        // Update Summary Tab
+        document.getElementById('regimeRecommendation').textContent =
+          oldRegime.tax < newRegime.tax ? 'Old Regime' : 'New Regime';
+        document.getElementById('taxSavings').innerHTML =
+          "<small>Potential Savings: " + formatCurrency(Math.abs(oldRegime.tax - newRegime.tax)) + "</small>";
+
+        // Update Detailed Tab
+        document.getElementById('oldGrossIncome').textContent = formatCurrency(inputData.grossSalary);
+        document.getElementById('newGrossIncome').textContent = formatCurrency(inputData.grossSalary);
+        document.getElementById('oldTotalDeductions').textContent = formatCurrency(inputData.grossSalary - oldRegime.taxableIncome);
+        document.getElementById('newTotalDeductions').textContent = formatCurrency(inputData.grossSalary - newRegime.taxableIncome);
+        document.getElementById('oldTaxableIncome').textContent = formatCurrency(oldRegime.taxableIncome);
+        document.getElementById('newTaxableIncome').textContent = formatCurrency(newRegime.taxableIncome);
+        document.getElementById('oldTotalTax').textContent = formatCurrency(oldRegime.tax);
+        document.getElementById('newTotalTax').textContent = formatCurrency(newRegime.tax);
+        document.getElementById('oldSurcharge').textContent = formatCurrency(oldRegime.surcharge);
+        document.getElementById('newSurcharge').textContent = formatCurrency(newRegime.surcharge);
+
+        // Update Compare Tab
+        document.getElementById('oldEffectiveRate').textContent =
+          ((oldRegime.tax / inputData.grossSalary) * 100).toFixed(1) + "%";
+        document.getElementById('newEffectiveRate').textContent =
+          ((newRegime.tax / inputData.grossSalary) * 100).toFixed(1) + "%";
+        document.getElementById('oldMonthly').textContent =
+          formatCurrency((inputData.grossSalary - oldRegime.tax) / 12);
+        document.getElementById('newMonthly').textContent =
+          formatCurrency((inputData.grossSalary - newRegime.tax) / 12);
+
+        // Update Chart
+        if (taxChart) taxChart.destroy();
+        taxChart = new Chart(document.getElementById('taxChart'), {
+          type: 'doughnut',
+          data: {
+            labels: ['Tax Paid', 'Take Home'],
+            datasets: [{
+              data: [oldRegime.tax, inputData.grossSalary - oldRegime.tax],
+              backgroundColor: ['#e74c3c', '#2ecc71']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'bottom' },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return " " + formatCurrency(context.parsed);
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        // Update Deduction Breakdown Section (Old Regime Only)
+        if (oldRegime.breakdown) {
+          document.getElementById('breakdownHRA').textContent = formatCurrency(oldRegime.breakdown.hraExemption);
+          document.getElementById('breakdown80C').textContent = formatCurrency(oldRegime.breakdown.applied80C);
+          document.getElementById('breakdown80D').textContent = formatCurrency(oldRegime.breakdown.applied80D);
+          document.getElementById('breakdown80E').textContent = formatCurrency(oldRegime.breakdown.applied80E);
+          document.getElementById('breakdown24b').textContent = formatCurrency(oldRegime.breakdown.applied24b);
+          document.getElementById('breakdownStandard').textContent = formatCurrency(oldRegime.breakdown.standardDeduction);
+          document.getElementById('breakdownTotal').textContent = formatCurrency(oldRegime.breakdown.totalDeductions);
+          document.getElementById('breakdownSection').style.display = 'block';
+        }
+      }
+
+      // Asynchronous function to capture a given element as image data (forcing display if hidden)
+      async function captureElement(elementId) {
+        const element = document.getElementById(elementId);
+        // Save original display
+        const originalDisplay = element.style.display;
+        // Force display to block for capture
+        element.style.display = 'block';
+        const canvas = await html2canvas(element, { scale: 2 });
+        // Revert display style
+        element.style.display = originalDisplay;
+        return canvas.toDataURL('image/png');
+      }
+
+      // Async PDF generation function
+      async function generatePDF() {
+        const doc = new jsPDF('p', 'pt', 'a4');
+        const margin = 20;
+        let verticalOffset = margin;
+
+        doc.setFontSize(18);
+        doc.text("Tax Calculation Report", margin, verticalOffset);
+        verticalOffset += 30;
+
+        // Taxpayer Information
+        const dob = document.getElementById('dob').value;
+        const grossSalary = document.getElementById('grossSalary').value;
+        const basicSalary = document.getElementById('basicSalary').value;
+        doc.setFontSize(12);
+        doc.text("Taxpayer Information:", margin, verticalOffset);
+        verticalOffset += 15;
+        doc.text("Date of Birth: " + dob, margin, verticalOffset);
+        verticalOffset += 15;
+        doc.text("Gross Salary: " + grossSalary, margin, verticalOffset);
+        verticalOffset += 15;
+        doc.text("Basic Salary: " + basicSalary, margin, verticalOffset);
+        verticalOffset += 25;
+
+        // Capture and add Summary Tab (includes chart)
+        const summaryImgData = await captureElement('summaryTab');
+        const pageWidth = doc.internal.pageSize.getWidth() - margin * 2;
+        let imgProps = doc.getImageProperties(summaryImgData);
+        let imgHeight = (imgProps.height * pageWidth) / imgProps.width;
+        if (verticalOffset + imgHeight > doc.internal.pageSize.getHeight() - margin) {
+          doc.addPage();
+          verticalOffset = margin;
+        }
+        doc.addImage(summaryImgData, 'PNG', margin, verticalOffset, pageWidth, imgHeight);
+        verticalOffset += imgHeight + 20;
+
+        // Capture and add Detailed Tab
+        const detailedImgData = await captureElement('detailedTab');
+        imgProps = doc.getImageProperties(detailedImgData);
+        imgHeight = (imgProps.height * pageWidth) / imgProps.width;
+        if (verticalOffset + imgHeight > doc.internal.pageSize.getHeight() - margin) {
+          doc.addPage();
+          verticalOffset = margin;
+        }
+        doc.text("Detailed Analysis (Old vs New Regime):", margin, verticalOffset);
+        verticalOffset += 15;
+        doc.addImage(detailedImgData, 'PNG', margin, verticalOffset, pageWidth, imgHeight);
+        verticalOffset += imgHeight + 20;
+
+        // Capture and add Comparison Tab
+        const compareImgData = await captureElement('compareTab');
+        imgProps = doc.getImageProperties(compareImgData);
+        imgHeight = (imgProps.height * pageWidth) / imgProps.width;
+        if (verticalOffset + imgHeight > doc.internal.pageSize.getHeight() - margin) {
+          doc.addPage();
+          verticalOffset = margin;
+        }
+        doc.text("Comparison:", margin, verticalOffset);
+        verticalOffset += 15;
+        doc.addImage(compareImgData, 'PNG', margin, verticalOffset, pageWidth, imgHeight);
+        verticalOffset += imgHeight + 20;
+
+        // Capture and add Deduction Breakdown (if available)
+        const breakdownElement = document.getElementById('breakdownSection');
+        if (breakdownElement && breakdownElement.innerHTML.trim() !== "") {
+          const breakdownImgData = await captureElement('breakdownSection');
+          imgProps = doc.getImageProperties(breakdownImgData);
+          imgHeight = (imgProps.height * pageWidth) / imgProps.width;
+          if (verticalOffset + imgHeight > doc.internal.pageSize.getHeight() - margin) {
+            doc.addPage();
+            verticalOffset = margin;
+          }
+          doc.text("Deduction Breakdown (Old Regime):", margin, verticalOffset);
+          verticalOffset += 15;
+          doc.addImage(breakdownImgData, 'PNG', margin, verticalOffset, pageWidth, imgHeight);
+          verticalOffset += imgHeight + 20;
+        }
+
+        doc.save('tax-report.pdf');
+      }
+
+      function calculateTax() {
+        try {
+          clearErrors();
+
+          // Validate inputs
+          const dobInput = document.getElementById('dob');
+          const grossSalaryInput = document.getElementById('grossSalary');
+          const basicSalaryInput = document.getElementById('basicSalary');
+
+          if (!dobInput.value) throw new Error('Date of Birth is required');
+          const grossSalary = parseFloat(grossSalaryInput.value);
+          const basicSalary = parseFloat(basicSalaryInput.value);
+
+          if (isNaN(grossSalary)) throw new Error('Invalid Gross Salary');
+          if (grossSalary <= 0) throw new Error('Gross Salary must be positive');
+          if (isNaN(basicSalary)) throw new Error('Invalid Basic Salary');
+          if (basicSalary <= 0) throw new Error('Basic Salary must be positive');
+          if (basicSalary > grossSalary) throw new Error('Basic Salary cannot be greater than Gross Salary');
+
+          // Parse inputs
+          const dob = new Date(dobInput.value);
+          const age = new Date().getFullYear() - dob.getFullYear();
+          const inputData = {
+            grossSalary: grossSalary,
+            basicSalary: basicSalary,
+            hraReceived: parseFloat(document.getElementById('hraReceived').value) || 0,
+            rentPaid: parseFloat(document.getElementById('rentPaid').value) || 0,
+            metroCity: document.getElementById('metroCity').value,
+            deductions80C: Math.min(parseFloat(document.getElementById('80c').value) || 0, 150000),
+            deductions80D: Math.min(parseFloat(document.getElementById('80d').value) || 0,
+              age >= 60 ? 50000 : 25000),
+            deductions80E: parseFloat(document.getElementById('80e').value) || 0,
+            deductions24b: Math.min(parseFloat(document.getElementById('24b').value) || 0, 200000),
+            age: age
+          };
+
+          // Perform calculations
+          const calculator = new TaxCalculator();
+          const oldRegime = calculator.calculateOldRegime(inputData);
+          const newRegime = calculator.calculateNewRegime(inputData);
+
+          // Show results
+          showTab('summary');
+          updateResults(oldRegime, newRegime, inputData);
+
+        } catch (error) {
+          showError(error.message);
+        }
+      }
+
+      // Event Listeners
+      calculateBtn.addEventListener('click', calculateTax);
+      downloadBtn.addEventListener('click', generatePDF);
+      resetBtn.addEventListener('click', function() {
+        // Reset input fields
+        document.getElementById('dob').value = '';
+        document.getElementById('grossSalary').value = '';
+        document.getElementById('basicSalary').value = '';
+        document.getElementById('hraReceived').value = '';
+        document.getElementById('rentPaid').value = '';
+        document.getElementById('metroCity').value = 'yes';
+        document.getElementById('80c').value = '';
+        document.getElementById('80d').value = '';
+        document.getElementById('80e').value = '';
+        document.getElementById('24b').value = '';
+
+        // Hide results and breakdown
+        document.querySelectorAll('.result-tab').forEach(tab => tab.style.display = 'none');
+        if (taxChart) taxChart.destroy();
+        document.getElementById('breakdownSection').style.display = 'none';
+        clearErrors();
+      });
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          showTab(this.dataset.tab);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
