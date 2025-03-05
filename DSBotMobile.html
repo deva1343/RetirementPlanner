@@ -177,6 +177,7 @@
     <div class="input-section">
       <h1>Professional Tax Calculator 🇮🇳</h1>
 
+      <!-- Date input now has a dynamic max value (set in script) -->
       <div class="input-group">
         <label>Date of Birth:</label>
         <input type="date" id="dob" required />
@@ -184,22 +185,22 @@
 
       <div class="input-group">
         <label>Gross Salary (₹):</label>
-        <input type="number" id="grossSalary" placeholder="Annual income" required />
+        <input type="number" id="grossSalary" placeholder="Annual income" required min="0" />
       </div>
 
       <div class="input-group">
         <label>Basic Salary (₹):</label>
-        <input type="number" id="basicSalary" placeholder="Basic component" required />
+        <input type="number" id="basicSalary" placeholder="Basic component" required min="0" />
       </div>
 
       <h2>HRA Details</h2>
       <div class="input-group">
         <label>HRA Received (₹):</label>
-        <input type="number" id="hraReceived" />
+        <input type="number" id="hraReceived" min="0" />
       </div>
       <div class="input-group">
         <label>Rent Paid (₹):</label>
-        <input type="number" id="rentPaid" />
+        <input type="number" id="rentPaid" min="0" />
       </div>
       <div class="input-group">
         <label>Metro City:</label>
@@ -212,19 +213,19 @@
       <h2>Deductions</h2>
       <div class="input-group">
         <label>80C Investments (₹):</label>
-        <input type="number" id="80c" placeholder="Max ₹1.5 lakh" />
+        <input type="number" id="80c" placeholder="Max ₹1.5 lakh" min="0" />
       </div>
       <div class="input-group">
         <label>Medical Insurance (80D) (₹):</label>
-        <input type="number" id="80d" placeholder="Max ₹75k" />
+        <input type="number" id="80d" placeholder="Max ₹75k" min="0" />
       </div>
       <div class="input-group">
         <label>Education Loan (80E) (₹):</label>
-        <input type="number" id="80e" placeholder="No limit" />
+        <input type="number" id="80e" placeholder="No limit" min="0" />
       </div>
       <div class="input-group">
         <label>Home Loan Interest (24b) (₹):</label>
-        <input type="number" id="24b" placeholder="Max ₹2 lakh" />
+        <input type="number" id="24b" placeholder="Max ₹2 lakh" min="0" />
       </div>
 
       <button id="calculateBtn">Calculate Tax</button>
@@ -418,12 +419,9 @@
 
       calculateHRAExemption(basic, hraReceived, rentPaid, isMetro) {
         const metroPercentage = isMetro ? 0.5 : 0.4;
-        const exemptAmount = Math.min(
-          hraReceived,
-          rentPaid - (basic * 0.1),
-          basic * metroPercentage
-        );
-        return Math.max(exemptAmount, 0);
+        // Ensure that if rentPaid - (basic*0.1) is negative, we return 0
+        const computedValue = Math.min(hraReceived, rentPaid - (basic * 0.1), basic * metroPercentage);
+        return Math.max(computedValue, 0);
       }
 
       calculateOldRegime(data) {
@@ -444,12 +442,14 @@
         const applied24b = Math.min(data.deductions24b, this.taxConfig.oldRegime.deductions["24b"]);
         const standardDeduction = this.taxConfig.oldRegime.deductions.standard;
         
-        let taxableIncome = data.grossSalary - (hraExemption + applied80C + applied80D + applied80E + applied24b + standardDeduction);
+        let totalDeductions = hraExemption + applied80C + applied80D + applied80E + applied24b + standardDeduction;
+        let taxableIncome = data.grossSalary - totalDeductions;
         taxableIncome = Math.max(taxableIncome, 0);
         
         let tax = this.applySlabs(taxableIncome, 'old');
         const surcharge = this.calculateSurcharge(tax, data.grossSalary);
-        tax = (tax + surcharge) * (1 + this.taxConfig.cess);
+        // Round the tax to the nearest rupee
+        tax = Math.round((tax + surcharge) * (1 + this.taxConfig.cess));
         
         return {
           taxableIncome: taxableIncome,
@@ -462,7 +462,7 @@
             applied80E: applied80E,
             applied24b: applied24b,
             standardDeduction: standardDeduction,
-            totalDeductions: hraExemption + applied80C + applied80D + applied80E + applied24b + standardDeduction
+            totalDeductions: totalDeductions
           }
         };
       }
@@ -472,7 +472,7 @@
         taxableIncome = Math.max(taxableIncome, 0);
         let tax = this.applySlabs(taxableIncome, 'new');
         const surcharge = this.calculateSurcharge(tax, data.grossSalary);
-        tax = (tax + surcharge) * (1 + this.taxConfig.cess);
+        tax = Math.round((tax + surcharge) * (1 + this.taxConfig.cess));
         
         return {
           taxableIncome: taxableIncome,
@@ -516,6 +516,11 @@
       const resetBtn = document.getElementById('resetBtn');
       const tabs = document.querySelectorAll('.tab-button');
 
+      // Set max attribute for date input to prevent future dates
+      const dobInput = document.getElementById('dob');
+      const today = new Date().toISOString().split('T')[0];
+      dobInput.setAttribute('max', today);
+
       function showError(message) {
         const errorContainer = document.getElementById('errorContainer');
         errorContainer.innerHTML = "<strong>Error:</strong> " + message +
@@ -536,7 +541,7 @@
       }
 
       function formatCurrency(value) {
-        return "₹" + value.toLocaleString('en-IN', { maximumFractionDigits: 0 });
+        return "₹" + Number(value).toLocaleString('en-IN', { maximumFractionDigits: 0 });
       }
 
       function updateResults(oldRegime, newRegime, inputData) {
@@ -712,6 +717,8 @@
           const basicSalaryInput = document.getElementById('basicSalary');
 
           if (!dobInput.value) throw new Error('Date of Birth is required');
+          if (new Date(dobInput.value) > new Date()) throw new Error('Date of Birth cannot be in the future');
+
           const grossSalary = parseFloat(grossSalaryInput.value);
           const basicSalary = parseFloat(basicSalaryInput.value);
 
@@ -720,6 +727,13 @@
           if (isNaN(basicSalary)) throw new Error('Invalid Basic Salary');
           if (basicSalary <= 0) throw new Error('Basic Salary must be positive');
           if (basicSalary > grossSalary) throw new Error('Basic Salary cannot be greater than Gross Salary');
+
+          // Validate that none of the numeric inputs are negative
+          const inputsToCheck = ['hraReceived', 'rentPaid', '80c', '80d', '80e', '24b'];
+          for (const id of inputsToCheck) {
+            const val = parseFloat(document.getElementById(id).value) || 0;
+            if (val < 0) throw new Error(`${id} cannot be negative`);
+          }
 
           // Parse inputs
           const dob = new Date(dobInput.value);
