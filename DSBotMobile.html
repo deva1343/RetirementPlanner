@@ -1,10 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <!-- Responsive meta tag -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Professional Tax Calculator - India</title>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Income Tax Calculator India | FY 2023-24 | Instant & No Signup</title>
+    <meta name="description" content="Completely FREE income tax calculator for India, FY 2023-24. Get instant, accurate tax estimations without any signup. Perfect for salaried & self-employed.">
+    <meta name="keywords" content="free income tax calculator india fy 2023-24, free online tax calculator india, calculate income tax india without signup, accurate tax estimation india, income tax calculator for salaried india, tax calculator for self employed india, instant tax calculation india, indian tax return calculator, budget 2023 tax calculator india, tax planning tools india, 100% free tax calculator india">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Your Company Name (Optional)">
+
+    <meta property="og:title" content="Free Income Tax Calculator India | FY 2023-24 | Instant & No Signup">
+    <meta property="og:description" content="Completely FREE income tax calculator for India, FY 2023-24. Get instant, accurate tax estimations without any signup. Perfect for salaried & self-employed.">
+    <meta property="og:url" content="https://dpal.site/DSBotMobile.html">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://dpal.site/images/your-og-image.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Income Tax Calculator India | FY 2023-24 | Instant & No Signup">
+    <meta name="twitter:description" content="Completely FREE income tax calculator for India, FY 2023-24. Get instant, accurate tax estimations without any signup.">
+    <meta name="twitter:image" content="https://dpal.site/images/your-twitter-image.jpg">
+
+    <meta name="geo.region" content="IN">
+    <meta name="geo.placename" content="India">
+    <meta name="geo.position" content="20.5937;78.9629">
+    <meta name="ICBM" content="20.5937, 78.9629">
+	<title>Professional Tax Calculator - India</title>
   <!-- Google Font for a modern look -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <!-- Chart.js -->
@@ -21,7 +41,6 @@
       --error: #e74c3c;
       --background: #f8f9fa;
     }
-
     body {
       font-family: 'Roboto', sans-serif;
       max-width: 1200px;
@@ -29,7 +48,6 @@
       padding: 2rem;
       background: var(--background);
     }
-
     #errorContainer {
       display: none;
       background: #ffeeee;
@@ -39,21 +57,18 @@
       border: 2px solid var(--error);
       border-radius: 8px;
     }
-
     .tax-app {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 2rem;
       margin-top: 2rem;
     }
-
     .input-section, .results-section {
       background: white;
       padding: 2rem;
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-
     .input-group {
       margin: 1rem 0;
       display: grid;
@@ -61,22 +76,17 @@
       gap: 1rem;
       align-items: center;
     }
-
-    input,
-    select {
+    input, select {
       padding: 0.75rem;
       border: 2px solid #e0e0e0;
       border-radius: 8px;
       font-size: 1rem;
       transition: border-color 0.3s ease;
     }
-
-    input:focus,
-    select:focus {
+    input:focus, select:focus {
       outline: none;
       border-color: var(--secondary);
     }
-
     button {
       background: var(--secondary);
       color: white;
@@ -89,17 +99,14 @@
       transition: transform 0.2s ease;
       margin-right: 10px;
     }
-
     button:hover {
       transform: translateY(-2px);
     }
-
     .result-tabs {
       display: flex;
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
-
     .tab-button {
       background: #f0f0f0;
       color: #666;
@@ -108,42 +115,35 @@
       cursor: pointer;
       transition: all 0.2s ease;
     }
-
     .tab-button.active {
       background: var(--secondary);
       color: white;
     }
-
     .comparison-table {
       width: 100%;
       border-collapse: collapse;
       margin: 1rem 0;
       background: white;
     }
-
     .comparison-table th {
       background: var(--primary);
       color: white;
       padding: 1rem;
       text-align: left;
     }
-
     .comparison-table td,
     .comparison-table th {
       padding: 1rem;
       border: 1px solid #e0e0e0;
     }
-
     .highlight {
       background: #e8f4f8;
       font-weight: bold;
     }
-
     .chart-container {
       height: 300px;
       margin: 2rem 0;
     }
-
     .metric-card {
       padding: 1rem;
       background: #f8fafc;
@@ -151,14 +151,12 @@
       margin: 1rem 0;
       text-align: center;
     }
-
     .metric-value {
       font-size: 1.4rem;
       font-weight: bold;
       color: var(--primary);
       margin: 0.5rem 0;
     }
-
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .tax-app {
@@ -176,8 +174,12 @@
   <div class="tax-app">
     <div class="input-section">
       <h1>Professional Tax Calculator 🇮🇳</h1>
+      <!-- PDF input moved to the top -->
+      <div class="input-group">
+        <label>Upload Form 16 PDF (Optional):</label>
+        <input type="file" id="pdfInput" accept="application/pdf" />
+      </div>
 
-      <!-- Date input now has a dynamic max value (set in script) -->
       <div class="input-group">
         <label>Date of Birth:</label>
         <input type="date" id="dob" required />
@@ -374,10 +376,58 @@
     </div>
   </div>
 
+  <!-- Firebase, Bootstrap, and main JS scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Firebase Initialization -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDoe6v3NbbMceeFnh-XH6Fp74DqqSLYlVE",
+      authDomain: "gaanaai.firebaseapp.com",
+      projectId: "gaanaai",
+      storageBucket: "gaanaai.firebasestorage.app",
+      messagingSenderId: "1033414979244",
+      appId: "1:1033414979244:web:3c91428cef18246fe17909",
+      measurementId: "G-67SQ4QEE0P"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const firestore = firebase.firestore();
+    const storage = firebase.storage();
+  </script>
+  
+  <!-- Main Script -->
   <script>
     const { jsPDF } = window.jspdf;
     let taxChart = null;
-
+    
+    // Helper to safely set textContent for an element.
+    function setText(id, value) {
+      const elem = document.getElementById(id);
+      if (elem) {
+        elem.textContent = value;
+      } else {
+        console.error(`Element with id "${id}" not found.`);
+      }
+    }
+    
+    // Custom extraction function for Form 16 text.
+    function extractDataFromForm16Text(text) {
+      const data = {};
+      // Extract full name from "Name and address of the Employee"
+      const empMatch = text.match(/Name and address of the Employee\/Specified senior citizen\s+([\sA-Z]+)\s+/i);
+      if (empMatch) data.fullName = empMatch[1].trim();
+      // Extract PAN of employee
+      const panMatch = text.match(/PAN\s+of\s+the\s+Employee[\s\S]+?([A-Z0-9]{10})/i);
+      if (panMatch) data.panCard = panMatch[1].trim();
+      // Extract DOB (if available in YYYY-MM-DD format)
+      const dobMatch = text.match(/DOB:\s*([\d]{4}-[\d]{2}-[\d]{2})/i);
+      if (dobMatch) data.dob = dobMatch[1].trim();
+      // Extract Gross Salary (example: "Salary as per provisions contained in section 17(1)(a) 915264.00")
+      const grossSalaryMatch = text.match(/Salary as per provisions contained in section 17\(1\)\(a\)[\s:]*([\d,]+\.\d+)/i);
+      if (grossSalaryMatch) data.grossSalary = grossSalaryMatch[1].replace(/,/g, '').trim();
+      return data;
+    }
+    
     class TaxCalculator {
       constructor() {
         this.taxConfig = {
@@ -416,16 +466,14 @@
           }
         };
       }
-
+      
       calculateHRAExemption(basic, hraReceived, rentPaid, isMetro) {
         const metroPercentage = isMetro ? 0.5 : 0.4;
-        // Ensure that if rentPaid - (basic*0.1) is negative, we return 0
         const computedValue = Math.min(hraReceived, rentPaid - (basic * 0.1), basic * metroPercentage);
         return Math.max(computedValue, 0);
       }
-
+      
       calculateOldRegime(data) {
-        // Calculate individual deductions for breakdown
         const hraExemption = this.calculateHRAExemption(
           data.basicSalary,
           data.hraReceived,
@@ -448,7 +496,6 @@
         
         let tax = this.applySlabs(taxableIncome, 'old');
         const surcharge = this.calculateSurcharge(tax, data.grossSalary);
-        // Round the tax to the nearest rupee
         tax = Math.round((tax + surcharge) * (1 + this.taxConfig.cess));
         
         return {
@@ -466,7 +513,7 @@
           }
         };
       }
-
+      
       calculateNewRegime(data) {
         let taxableIncome = data.grossSalary - this.taxConfig.newRegime.standardDeduction;
         taxableIncome = Math.max(taxableIncome, 0);
@@ -480,12 +527,10 @@
           surcharge: surcharge
         };
       }
-
+      
       applySlabs(income, regime) {
         const slabs = this.taxConfig[`${regime}Regime`].slabs;
-        let tax = 0;
-        let previousLimit = 0;
-
+        let tax = 0, previousLimit = 0;
         for (const slab of slabs) {
           const currentLimit = slab.limit;
           const taxableInSlab = Math.max(Math.min(income, currentLimit) - previousLimit, 0);
@@ -495,32 +540,27 @@
         }
         return tax;
       }
-
+      
       calculateSurcharge(tax, grossIncome) {
-        const thresholds = Object.keys(this.taxConfig.surcharge)
-          .map(Number)
-          .sort((a, b) => b - a);
-        
+        const thresholds = Object.keys(this.taxConfig.surcharge).map(Number).sort((a, b) => b - a);
         for (const threshold of thresholds) {
-          if (grossIncome > threshold) {
-            return tax * this.taxConfig.surcharge[threshold];
-          }
+          if (grossIncome > threshold) return tax * this.taxConfig.surcharge[threshold];
         }
         return 0;
       }
     }
-
+    
     document.addEventListener('DOMContentLoaded', () => {
       const calculateBtn = document.getElementById('calculateBtn');
       const downloadBtn = document.getElementById('downloadBtn');
       const resetBtn = document.getElementById('resetBtn');
       const tabs = document.querySelectorAll('.tab-button');
-
-      // Set max attribute for date input to prevent future dates
+      
+      // Set max for DOB input to prevent future dates
       const dobInput = document.getElementById('dob');
       const today = new Date().toISOString().split('T')[0];
       dobInput.setAttribute('max', today);
-
+      
       function showError(message) {
         const errorContainer = document.getElementById('errorContainer');
         errorContainer.innerHTML = "<strong>Error:</strong> " + message +
@@ -528,22 +568,23 @@
         errorContainer.style.display = "block";
         window.scrollTo(0, 0);
       }
-
+      
       function clearErrors() {
         document.getElementById('errorContainer').style.display = 'none';
       }
-
+      
       function showTab(tabName) {
         document.querySelectorAll('.result-tab').forEach(tab => tab.style.display = 'none');
         document.querySelector("#" + tabName + "Tab").style.display = 'block';
         tabs.forEach(tab => tab.classList.remove('active'));
         document.querySelector("[data-tab='" + tabName + "']").classList.add('active');
       }
-
+      
       function formatCurrency(value) {
         return "₹" + Number(value).toLocaleString('en-IN', { maximumFractionDigits: 0 });
       }
-
+      
+      // updateResults function to display computed tax results.
       function updateResults(oldRegime, newRegime, inputData) {
         // Update Summary Tab
         document.getElementById('regimeRecommendation').textContent =
@@ -613,15 +654,12 @@
         }
       }
 
-      // Asynchronous function to capture a given element as image data (forcing display if hidden)
+      // Asynchronous function to capture a given element as image data
       async function captureElement(elementId) {
         const element = document.getElementById(elementId);
-        // Save original display
         const originalDisplay = element.style.display;
-        // Force display to block for capture
         element.style.display = 'block';
         const canvas = await html2canvas(element, { scale: 2 });
-        // Revert display style
         element.style.display = originalDisplay;
         return canvas.toDataURL('image/png');
       }
@@ -631,12 +669,9 @@
         const doc = new jsPDF('p', 'pt', 'a4');
         const margin = 20;
         let verticalOffset = margin;
-
         doc.setFontSize(18);
         doc.text("Tax Calculation Report", margin, verticalOffset);
         verticalOffset += 30;
-
-        // Taxpayer Information
         const dob = document.getElementById('dob').value;
         const grossSalary = document.getElementById('grossSalary').value;
         const basicSalary = document.getElementById('basicSalary').value;
@@ -649,8 +684,7 @@
         verticalOffset += 15;
         doc.text("Basic Salary: " + basicSalary, margin, verticalOffset);
         verticalOffset += 25;
-
-        // Capture and add Summary Tab (includes chart)
+        
         const summaryImgData = await captureElement('summaryTab');
         const pageWidth = doc.internal.pageSize.getWidth() - margin * 2;
         let imgProps = doc.getImageProperties(summaryImgData);
@@ -661,8 +695,7 @@
         }
         doc.addImage(summaryImgData, 'PNG', margin, verticalOffset, pageWidth, imgHeight);
         verticalOffset += imgHeight + 20;
-
-        // Capture and add Detailed Tab
+        
         const detailedImgData = await captureElement('detailedTab');
         imgProps = doc.getImageProperties(detailedImgData);
         imgHeight = (imgProps.height * pageWidth) / imgProps.width;
@@ -674,8 +707,7 @@
         verticalOffset += 15;
         doc.addImage(detailedImgData, 'PNG', margin, verticalOffset, pageWidth, imgHeight);
         verticalOffset += imgHeight + 20;
-
-        // Capture and add Comparison Tab
+        
         const compareImgData = await captureElement('compareTab');
         imgProps = doc.getImageProperties(compareImgData);
         imgHeight = (imgProps.height * pageWidth) / imgProps.width;
@@ -687,8 +719,7 @@
         verticalOffset += 15;
         doc.addImage(compareImgData, 'PNG', margin, verticalOffset, pageWidth, imgHeight);
         verticalOffset += imgHeight + 20;
-
-        // Capture and add Deduction Breakdown (if available)
+        
         const breakdownElement = document.getElementById('breakdownSection');
         if (breakdownElement && breakdownElement.innerHTML.trim() !== "") {
           const breakdownImgData = await captureElement('breakdownSection');
@@ -703,40 +734,43 @@
           doc.addImage(breakdownImgData, 'PNG', margin, verticalOffset, pageWidth, imgHeight);
           verticalOffset += imgHeight + 20;
         }
-
         doc.save('tax-report.pdf');
       }
 
+      // Main function to calculate tax, update results, and save data to Firebase
       function calculateTax() {
         try {
           clearErrors();
 
-          // Validate inputs
-          const dobInput = document.getElementById('dob');
-          const grossSalaryInput = document.getElementById('grossSalary');
-          const basicSalaryInput = document.getElementById('basicSalary');
+          // Validate required fields with descriptive messages
+          const requiredFields = [
+            { id: 'dob', name: 'Date of Birth' },
+            { id: 'grossSalary', name: 'Gross Salary' },
+            { id: 'basicSalary', name: 'Basic Salary' }
+          ];
+          for (const field of requiredFields) {
+            const value = document.getElementById(field.id).value;
+            if (!value) {
+              throw new Error(`The field "${field.name}" is required.`);
+            }
+          }
+          if (new Date(document.getElementById('dob').value) > new Date()) {
+            throw new Error('Date of Birth cannot be in the future.');
+          }
 
-          if (!dobInput.value) throw new Error('Date of Birth is required');
-          if (new Date(dobInput.value) > new Date()) throw new Error('Date of Birth cannot be in the future');
+          const grossSalary = parseFloat(document.getElementById('grossSalary').value);
+          const basicSalary = parseFloat(document.getElementById('basicSalary').value);
+          if (isNaN(grossSalary) || grossSalary <= 0) throw new Error('Gross Salary must be a positive number.');
+          if (isNaN(basicSalary) || basicSalary <= 0) throw new Error('Basic Salary must be a positive number.');
+          if (basicSalary > grossSalary) throw new Error('Basic Salary cannot be greater than Gross Salary.');
 
-          const grossSalary = parseFloat(grossSalaryInput.value);
-          const basicSalary = parseFloat(basicSalaryInput.value);
-
-          if (isNaN(grossSalary)) throw new Error('Invalid Gross Salary');
-          if (grossSalary <= 0) throw new Error('Gross Salary must be positive');
-          if (isNaN(basicSalary)) throw new Error('Invalid Basic Salary');
-          if (basicSalary <= 0) throw new Error('Basic Salary must be positive');
-          if (basicSalary > grossSalary) throw new Error('Basic Salary cannot be greater than Gross Salary');
-
-          // Validate that none of the numeric inputs are negative
           const inputsToCheck = ['hraReceived', 'rentPaid', '80c', '80d', '80e', '24b'];
           for (const id of inputsToCheck) {
             const val = parseFloat(document.getElementById(id).value) || 0;
-            if (val < 0) throw new Error(`${id} cannot be negative`);
+            if (val < 0) throw new Error(`The field "${id}" cannot be negative.`);
           }
 
-          // Parse inputs
-          const dob = new Date(dobInput.value);
+          const dob = new Date(document.getElementById('dob').value);
           const age = new Date().getFullYear() - dob.getFullYear();
           const inputData = {
             grossSalary: grossSalary,
@@ -745,28 +779,46 @@
             rentPaid: parseFloat(document.getElementById('rentPaid').value) || 0,
             metroCity: document.getElementById('metroCity').value,
             deductions80C: Math.min(parseFloat(document.getElementById('80c').value) || 0, 150000),
-            deductions80D: Math.min(parseFloat(document.getElementById('80d').value) || 0,
-              age >= 60 ? 50000 : 25000),
+            deductions80D: Math.min(parseFloat(document.getElementById('80d').value) || 0, age >= 60 ? 50000 : 25000),
             deductions80E: parseFloat(document.getElementById('80e').value) || 0,
             deductions24b: Math.min(parseFloat(document.getElementById('24b').value) || 0, 200000),
             age: age
           };
 
-          // Perform calculations
           const calculator = new TaxCalculator();
           const oldRegime = calculator.calculateOldRegime(inputData);
           const newRegime = calculator.calculateNewRegime(inputData);
 
-          // Show results
+          // Display the results
           showTab('summary');
           updateResults(oldRegime, newRegime, inputData);
+
+          // Prepare form data to be saved in Firebase
+          const formData = {
+            dob: document.getElementById('dob').value,
+            grossSalary: grossSalary,
+            basicSalary: basicSalary,
+            hraReceived: inputData.hraReceived,
+            rentPaid: inputData.rentPaid,
+            metroCity: inputData.metroCity,
+            deductions80C: document.getElementById('80c').value,
+            deductions80D: document.getElementById('80d').value,
+            deductions80E: document.getElementById('80e').value,
+            deductions24b: document.getElementById('24b').value,
+            oldRegime: oldRegime,
+            newRegime: newRegime,
+            submittedAt: new Date().toISOString()
+          };
+
+          // Save to Firebase Firestore and upload PDF to Firebase Storage if available.
+          const pdfFile = document.getElementById('pdfInput').files[0];
+          storeData(formData, pdfFile);
 
         } catch (error) {
           showError(error.message);
         }
       }
 
-      // Event Listeners
       calculateBtn.addEventListener('click', calculateTax);
       downloadBtn.addEventListener('click', generatePDF);
       resetBtn.addEventListener('click', function() {
@@ -781,7 +833,6 @@
         document.getElementById('80d').value = '';
         document.getElementById('80e').value = '';
         document.getElementById('24b').value = '';
-
         // Hide results and breakdown
         document.querySelectorAll('.result-tab').forEach(tab => tab.style.display = 'none');
         if (taxChart) taxChart.destroy();
@@ -796,14 +847,13 @@
       });
     });
   </script>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-K9KZ60761N"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-K9KZ60761N');
-</script>
+  <!-- Google tag (gtag.js) for analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9KZ60761N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K9KZ60761N');
+  </script>
 </body>
 </html>
