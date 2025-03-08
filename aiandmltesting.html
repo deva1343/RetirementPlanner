@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI/ML Testing Master Roadmap</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Master the AI/ML Testing Roadmap—from core foundations to advanced concepts. Explore courses, tools, projects, articles, achievement badges, PDF downloads, and community features for effective ML testing." />
+  <meta name="keywords" content="AI, ML, testing, roadmap, machine learning, automation, MLOps, cloud, interactive roadmap, achievement badges, PDF download, community features" />
+  <meta name="author" content="Your Name or Company" />
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="AI/ML Testing Master Roadmap" />
+  <meta property="og:description" content="A comprehensive interactive roadmap for mastering AI/ML testing, featuring courses, tools, projects, articles, achievement badges, PDF downloads, and community insights." />
+  <meta property="og:image" content="path/to/image.jpg" />
+  <meta property="og:url" content="https://yourwebsite.com" />
+  <meta property="og:type" content="website" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AI/ML Testing Master Roadmap" />
+  <meta name="twitter:description" content="A comprehensive interactive roadmap for AI/ML testing with courses, tools, projects, articles, achievements, PDF downloads, and community features." />
+  <meta name="twitter:image" content="path/to/image.jpg" />
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Optional: Tailwind dark mode configuration is enabled by adding the "dark" class to the html element -->
+</head>
+<body class="bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-800 dark:text-gray-100 pt-20">
+  <!-- Header -->
+  <header class="fixed top-0 w-full bg-blue-900 text-white p-4 flex justify-between items-center z-50">
+    <h1 class="text-xl font-bold">AI/ML Testing Roadmap 🚀</h1>
+    <button class="bg-transparent border border-white text-white px-4 py-2 rounded-full" onclick="toggleTheme()">🌓 Toggle Theme</button>
+  </header>
+
+  <!-- Search Container -->
+  <div class="fixed top-16 right-72">
+    <input type="text" id="searchInput" placeholder="Search resources..." class="px-4 py-2 rounded-full border-2 border-blue-900 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100" />
+  </div>
+
+  <!-- Progress Container -->
+  <div class="fixed top-16 right-5 bg-white dark:bg-gray-700 p-4 rounded-lg shadow-md w-64">
+    <h3 class="text-lg font-semibold mb-2">Your Progress</h3>
+    <div class="w-full h-2 bg-gray-200 rounded overflow-hidden">
+      <div id="progressFill" class="h-full bg-green-500" style="width: 0%;"></div>
+    </div>
+    <div id="progressText" class="mt-2 text-sm"></div>
+  </div>
+
+  <!-- Timeline -->
+  <div id="timeline" class="fixed left-5 top-32 flex flex-col gap-8"></div>
+
+  <!-- Main Content -->
+  <main id="mainContent" class="max-w-4xl mx-auto mt-10 space-y-8"></main>
+
+  <!-- Community Section -->
+  <section class="bg-white dark:bg-gray-700 p-8 mx-4 rounded-lg shadow-md text-center">
+    <h2 class="text-2xl font-bold mb-4">Join Our Community</h2>
+    <p class="mb-4">Connect with peers, join webinars, and contribute to open-source projects.</p>
+    <button class="bg-blue-900 text-white px-6 py-3 rounded" onclick="window.open('https://forum.example.com','_blank')">Join Our Forum</button>
+  </section>
+
+  <script>
+    // Roadmap Data with additional phases and resource type "articles"
+    const roadmap = [
+      {
+        phase: 1,
+        title: "Core Foundations",
+        duration: "3-4 Months",
+        goals: [
+          "Master Python for ML automation",
+          "Understand basic ML concepts",
+          "Bridge QA skills to AI testing"
+        ],
+        resources: {
+          courses: [
+            { name: "Google ML Crash Course", url: "https://developers.google.com/machine-learning/crash-course", type: "free" },
+            { name: "Python Automation Expert", url: "#", type: "paid" },
+            { name: "Mathematics for ML", url: "#", type: "free" }
+          ],
+          tools: [
+            { name: "Python", icon: "🐍", docs: "https://docs.python.org" },
+            { name: "TensorFlow", icon: "🔢", docs: "https://www.tensorflow.org" },
+            { name: "Jupyter Notebook", icon: "📓", docs: "https://jupyter.org" }
+          ],
+          articles: [
+            { name: "Intro to Python for ML", url: "#" },
+            { name: "Basics of Machine Learning", url: "#" }
+          ],
+          projects: [
+            "Convert Java tests to Python",
+            "Build a simple ML model validator",
+            "Create data validation scripts"
+          ]
+        },
+        checklist: [
+          "Complete Python basics",
+          "Finish ML fundamentals course",
+          "Port 3 Java tests to Python"
+        ]
+      },
+      {
+        phase: 2,
+        title: "Specialized Testing",
+        duration: "4-6 Months",
+        goals: [
+          "Master model validation techniques",
+          "Implement bias detection systems",
+          "Optimize ML performance testing"
+        ],
+        resources: {
+          courses: [
+            { name: "Testing AI Systems", url: "#", type: "paid" },
+            { name: "MLOps Fundamentals", url: "#", type: "free" },
+            { name: "Ethical AI Practices", url: "#", type: "free" }
+          ],
+          tools: [
+            { name: "DeepLearning4J", icon: "🧠", docs: "https://deeplearning4j.org" },
+            { name: "JMeter", icon: "⚡", docs: "https://jmeter.apache.org" },
+            { name: "Great Expectations", icon: "✅", docs: "https://greatexpectations.io" }
+          ],
+          articles: [
+            { name: "Bias in Machine Learning", url: "#" },
+            { name: "Performance Testing Strategies", url: "#" }
+          ],
+          projects: [
+            "Build bias detection test suite",
+            "Create load testing framework for ML APIs",
+            "Implement data quality checks"
+          ]
+        },
+        checklist: [
+          "Validate 3 different ML models",
+          "Implement bias detection in test suite",
+          "Run performance tests on inference API"
+        ]
+      },
+      {
+        phase: 3,
+        title: "MLOps & Cloud",
+        duration: "6-8 Months",
+        goals: [
+          "Master cloud-based ML deployments",
+          "Implement CI/CD for ML pipelines",
+          "Optimize Kubernetes for ML workloads"
+        ],
+        resources: {
+          courses: [
+            { name: "AWS ML Engineer", url: "#", type: "paid" },
+            { name: "Azure ML Specialist", url: "#", type: "paid" },
+            { name: "Kubernetes for ML", url: "#", type: "free" }
+          ],
+          tools: [
+            { name: "AWS SageMaker", icon: "☁️", docs: "https://aws.amazon.com/sagemaker" },
+            { name: "Kubeflow", icon: "🚢", docs: "https://www.kubeflow.org" },
+            { name: "MLflow", icon: "📊", docs: "https://mlflow.org" }
+          ],
+          articles: [
+            { name: "CI/CD in Machine Learning", url: "#" },
+            { name: "Cloud Deployment Best Practices", url: "#" }
+          ],
+          projects: [
+            "Deploy model on AWS SageMaker",
+            "Build CI/CD pipeline for ML model",
+            "Implement Kubernetes scaling for ML"
+          ]
+        },
+        checklist: [
+          "Deploy model to cloud platform",
+          "Automate model retraining pipeline",
+          "Implement monitoring for ML service"
+        ]
+      },
+      {
+        phase: 4,
+        title: "Advanced Concepts",
+        duration: "Ongoing",
+        goals: [
+          "Implement adversarial testing",
+          "Master model explainability",
+          "Ensure regulatory compliance"
+        ],
+        resources: {
+          courses: [
+            { name: "Responsible AI", url: "#", type: "free" },
+            { name: "GDPR Certification", url: "#", type: "paid" },
+            { name: "Advanced ML Security", url: "#", type: "paid" }
+          ],
+          tools: [
+            { name: "SHAP", icon: "📈", docs: "https://shap.readthedocs.io" },
+            { name: "CleverHans", icon: "🛡️", docs: "https://cleverhans.ai" },
+            { name: "Evidently AI", icon: "🔍", docs: "https://evidentlyai.com" }
+          ],
+          articles: [
+            { name: "Adversarial Testing Methods", url: "#" },
+            { name: "Explainability in AI", url: "#" }
+          ],
+          projects: [
+            "Implement model explainability dashboard",
+            "Create adversarial test cases",
+            "Build compliance audit framework"
+          ]
+        },
+        checklist: [
+          "Implement SHAP explanations",
+          "Run adversarial testing suite",
+          "Create compliance documentation"
+        ]
+      },
+      {
+        phase: 5,
+        title: "Achievement & Certification",
+        duration: "3-5 Months",
+        goals: [
+          "Earn recognized industry certifications",
+          "Implement achievement badges for milestones",
+          "Track progress with automated validations"
+        ],
+        resources: {
+          courses: [
+            { name: "Certified AI Tester", url: "#", type: "paid" },
+            { name: "ML Certification Bootcamp", url: "#", type: "free" }
+          ],
+          tools: [
+            { name: "BadgeOS", icon: "🏆", docs: "#" },
+            { name: "CertifyMe", icon: "🎓", docs: "#" }
+          ],
+          articles: [
+            { name: "The Value of Certifications", url: "#" },
+            { name: "Implementing Achievement Systems", url: "#" }
+          ],
+          projects: [
+            "Develop a badge system for course milestones",
+            "Integrate certification tests into the roadmap"
+          ]
+        },
+        checklist: [
+          "Complete certification course",
+          "Achieve 100% on milestone tests",
+          "Receive digital badge"
+        ]
+      },
+      {
+        phase: 6,
+        title: "Community & Networking",
+        duration: "Ongoing",
+        goals: [
+          "Engage with industry peers",
+          "Join webinars and live Q&A sessions",
+          "Contribute to open-source projects"
+        ],
+        resources: {
+          courses: [
+            { name: "Community Building 101", url: "#", type: "free" },
+            { name: "Networking for AI Professionals", url: "#", type: "paid" }
+          ],
+          tools: [
+            { name: "Slack", icon: "💬", docs: "https://slack.com" },
+            { name: "Discord", icon: "🎙️", docs: "https://discord.com" }
+          ],
+          articles: [
+            { name: "The Importance of Networking", url: "#" },
+            { name: "How to Build an Online Community", url: "#" }
+          ],
+          projects: [
+            "Participate in community webinars",
+            "Launch an open-source collaboration project",
+            "Host a virtual meetup"
+          ]
+        },
+        checklist: [
+          "Register on community platforms",
+          "Attend at least one webinar",
+          "Engage in forum discussions"
+        ]
+      }
+    ];
+
+    let userProgress = JSON.parse(localStorage.getItem('progress')) || {};
+
+    function init() {
+      renderTimeline();
+      renderPhases();
+      setupSearch();
+      updateProgress();
+      setupIntersectionObserver();
+      applySavedTheme();
+      updateAchievements();
+    }
+
+    function renderTimeline() {
+      const timeline = document.getElementById('timeline');
+      roadmap.forEach(phase => {
+        const marker = document.createElement('div');
+        marker.className = 'w-5 h-5 bg-blue-500 rounded-full cursor-pointer transition-transform hover:scale-125';
+        marker.onclick = () => scrollToPhase(phase.phase);
+        timeline.appendChild(marker);
+      });
+    }
+
+    function renderPhases() {
+      const main = document.getElementById('mainContent');
+      roadmap.forEach(phase => {
+        const phaseHTML = `
+          <section class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg transition transform hover:scale-105" id="phase${phase.phase}">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-2xl font-bold text-blue-900 dark:text-blue-300">Phase ${phase.phase}: ${phase.title}</h2>
+              <span class="bg-blue-500 text-white px-3 py-1 rounded-full">${phase.duration}</span>
+            </div>
+            <div class="mb-4">
+              <div class="flex space-x-4 mb-2">
+                <button class="tab-btn active px-4 py-2 rounded bg-blue-500 text-white" onclick="switchTab(${phase.phase}, 'overview', event)">Overview</button>
+                <button class="tab-btn px-4 py-2 rounded bg-gray-200 dark:bg-gray-600" onclick="switchTab(${phase.phase}, 'resources', event)">Resources</button>
+                <button class="tab-btn px-4 py-2 rounded bg-gray-200 dark:bg-gray-600" onclick="switchTab(${phase.phase}, 'projects', event)">Projects</button>
+              </div>
+              <div class="tab-content active" id="overview-${phase.phase}">
+                <h3 class="text-xl font-semibold mb-2">Key Concepts</h3>
+                <ul class="list-disc ml-6 mb-4">
+                  ${phase.goals.map(g => `<li>${g}</li>`).join('')}
+                </ul>
+                <h3 class="text-xl font-semibold mb-2">Checklist</h3>
+                <div class="space-y-2">
+                  ${phase.checklist.map(item => `
+                    <label class="flex items-center space-x-2">
+                      <input type="checkbox" onchange="updateChecklist(${phase.phase}, '${item}', event)" ${userProgress[phase.phase]?.[item] ? 'checked' : ''} class="form-checkbox h-5 w-5">
+                      <span>${item}</span>
+                    </label>
+                  `).join('')}
+                </div>
+              </div>
+              <div class="tab-content hidden" id="resources-${phase.phase}">
+                <h3 class="text-xl font-semibold mb-2">Learning Resources</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                  ${phase.resources.courses.map(course => `
+                    <div class="p-4 border-l-4 border-blue-500 bg-gray-50 dark:bg-gray-600 rounded">
+                      ${course.type === 'free' ? '<span class="bg-red-500 text-white px-2 py-1 rounded text-xs">FREE</span>' : ''}
+                      <a href="${course.url}" target="_blank" class="text-blue-700 dark:text-blue-300">${course.name}</a>
+                    </div>
+                  `).join('')}
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Tools & Technologies</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                  ${phase.resources.tools.map(tool => `
+                    <div class="p-4 border-l-4 border-blue-500 bg-gray-50 dark:bg-gray-600 rounded flex items-center space-x-2">
+                      <span>${tool.icon}</span>
+                      <a href="${tool.docs}" target="_blank" class="text-blue-700 dark:text-blue-300">${tool.name}</a>
+                    </div>
+                  `).join('')}
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Articles & Webinars</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  ${phase.resources.articles ? phase.resources.articles.map(article => `
+                    <div class="p-4 border-l-4 border-blue-500 bg-gray-50 dark:bg-gray-600 rounded">
+                      <a href="${article.url}" target="_blank" class="text-blue-700 dark:text-blue-300">${article.name}</a>
+                    </div>
+                  `).join('') : 'No articles available'}
+                </div>
+              </div>
+              <div class="tab-content hidden" id="projects-${phase.phase}">
+                <h3 class="text-xl font-semibold mb-2">Hands-on Projects</h3>
+                <ul class="list-disc ml-6">
+                  ${phase.resources.projects.map(p => `<li>${p}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4" onclick="downloadPDF(${phase.phase})">Download PDF</button>
+          </section>
+        `;
+        main.innerHTML += phaseHTML;
+      });
+    }
+
+    function switchTab(phase, tabName, event) {
+      const tabContents = document.querySelectorAll(`#phase${phase} .tab-content`);
+      const tabButtons = document.querySelectorAll(`#phase${phase} .tab-btn`);
+      tabContents.forEach(content => content.classList.add('hidden'));
+      tabButtons.forEach(btn => btn.classList.remove('bg-blue-500', 'text-white'));
+      tabButtons.forEach(btn => btn.classList.add('bg-gray-200', 'dark:bg-gray-600'));
+      document.getElementById(`${tabName}-${phase}`).classList.remove('hidden');
+      event.target.classList.remove('bg-gray-200', 'dark:bg-gray-600');
+      event.target.classList.add('bg-blue-500', 'text-white');
+    }
+
+    function updateChecklist(phase, item, event) {
+      if (!userProgress[phase]) userProgress[phase] = {};
+      userProgress[phase][item] = event.target.checked;
+      localStorage.setItem('progress', JSON.stringify(userProgress));
+      updateProgress();
+      updateAchievements();
+    }
+
+    function updateProgress() {
+      const totalItems = roadmap.reduce((acc, phase) => acc + phase.checklist.length, 0);
+      const completed = Object.values(userProgress).flatMap(Object.values).filter(Boolean).length;
+      const percentage = (completed / totalItems) * 100;
+      document.getElementById('progressFill').style.width = `${percentage}%`;
+      document.getElementById('progressText').textContent = `${completed}/${totalItems} tasks completed (${Math.round(percentage)}%)`;
+    }
+
+    function updateAchievements() {
+      roadmap.forEach(phase => {
+        const phaseProgress = userProgress[phase.phase] || {};
+        const allChecked = phase.checklist.every(item => phaseProgress[item]);
+        const phaseCard = document.getElementById('phase' + phase.phase);
+        let badge = phaseCard.querySelector('.achievement-badge');
+        if (allChecked) {
+          if (!badge) {
+            badge = document.createElement('span');
+            badge.className = 'achievement-badge bg-green-500 text-white px-3 py-1 rounded-full ml-4';
+            badge.textContent = 'Achievement Unlocked!';
+            phaseCard.querySelector('div.flex').appendChild(badge);
+          }
+        } else {
+          if (badge) badge.remove();
+        }
+      });
+    }
+
+    function downloadPDF(phase) {
+      // Placeholder for PDF download functionality
+      alert(`Downloading PDF for Phase ${phase}...`);
+    }
+
+    function toggleTheme() {
+      const htmlEl = document.documentElement;
+      if (htmlEl.classList.contains('dark')) {
+        htmlEl.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        htmlEl.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    function applySavedTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    function setupIntersectionObserver() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('opacity-100', 'translate-y-0');
+          }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('section').forEach(card => {
+        card.classList.add('opacity-0', 'translate-y-5', 'transition', 'duration-500');
+        observer.observe(card);
+      });
+    }
+
+    function setupSearch() {
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        document.querySelectorAll('section').forEach(card => {
+          const text = card.textContent.toLowerCase();
+          card.style.display = text.includes(searchTerm) ? 'block' : 'none';
+        });
+      });
+    }
+
+    function scrollToPhase(phase) {
+      document.getElementById(`phase${phase}`).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Initialize the application
+    init();
+  </script>
+</body>
+</html>
