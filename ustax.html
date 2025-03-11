@@ -2,10 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>US Tax Evaluation Tool</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USA Tax Calculator | Federal & State Income Tax Estimates - DPAL</title>
+  <meta name="description" content="Calculate your USA federal & state income tax with DPAL. Estimate your tax refund, find deductions, and access tax resources for all states.">
+  <meta name="keywords" content="USA tax calculator, federal income tax, state tax calculator, tax refund estimator, income tax calculation, tax deductions, online tax assessment, tax preparation, tax filing, IRS forms, Alabama income tax calculator, Alaska income tax calculator, Arizona income tax calculator, Arkansas income tax calculator, California income tax calculator, Colorado income tax calculator, Connecticut income tax calculator, Delaware income tax calculator, Florida income tax calculator, Georgia income tax calculator, Hawaii income tax calculator, Idaho income tax calculator, Illinois income tax calculator, Indiana income tax calculator, Iowa income tax calculator, Kansas income tax calculator, Kentucky income tax calculator, Louisiana income tax calculator, Maine income tax calculator, Maryland income tax calculator, Massachusetts income tax calculator, Michigan income tax calculator, Minnesota income tax calculator, Mississippi income tax calculator, Missouri income tax calculator, Montana income tax calculator, Nebraska income tax calculator, Nevada income tax calculator, New Hampshire income tax calculator, New Jersey income tax calculator, New Mexico income tax calculator, New York income tax calculator, North Carolina income tax calculator, North Dakota income tax calculator, Ohio income tax calculator, Oklahoma income tax calculator, Oregon income tax calculator, Pennsylvania income tax calculator, Rhode Island income tax calculator, South Carolina income tax calculator, South Dakota income tax calculator, Tennessee income tax calculator, Texas income tax calculator, Utah income tax calculator, Vermont income tax calculator, Virginia income tax calculator, Washington income tax calculator, West Virginia income tax calculator, Wisconsin income tax calculator, Wyoming income tax calculator, Alabama tax rates, Alaska tax rates, Arizona tax rates, Arkansas tax rates, California tax rates, Colorado tax rates, Connecticut tax rates, Delaware tax rates, Florida tax rates, Georgia tax rates, Hawaii tax rates, Idaho tax rates, Illinois tax rates, Indiana tax rates, Iowa tax rates, Kansas tax rates, Kentucky tax rates, Louisiana tax rates, Maine tax rates, Maryland tax rates, Massachusetts tax rates, Michigan tax rates, Minnesota tax rates, Mississippi tax rates, Missouri tax rates, Montana tax rates, Nebraska tax rates, Nevada tax rates, New Hampshire tax rates, New Jersey tax rates, New Mexico tax rates, New York tax rates, North Carolina tax rates, North Dakota tax rates, Ohio tax rates, Oklahoma tax rates, Oregon tax rates, Pennsylvania tax rates, Rhode Island tax rates, South Carolina tax rates, South Dakota tax rates, Tennessee tax rates, Texas tax rates, Utah tax rates, Vermont tax rates, Virginia tax rates, Washington tax rates, West Virginia tax rates, Wisconsin tax rates, Wyoming tax rates, how to calculate income tax, tax liability, tax software, tax advice, DPAL tax, DPAL calculator">
+  <meta name="author" content="DPAL">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="USA Tax Calculator | Federal & State Income Tax Estimates - DPAL">
+  <meta property="og:description" content="Get precise tax calculations for federal & state income tax in the USA for 2025. Estimate your refund, find deductions, and access enhanced tax logic with DPAL.">
+  <meta property="og:url" content="https://dpal.site/ustax.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="USA Tax Calculator | Federal & State Income Tax Estimates - DPAL">
+  <meta name="twitter:description" content="Calculate your USA federal & state income tax for 2025, estimate your refund, and find deductions. Updated tax logic from DPAL for all US states.">
+  <link rel="canonical" href="https://dpal.site/ustax.html">
+  <link rel="stylesheet" href="styles.css">
   <!-- Chart.js CDN for the visual chart -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Include jsPDF and html2canvas libraries for PDF download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <style>
     /* Global Styles */
     body {
@@ -110,6 +126,13 @@
       color: #856404;
       font-size: 14px;
     }
+    /* Responsive adjustments for the pie chart */
+    #taxChart {
+      max-width: 400px;
+      max-height: 400px;
+      margin: 20px auto;
+      display: block;
+    }
     @media(max-width: 600px) {
       form {
         flex-direction: column;
@@ -119,8 +142,12 @@
 </head>
 <body>
   <div class="container">
+    <!-- Home Button -->
+    <div style="text-align: right; margin-bottom: 10px;">
+      <button type="button" onclick="location.href='index.html'">Home</button>
+    </div>
     <h1>US Tax Evaluation Tool</h1>
-    <p>This tool calculates your federal and state tax liabilities based on up‑to‑date US tax law and displays a detailed breakdown along with a visual chart.</p>
+    <p>This tool calculates your federal and state tax liabilities for 2025 based on the latest tax laws and displays a detailed breakdown along with a visual chart.</p>
     <div id="errorMsg" class="error" style="display: none;"></div>
     <form id="taxForm">
       <div class="form-group">
@@ -140,7 +167,7 @@
         <input type="number" id="income" placeholder="Enter your annual income" step="0.01">
       </div>
       <div class="form-group">
-        <label for="deductions">Deductions ($)</label>
+        <label for="deductions">Deductions ($) (Leave blank for standard deduction)</label>
         <input type="number" id="deductions" placeholder="Enter your total deductions" step="0.01">
       </div>
       <div class="form-group">
@@ -212,14 +239,17 @@
       <h2>Tax Evaluation Report</h2>
       <div id="reportContent">Your detailed tax evaluation will appear here...</div>
       <div id="reportTableContainer"></div>
-      <canvas id="taxChart" style="max-width:100%; margin-top:20px;"></canvas>
+      <canvas id="taxChart"></canvas>
     </div>
+    
+    <!-- Download Buttons -->
     <div style="text-align:center; margin-top:20px;">
-      <button type="button" onclick="downloadReport()">Download Report</button>
+      <button type="button" onclick="downloadReport()">Download Report (TXT)</button>
+      <button type="button" onclick="downloadPDF()">Download Report (PDF)</button>
     </div>
     
     <div class="disclaimer">
-      <strong>Disclaimer:</strong> This tool is provided for informational purposes only and reflects approximate tax calculations based on current US tax law. All data is subject to change. We are not responsible for any errors or discrepancies in the calculations. Always consult a professional for official tax advice.
+      <strong>Disclaimer:</strong> This tool is provided for informational purposes only and reflects approximate tax calculations based on the latest available US tax law for 2025. Always consult a professional for official tax advice.
     </div>
     
   </div>
@@ -229,61 +259,14 @@
   </div>
   
   <script>
-    // Updated state tax rates (approximate values for demonstration as of 2025)
-    const stateTaxRates = {
-      "Alabama": 0.05,
-      "Alaska": 0,
-      "Arizona": 0.045,
-      "Arkansas": 0.06,
-      "California": 0.093,
-      "Colorado": 0.0455,
-      "Connecticut": 0.0699,
-      "Delaware": 0.066,
-      "Florida": 0,
-      "Georgia": 0.0575,
-      "Hawaii": 0.08,
-      "Idaho": 0.069,
-      "Illinois": 0.0495,
-      "Indiana": 0.0323,
-      "Iowa": 0.085,
-      "Kansas": 0.057,
-      "Kentucky": 0.05,
-      "Louisiana": 0.06,
-      "Maine": 0.0715,
-      "Maryland": 0.0575,
-      "Massachusetts": 0.05,
-      "Michigan": 0.0425,
-      "Minnesota": 0.0785,
-      "Mississippi": 0.05,
-      "Missouri": 0.054,
-      "Montana": 0.06,
-      "Nebraska": 0.068,
-      "Nevada": 0,
-      "New Hampshire": 0,
-      "New Jersey": 0.0637,
-      "New Mexico": 0.049,
-      "New York": 0.0685,
-      "North Carolina": 0.05375,
-      "North Dakota": 0.02,
-      "Ohio": 0.04997,
-      "Oklahoma": 0.05,
-      "Oregon": 0.099,
-      "Pennsylvania": 0.0307,
-      "Rhode Island": 0.0599,
-      "South Carolina": 0.07,
-      "South Dakota": 0,
-      "Tennessee": 0,
-      "Texas": 0,
-      "Utah": 0.0495,
-      "Vermont": 0.089,
-      "Virginia": 0.0575,
-      "Washington": 0,
-      "West Virginia": 0.065,
-      "Wisconsin": 0.0765,
-      "Wyoming": 0
+    // Standard Deductions for 2025 (example values)
+    const standardDeductions = {
+      single: 13850,
+      married: 27700,
+      hoh: 20800
     };
 
-    // Updated federal tax brackets for 2023 (approximate values)
+    // Updated federal tax brackets for 2025 (example approximate values)
     const federalBrackets = {
       single: [
         { rate: 0.10, min: 0, max: 11000 },
@@ -314,12 +297,88 @@
       ]
     };
 
+    // Flat state tax rates for states with a flat tax (if no progressive brackets are defined)
+    const flatStateTaxRates = {
+      "Alabama": 0.05,
+      "Alaska": 0,
+      "Arizona": 0.045,
+      "Arkansas": 0.06,
+      "Colorado": 0.0455,
+      "Delaware": 0.066,
+      "Florida": 0,
+      "Georgia": 0.0575,
+      "Hawaii": 0.08,
+      "Idaho": 0.069,
+      "Illinois": 0.0495,
+      "Indiana": 0.0323,
+      "Iowa": 0.085,
+      "Kansas": 0.057,
+      "Kentucky": 0.05,
+      "Louisiana": 0.06,
+      "Maine": 0.0715,
+      "Maryland": 0.0575,
+      "Massachusetts": 0.05,
+      "Michigan": 0.0425,
+      "Minnesota": 0.0785,
+      "Mississippi": 0.05,
+      "Missouri": 0.054,
+      "Montana": 0.06,
+      "Nebraska": 0.068,
+      "Nevada": 0,
+      "New Hampshire": 0,
+      "New Jersey": 0.0637,
+      "North Carolina": 0.05375,
+      "North Dakota": 0.02,
+      "Ohio": 0.04997,
+      "Oklahoma": 0.05,
+      "Oregon": 0.099,
+      "Pennsylvania": 0.0307,
+      "Rhode Island": 0.0599,
+      "South Carolina": 0.07,
+      "South Dakota": 0,
+      "Tennessee": 0,
+      "Texas": 0,
+      "Utah": 0.0495,
+      "Vermont": 0.089,
+      "Virginia": 0.0575,
+      "Washington": 0,
+      "West Virginia": 0.065,
+      "Wisconsin": 0.0765,
+      "Wyoming": 0
+    };
+
+    // Progressive state tax brackets for states that use a progressive tax system
+    const stateTaxBrackets = {
+      "California": [
+        { rate: 0.01, min: 0, max: 8809 },
+        { rate: 0.02, min: 8809, max: 20883 },
+        { rate: 0.04, min: 20883, max: 32960 },
+        { rate: 0.06, min: 32960, max: 45753 },
+        { rate: 0.08, min: 45753, max: 57824 },
+        { rate: 0.093, min: 57824, max: 295373 },
+        { rate: 0.103, min: 295373, max: 354445 },
+        { rate: 0.113, min: 354445, max: 590742 },
+        { rate: 0.123, min: 590742, max: Infinity }
+      ],
+      "New York": [
+        { rate: 0.04, min: 0, max: 8500 },
+        { rate: 0.045, min: 8500, max: 11700 },
+        { rate: 0.0525, min: 11700, max: 13900 },
+        { rate: 0.059, min: 13900, max: 21400 },
+        { rate: 0.0621, min: 21400, max: 80650 },
+        { rate: 0.0649, min: 80650, max: 215400 },
+        { rate: 0.0685, min: 215400, max: 1077550 },
+        { rate: 0.0882, min: 1077550, max: Infinity }
+      ]
+      // Additional states with progressive brackets can be added here
+    };
+
     // Validate inputs
     function validateInputs(name, income, deductions, state) {
       let errors = [];
       if (!name) errors.push("Name is required.");
       if (isNaN(income) || income <= 0) errors.push("Annual income must be a positive number.");
-      if (isNaN(deductions) || deductions < 0) errors.push("Deductions cannot be negative.");
+      if (deductions < 0) errors.push("Deductions cannot be negative.");
       if (deductions > income) errors.push("Deductions cannot exceed annual income.");
       if (!state) errors.push("Please select your state.");
       return errors;
@@ -335,11 +394,16 @@
       const name = document.getElementById('name').value.trim();
       const status = document.getElementById('status').value;
       const income = parseFloat(document.getElementById('income').value);
-      const deductions = parseFloat(document.getElementById('deductions').value);
+      let deductions = parseFloat(document.getElementById('deductions').value);
       const state = document.getElementById('state').value;
       const additional = document.getElementById('additional').value.trim();
       
-      // Validate
+      // If deductions are not provided, use standard deduction for the selected filing status
+      if (isNaN(deductions)) {
+        deductions = standardDeductions[status];
+      }
+      
+      // Validate inputs
       const errors = validateInputs(name, income, deductions, state);
       if (errors.length > 0) {
         document.getElementById('errorMsg').innerText = errors.join("\n");
@@ -353,13 +417,11 @@
       // Compute taxable income
       const taxableIncome = Math.max(0, income - deductions);
       
-      // Select federal brackets based on filing status
-      const brackets = federalBrackets[status];
-      
-      // Calculate federal tax breakdown
+      // Calculate federal tax breakdown using progressive brackets
       let federalTax = 0;
       let breakdownData = [];
-      brackets.forEach((bracket) => {
+      const fedBrackets = federalBrackets[status];
+      fedBrackets.forEach((bracket) => {
         if (taxableIncome > bracket.min) {
           const taxableInBracket = Math.min(taxableIncome, bracket.max) - bracket.min;
           const taxInBracket = taxableInBracket * bracket.rate;
@@ -373,9 +435,21 @@
         }
       });
       
-      // Calculate state tax
-      const stateTaxRate = stateTaxRates[state] !== undefined ? stateTaxRates[state] : 0.05;
-      const stateTax = taxableIncome * stateTaxRate;
+      // Calculate state tax: use progressive brackets if available; otherwise, use a flat rate.
+      let stateTax = 0;
+      if (stateTaxBrackets[state]) {
+        const stateBrackets = stateTaxBrackets[state];
+        stateBrackets.forEach((bracket) => {
+          if (taxableIncome > bracket.min) {
+            const taxableInBracket = Math.min(taxableIncome, bracket.max) - bracket.min;
+            stateTax += taxableInBracket * bracket.rate;
+          }
+        });
+      } else {
+        const rate = flatStateTaxRates[state] !== undefined ? flatStateTaxRates[state] : 0.05;
+        stateTax = taxableIncome * rate;
+      }
+      
       const totalTax = federalTax + stateTax;
       
       // Generate report text
@@ -392,12 +466,17 @@
       report += 'Federal Tax Breakdown:\n';
       breakdownData.forEach((row, i) => {
         report += `Bracket ${i+1} (${row.bracket}) at ${row.rate}:\n`;
-        report += `  Taxable Amount: ${row.taxable}\n  Tax: ${row.tax}\n\n`;
+        report += `  Taxable Amount: ${row.tax}\n  Tax: ${row.tax}\n\n`;
       });
       report += `Total Federal Tax: $${federalTax.toFixed(2)}\n\n`;
       report += 'State Tax Calculation:\n';
       report += `State Selected: ${state}\n`;
-      report += `State Tax Rate: ${(stateTaxRate * 100).toFixed(2)}%\n`;
+      if (stateTaxBrackets[state]) {
+        report += `Applied Progressive Brackets for ${state}\n`;
+      } else {
+        const rate = flatStateTaxRates[state] !== undefined ? flatStateTaxRates[state] : 0.05;
+        report += `Flat Tax Rate: ${(rate * 100).toFixed(2)}%\n`;
+      }
       report += `State Tax: $${stateTax.toFixed(2)}\n\n`;
       report += 'Summary:\n';
       report += `Total Estimated Tax (Federal + State): $${totalTax.toFixed(2)}\n\n`;
@@ -406,21 +485,26 @@
       }
       report += 'Disclaimer: This tool is provided for informational purposes only and is not a substitute for professional tax advice. We are not responsible for any errors or discrepancies in these calculations.\n';
       
-      // Display report text
+      // Display the report
       document.getElementById('reportContent').innerText = report;
       
-      // Create breakdown table
+      // Create breakdown table for a visual summary
       let tableHTML = '<table><thead><tr><th>Bracket Range</th><th>Tax Rate</th><th>Taxable Amount</th><th>Tax Amount</th></tr></thead><tbody>';
       breakdownData.forEach(row => {
         tableHTML += `<tr><td>${row.bracket}</td><td>${row.rate}</td><td>${row.taxable}</td><td>${row.tax}</td></tr>`;
       });
       tableHTML += `<tr><td colspan="3"><strong>Total Federal Tax</strong></td><td><strong>$${federalTax.toFixed(2)}</strong></td></tr>`;
-      tableHTML += `<tr><td colspan="3"><strong>State Tax (${(stateTaxRate * 100).toFixed(2)}%)</strong></td><td><strong>$${stateTax.toFixed(2)}</strong></td></tr>`;
+      if (stateTaxBrackets[state]) {
+        tableHTML += `<tr><td colspan="3"><strong>State Tax (${state} Progressive)</strong></td><td><strong>$${stateTax.toFixed(2)}</strong></td></tr>`;
+      } else {
+        const rate = flatStateTaxRates[state] !== undefined ? flatStateTaxRates[state] : 0.05;
+        tableHTML += `<tr><td colspan="3"><strong>State Tax (${(rate * 100).toFixed(2)}% Flat)</strong></td><td><strong>$${stateTax.toFixed(2)}</strong></td></tr>`;
+      }
       tableHTML += `<tr><td colspan="3"><strong>Total Tax</strong></td><td><strong>$${totalTax.toFixed(2)}</strong></td></tr>`;
       tableHTML += '</tbody></table>';
       document.getElementById('reportTableContainer').innerHTML = tableHTML;
       
-      // Create/update Chart.js pie chart for tax distribution
+      // Create/update the Chart.js pie chart to show tax distribution
       const chartData = {
         labels: ['Federal Tax', 'State Tax'],
         datasets: [{
@@ -438,6 +522,7 @@
           data: chartData,
           options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
               legend: { position: 'bottom' },
               title: { display: true, text: 'Tax Distribution' }
@@ -446,11 +531,11 @@
         });
       }
       
-      // Store report for download
+      // Store the report for download
       window.taxReport = report;
     }
     
-    // Download report as text file
+    // Function to download the report as a text file
     function downloadReport() {
       if (!window.taxReport) {
         alert('Please evaluate your tax first before downloading the report.');
@@ -468,6 +553,31 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }
+    
+    // Function to download the entire result section (including chart) as a PDF file
+    function downloadPDF() {
+      const resultElement = document.getElementById("result");
+      html2canvas(resultElement).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgProps = pdf.getImageProperties(imgData);
+        const imgWidth = pdfWidth;
+        const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        pdf.save('TaxReport.pdf');
+      });
+    }
+  </script>
+  
+  <!-- Google Tag Manager -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9KZ60761N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K9KZ60761N');
   </script>
 </body>
 </html>
