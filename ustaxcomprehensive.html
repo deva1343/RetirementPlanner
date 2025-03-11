@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>2025 Comprehensive Tax Planning & Analysis Tool | Estimate Federal & State Taxes (All States & Major Cities) | DPAL</title>
+<meta name="description" content="Need accurate 2025 tax planning? Use our comprehensive tool to estimate federal and state taxes for all US states and major cities. Analyze all income types, deductions, and credits. Get a detailed tax breakdown, explore tax saving strategies, and simplify your tax preparation. Start your tax analysis today! Covers California (Los Angeles, San Francisco), New York (NYC), Texas (Houston, Dallas), Florida (Miami, Orlando), Illinois (Chicago), and all other states." />
+<meta name="keywords" content="2025 tax planning tool, comprehensive tax analysis, federal and state tax estimator, detailed tax breakdown 2025, calculate self-employment taxes online, investment income tax analysis, maximize tax credits 2025, compare itemized vs standard deduction, accurate tax estimation 2025, tax preparation assistance, online tax planning software, how to calculate 2025 taxes, free tax analysis tool, 2025 tax liability calculation, understand your 2025 tax obligations, California state taxes, New York state taxes, Texas state taxes, Florida state taxes, Illinois state taxes, Los Angeles tax calculator, San Francisco tax calculator, New York City tax calculator, Houston tax calculator, Dallas tax calculator, Miami tax calculator, Orlando tax calculator, Chicago tax calculator, all state tax calculator, all city tax calculator" />
+<link rel="canonical" href="https://dpal.site/ustaxcomprehensive.html" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- jsPDF and html2canvas for PDF download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      margin-bottom: 1.5rem;
+    }
+    #taxChart {
+      max-width: 400px;
+      max-height: 400px;
+      margin: 20px auto;
+      display: block;
+    }
+    pre {
+      white-space: pre-wrap;
+      background: #f1f1f1;
+      padding: 1rem;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="text-center mb-4">
+      <h1>Comprehensive Tax Evaluation Tool 2025</h1>
+      <p class="lead">Enter all your income sources, deductions, and credits to get a detailed tax breakdown.</p>
+    </div>
+
+    <!-- Tax Form -->
+    <div class="card shadow">
+      <div class="card-body">
+        <form id="taxForm">
+          <div class="row g-3">
+            <!-- Personal Information -->
+            <div class="col-md-6">
+              <label for="fullName" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
+            </div>
+            <div class="col-md-6">
+              <label for="filingStatus" class="form-label">Filing Status</label>
+              <select id="filingStatus" class="form-select" required>
+                <option value="" selected disabled>Choose...</option>
+                <option value="single">Single</option>
+                <option value="married">Married Filing Jointly</option>
+                <option value="hoh">Head of Household</option>
+              </select>
+            </div>
+
+            <!-- Income Section -->
+            <div class="col-12">
+              <h5 class="mt-3">Income</h5>
+              <hr>
+            </div>
+            <div class="col-md-6">
+              <label for="w2Income" class="form-label">W-2 Income (Wages)</label>
+              <input type="number" class="form-control" id="w2Income" placeholder="e.g., 50000" step="0.01" min="0">
+            </div>
+            <div class="col-md-6">
+              <label for="selfEmpIncome" class="form-label">Self-Employment Income</label>
+              <input type="number" class="form-control" id="selfEmpIncome" placeholder="e.g., 20000" step="0.01" min="0">
+            </div>
+            <div class="col-md-6">
+              <label for="investmentIncome" class="form-label">Investment Income</label>
+              <input type="number" class="form-control" id="investmentIncome" placeholder="e.g., 5000" step="0.01" min="0">
+            </div>
+            <div class="col-md-6">
+              <label for="otherIncome" class="form-label">Other Income</label>
+              <input type="number" class="form-control" id="otherIncome" placeholder="e.g., 3000" step="0.01" min="0">
+            </div>
+
+            <!-- Deductions Section -->
+            <div class="col-12">
+              <h5 class="mt-3">Deductions</h5>
+              <hr>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Deduction Type</label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="deductionType" id="standardDeduction" value="standard" checked>
+                  <label class="form-check-label" for="standardDeduction">Standard Deduction</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="deductionType" id="itemizedDeduction" value="itemized">
+                  <label class="form-check-label" for="itemizedDeduction">Itemized Deduction</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6" id="itemizedDeductionContainer" style="display:none;">
+              <label for="itemizedAmount" class="form-label">Itemized Deduction Amount ($)</label>
+              <input type="number" class="form-control" id="itemizedAmount" placeholder="Enter itemized deductions" step="0.01" min="0">
+            </div>
+
+            <!-- Credits Section -->
+            <div class="col-12">
+              <h5 class="mt-3">Tax Credits</h5>
+              <hr>
+            </div>
+            <div class="col-md-4">
+              <label for="childCredit" class="form-label">Child Tax Credit ($)</label>
+              <input type="number" class="form-control" id="childCredit" placeholder="e.g., 2000" step="0.01" min="0" value="0">
+            </div>
+            <div class="col-md-4">
+              <label for="educationCredit" class="form-label">Education Credit ($)</label>
+              <input type="number" class="form-control" id="educationCredit" placeholder="e.g., 1000" step="0.01" min="0" value="0">
+            </div>
+            <div class="col-md-4">
+              <label for="energyCredit" class="form-label">Energy Credit ($)</label>
+              <input type="number" class="form-control" id="energyCredit" placeholder="e.g., 500" step="0.01" min="0" value="0">
+            </div>
+
+            <!-- State Selection -->
+            <div class="col-md-6">
+              <label for="state" class="form-label">Select Your State</label>
+              <select id="state" class="form-select" required>
+                <option value="" selected disabled>Choose State...</option>
+                <option value="California">California</option>
+                <option value="New York">New York</option>
+                <option value="Texas">Texas</option>
+                <option value="Florida">Florida</option>
+                <option value="Illinois">Illinois</option>
+                <option value="Pennsylvania">Pennsylvania</option>
+                <!-- Add more states as needed -->
+              </select>
+            </div>
+
+            <!-- Additional Information -->
+            <div class="col-12">
+              <label for="additionalInfo" class="form-label">Additional Information</label>
+              <textarea class="form-control" id="additionalInfo" rows="3" placeholder="Any extra notes..."></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="col-12 text-center">
+              <button type="button" class="btn btn-primary btn-lg mt-3" onclick="calculateTax()">Evaluate Tax</button>
+            </div>
+          </div>
+        </form>
+        <!-- Error Message -->
+        <div id="errorMsg" class="alert alert-danger mt-3" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Result Section with Tabs -->
+    <div class="card shadow result-section" id="resultSection" style="display:none;">
+      <div class="card-body">
+        <h3 class="card-title text-center">Detailed Tax Evaluation Report</h3>
+        <div class="mb-4">
+          <ul class="nav nav-tabs" id="resultTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab" aria-controls="summary" aria-selected="true">Summary</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="federal-tab" data-bs-toggle="tab" data-bs-target="#federal" type="button" role="tab" aria-controls="federal" aria-selected="false">Federal Breakdown</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="state-tab" data-bs-toggle="tab" data-bs-target="#state" type="button" role="tab" aria-controls="state" aria-selected="false">State Breakdown</button>
+            </li>
+          </ul>
+          <div class="tab-content" id="resultTabContent">
+            <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+              <div id="summaryTableContainer" class="mt-3"></div>
+            </div>
+            <div class="tab-pane fade" id="federal" role="tabpanel" aria-labelledby="federal-tab">
+              <div id="federalTableContainer" class="mt-3"></div>
+            </div>
+            <div class="tab-pane fade" id="state" role="tabpanel" aria-labelledby="state-tab">
+              <div id="stateTableContainer" class="mt-3"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Optional Detailed Report Text -->
+        <div id="reportContent" class="mb-3" style="display:none;"></div>
+        <!-- Pie Chart for Tax Distribution -->
+        <div class="text-center">
+          <canvas id="taxChart"></canvas>
+        </div>
+        <!-- Download Buttons -->
+        <div class="text-center mt-3">
+          <button class="btn btn-secondary me-2" onclick="downloadReport()">Download Report (TXT)</button>
+          <button class="btn btn-secondary" onclick="downloadPDF()">Download Report (PDF)</button>
+        </div>
+        <!-- Disclaimer -->
+        <div class="alert alert-warning mt-4" role="alert">
+          <strong>Disclaimer:</strong> This tool is provided for informational purposes only and does not constitute professional tax advice. All calculations are estimates based on the 2025 tax guidelines and may not reflect individual circumstances.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Standard Deductions for 2025 (example values)
+    const standardDeductions = {
+      single: 13850,
+      married: 27700,
+      hoh: 20800
+    };
+
+    // Federal tax brackets for 2025 (simplified progressive brackets)
+    const federalBrackets = {
+      single: [
+        { rate: 0.10, min: 0, max: 11000 },
+        { rate: 0.12, min: 11000, max: 44725 },
+        { rate: 0.22, min: 44725, max: 95375 },
+        { rate: 0.24, min: 95375, max: 182100 },
+        { rate: 0.32, min: 182100, max: 231250 },
+        { rate: 0.35, min: 231250, max: 578125 },
+        { rate: 0.37, min: 578125, max: Infinity }
+      ],
+      married: [
+        { rate: 0.10, min: 0, max: 22000 },
+        { rate: 0.12, min: 22000, max: 89450 },
+        { rate: 0.22, min: 89450, max: 190750 },
+        { rate: 0.24, min: 190750, max: 364200 },
+        { rate: 0.32, min: 364200, max: 462500 },
+        { rate: 0.35, min: 462500, max: 693750 },
+        { rate: 0.37, min: 693750, max: Infinity }
+      ],
+      hoh: [
+        { rate: 0.10, min: 0, max: 15700 },
+        { rate: 0.12, min: 15700, max: 59850 },
+        { rate: 0.22, min: 59850, max: 95350 },
+        { rate: 0.24, min: 95335, max: 182100 },
+        { rate: 0.32, min: 182100, max: 231250 },
+        { rate: 0.35, min: 231250, max: 578100 },
+        { rate: 0.37, min: 578100, max: Infinity }
+      ]
+    };
+
+    // Flat state tax rates (for states without progressive brackets)
+    const flatStateTaxRates = {
+      Texas: 0.0,
+      Florida: 0.0,
+      Illinois: 0.0495,
+      Pennsylvania: 0.0307
+    };
+
+    // Progressive state tax brackets for some states (example: California and New York)
+    const stateTaxBrackets = {
+      "California": [
+        { rate: 0.01, min: 0, max: 8809 },
+        { rate: 0.02, min: 8809, max: 20883 },
+        { rate: 0.04, min: 20883, max: 32960 },
+        { rate: 0.06, min: 32960, max: 45753 },
+        { rate: 0.08, min: 45753, max: 57824 },
+        { rate: 0.093, min: 57824, max: 295373 },
+        { rate: 0.103, min: 295373, max: 354445 },
+        { rate: 0.113, min: 354445, max: 590742 },
+        { rate: 0.123, min: 590742, max: Infinity }
+      ],
+      "New York": [
+        { rate: 0.04, min: 0, max: 8500 },
+        { rate: 0.045, min: 8500, max: 11700 },
+        { rate: 0.0525, min: 11700, max: 13900 },
+        { rate: 0.059, min: 13900, max: 21400 },
+        { rate: 0.0621, min: 21400, max: 80650 },
+        { rate: 0.0649, min: 80650, max: 215400 },
+        { rate: 0.0685, min: 215400, max: 1077550 },
+        { rate: 0.0882, min: 1077550, max: Infinity }
+      ]
+    };
+
+    // Toggle itemized deduction field based on selection
+    document.getElementsByName("deductionType").forEach(radio => {
+      radio.addEventListener("change", function() {
+        document.getElementById("itemizedDeductionContainer").style.display = (this.value === "itemized") ? "block" : "none";
+      });
+    });
+
+    // Main function: Calculate tax based on inputs
+    function calculateTax() {
+      // Hide previous errors and result section
+      document.getElementById('errorMsg').style.display = 'none';
+      document.getElementById('resultSection').style.display = 'none';
+
+      // Retrieve personal details
+      const fullName = document.getElementById("fullName").value.trim();
+      const filingStatus = document.getElementById("filingStatus").value;
+      if (!fullName || !filingStatus) {
+        showError("Please enter your full name and select a filing status.");
+        return;
+      }
+
+      // Retrieve income fields (default to 0 if empty)
+      const w2Income = parseFloat(document.getElementById("w2Income").value) || 0;
+      const selfEmpIncome = parseFloat(document.getElementById("selfEmpIncome").value) || 0;
+      const investmentIncome = parseFloat(document.getElementById("investmentIncome").value) || 0;
+      const otherIncome = parseFloat(document.getElementById("otherIncome").value) || 0;
+      const totalIncome = w2Income + selfEmpIncome + investmentIncome + otherIncome;
+
+      // Determine deduction amount based on type
+      const deductionType = document.querySelector('input[name="deductionType"]:checked').value;
+      let deductions = 0;
+      if (deductionType === "itemized") {
+        deductions = parseFloat(document.getElementById("itemizedAmount").value);
+        if (isNaN(deductions) || deductions < 0) {
+          showError("Please enter a valid itemized deduction amount.");
+          return;
+        }
+      } else {
+        deductions = standardDeductions[filingStatus];
+      }
+      if (deductions > totalIncome) {
+        showError("Deductions cannot exceed total income.");
+        return;
+      }
+
+      // Calculate taxable income
+      const taxableIncome = Math.max(0, totalIncome - deductions);
+
+      // Calculate Federal Tax using progressive brackets
+      let federalTax = 0;
+      let fedBreakdown = [];
+      federalBrackets[filingStatus].forEach((bracket) => {
+        if (taxableIncome > bracket.min) {
+          const incomeInBracket = Math.min(taxableIncome, bracket.max) - bracket.min;
+          const taxForBracket = incomeInBracket * bracket.rate;
+          federalTax += taxForBracket;
+          fedBreakdown.push({
+            range: `${bracket.min} - ${bracket.max === Infinity ? "∞" : bracket.max}`,
+            rate: (bracket.rate * 100).toFixed(2) + "%",
+            taxable: incomeInBracket.toFixed(2),
+            tax: taxForBracket.toFixed(2)
+          });
+        }
+      });
+
+      // Calculate State Tax: use progressive brackets if available, else flat rate.
+      const state = document.getElementById("state").value;
+      if (!state) {
+        showError("Please select your state.");
+        return;
+      }
+      let stateTax = 0;
+      let stateBreakdown = [];
+      if (stateTaxBrackets[state]) {
+        stateTaxBrackets[state].forEach(bracket => {
+          if (taxableIncome > bracket.min) {
+            const incomeInBracket = Math.min(taxableIncome, bracket.max) - bracket.min;
+            const taxForBracket = incomeInBracket * bracket.rate;
+            stateTax += taxForBracket;
+            stateBreakdown.push({
+              range: `${bracket.min} - ${bracket.max === Infinity ? "∞" : bracket.max}`,
+              rate: (bracket.rate * 100).toFixed(2) + "%",
+              taxable: incomeInBracket.toFixed(2),
+              tax: taxForBracket.toFixed(2)
+            });
+          }
+        });
+      } else {
+        // Use flat rate if defined
+        const flatRate = (flatStateTaxRates[state] !== undefined) ? flatStateTaxRates[state] : 0.05;
+        stateTax = taxableIncome * flatRate;
+        stateBreakdown.push({
+          range: "All Income",
+          rate: (flatRate * 100).toFixed(2) + "%",
+          taxable: taxableIncome.toFixed(2),
+          tax: stateTax.toFixed(2)
+        });
+      }
+
+      // Calculate total credits from inputs
+      const childCredit = parseFloat(document.getElementById("childCredit").value) || 0;
+      const educationCredit = parseFloat(document.getElementById("educationCredit").value) || 0;
+      const energyCredit = parseFloat(document.getElementById("energyCredit").value) || 0;
+      const totalCredits = childCredit + educationCredit + energyCredit;
+
+      // Final tax liability: subtract non-refundable credits (cannot go below zero)
+      let finalTax = Math.max(0, federalTax + stateTax - totalCredits);
+
+      // Prepare a detailed report text (optional)
+      let report = `Comprehensive Tax Evaluation Report - 2025\n`;
+      report += `===========================================\n\n`;
+      report += `Name: ${fullName}\n`;
+      report += `Filing Status: ${filingStatus.charAt(0).toUpperCase() + filingStatus.slice(1)}\n\n`;
+      report += `--- Income Breakdown ---\n`;
+      report += `W-2 Income: $${w2Income.toFixed(2)}\n`;
+      report += `Self-Employment Income: $${selfEmpIncome.toFixed(2)}\n`;
+      report += `Investment Income: $${investmentIncome.toFixed(2)}\n`;
+      report += `Other Income: $${otherIncome.toFixed(2)}\n`;
+      report += `Total Income: $${totalIncome.toFixed(2)}\n\n`;
+      report += `--- Deductions ---\n`;
+      report += `Deduction Type: ${deductionType === "itemized" ? "Itemized" : "Standard"}\n`;
+      report += `Deduction Amount: $${deductions.toFixed(2)}\n\n`;
+      report += `Taxable Income: $${taxableIncome.toFixed(2)}\n\n`;
+      report += `--- Federal Tax ---\n`;
+      fedBreakdown.forEach((item, index) => {
+        report += `Bracket ${index + 1} (${item.range}) @ ${item.rate} - Taxable: $${item.taxable}, Tax: $${item.tax}\n`;
+      });
+      report += `Total Federal Tax: $${federalTax.toFixed(2)}\n\n`;
+      report += `--- State Tax (${state}) ---\n`;
+      stateBreakdown.forEach((item, index) => {
+        report += `Bracket ${index + 1} (${item.range}) @ ${item.rate} - Taxable: $${item.taxable}, Tax: $${item.tax}\n`;
+      });
+      report += `Total State Tax: $${stateTax.toFixed(2)}\n\n`;
+      report += `--- Credits ---\n`;
+      report += `Child Tax Credit: $${childCredit.toFixed(2)}\n`;
+      report += `Education Credit: $${educationCredit.toFixed(2)}\n`;
+      report += `Energy Credit: $${energyCredit.toFixed(2)}\n`;
+      report += `Total Credits: $${totalCredits.toFixed(2)}\n\n`;
+      report += `Final Tax Liability (after credits): $${finalTax.toFixed(2)}\n\n`;
+      report += `Additional Information: ${document.getElementById("additionalInfo").value.trim() || "None"}\n`;
+      report += `Report Generated: ${new Date().toLocaleString()}\n`;
+
+      // Update the detailed text report (optional)
+      document.getElementById("reportContent").innerText = report;
+      document.getElementById("reportContent").style.display = "block";
+
+      // Build separate tables for Summary, Federal Breakdown, and State Breakdown
+      displaySummaryTable(totalIncome, deductions, taxableIncome, federalTax, stateTax, totalCredits, finalTax);
+      displayFederalTable(fedBreakdown);
+      displayStateTable(stateBreakdown);
+
+      // Create/update the Chart.js pie chart for tax distribution
+      const chartData = {
+        labels: ["Federal Tax", "State Tax"],
+        datasets: [{
+          data: [federalTax.toFixed(2), stateTax.toFixed(2)],
+          backgroundColor: ['#007bff', '#dc3545']
+        }]
+      };
+      const ctx = document.getElementById("taxChart").getContext("2d");
+      if (window.taxChartInstance) {
+        window.taxChartInstance.data = chartData;
+        window.taxChartInstance.update();
+      } else {
+        window.taxChartInstance = new Chart(ctx, {
+          type: "pie",
+          data: chartData,
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: "bottom" },
+              title: { display: true, text: "Tax Distribution" }
+            }
+          }
+        });
+      }
+
+      // Show the result section
+      document.getElementById("resultSection").style.display = "block";
+      window.taxReport = report;
+    }
+
+    // Display Summary Table
+    function displaySummaryTable(totalIncome, deductions, taxableIncome, federalTax, stateTax, totalCredits, finalTax) {
+      let html = `
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>Item</th>
+              <th>Amount ($)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total Income</td>
+              <td>${totalIncome.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>Deductions</td>
+              <td>${deductions.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>Taxable Income</td>
+              <td>${taxableIncome.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>Federal Tax</td>
+              <td>${federalTax.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>State Tax</td>
+              <td>${stateTax.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>Total Credits</td>
+              <td>${totalCredits.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <th>Final Tax Liability</th>
+              <th>${finalTax.toFixed(2)}</th>
+            </tr>
+          </tbody>
+        </table>
+      `;
+      document.getElementById("summaryTableContainer").innerHTML = html;
+    }
+
+    // Display Federal Tax Breakdown Table
+    function displayFederalTable(breakdown) {
+      let html = `
+        <table class="table table-striped">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Bracket Range</th>
+              <th>Rate</th>
+              <th>Taxable Amount</th>
+              <th>Tax Amount</th>
+            </tr>
+          </thead>
+          <tbody>`;
+      breakdown.forEach((item, index) => {
+        html += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.range}</td>
+            <td>${item.rate}</td>
+            <td>$${item.taxable}</td>
+            <td>$${item.tax}</td>
+          </tr>`;
+      });
+      html += `</tbody></table>`;
+      document.getElementById("federalTableContainer").innerHTML = html;
+    }
+
+    // Display State Tax Breakdown Table
+    function displayStateTable(breakdown) {
+      let html = `
+        <table class="table table-striped">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Bracket Range</th>
+              <th>Rate</th>
+              <th>Taxable Amount</th>
+              <th>Tax Amount</th>
+            </tr>
+          </thead>
+          <tbody>`;
+      breakdown.forEach((item, index) => {
+        html += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.range}</td>
+            <td>${item.rate}</td>
+            <td>$${item.taxable}</td>
+            <td>$${item.tax}</td>
+          </tr>`;
+      });
+      html += `</tbody></table>`;
+      document.getElementById("stateTableContainer").innerHTML = html;
+    }
+
+    // Show error messages
+    function showError(message) {
+      const errorMsg = document.getElementById("errorMsg");
+      errorMsg.innerText = message;
+      errorMsg.style.display = "block";
+    }
+
+    // Download the report as a text file
+    function downloadReport() {
+      if (!window.taxReport) {
+        alert("Please evaluate your tax first before downloading the report.");
+        return;
+      }
+      const blob = new Blob([window.taxReport], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "TaxReport_" + new Date().getTime() + ".txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Improved PDF download function that splits long content across multiple pages
+    function downloadPDF() {
+      const resultElement = document.getElementById("resultSection");
+      // Use html2canvas with a higher scale for better quality
+      html2canvas(resultElement, { scale: 2 }).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jspdf.jsPDF("p", "mm", "a4");
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = pageWidth;
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        let heightLeft = imgHeight;
+        let position = 0;
+        
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+        while (heightLeft > 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+        pdf.save("TaxReport.pdf");
+      });
+    }
+  </script>
+</body>
+</html>
