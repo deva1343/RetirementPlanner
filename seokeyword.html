@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO Keyword Research Tool</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #333;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar-logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .home-btn {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .button-group {
+      margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .btn {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #fff;
+    }
+    .btn-search { background: #007bff; }
+    .btn-copy { background: #28a745; }
+    .btn-copy-high { background: #17a2b8; }
+    .btn-download { background: #ff9800; }
+    .btn-rank { background: #ff5722; }
+
+    .results, .rank-results {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .result-item {
+      background: #f1f1f1;
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 4px;
+    }
+    .rank-low { color: green; }
+    .rank-medium { color: orange; }
+    .rank-high { color: red; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-logo">SEO Keyword Research</div>
+    <button class="home-btn" onclick="window.location.reload()">Home</button>
+  </nav>
+
+  <div class="container">
+    <textarea id="keywordInput" rows="2" placeholder="Enter keywords (comma-separated)"></textarea>
+    <div class="button-group">
+      <button class="btn btn-search" onclick="generateKeywords()">Generate Keywords</button>
+      <button class="btn btn-copy" onclick="copyKeywords()">Copy All Keywords</button>
+      <button class="btn btn-copy-high" onclick="copyHighRankingKeywords()">Copy High-Ranking Keywords</button>
+      <button class="btn btn-download" onclick="downloadCSV()">Download CSV</button>
+      <button class="btn btn-rank" onclick="showKeywordRankings()">Show Keyword Rankings</button>
+    </div>
+    <div id="results" class="results"></div>
+    <div id="rankings" class="rank-results"></div>
+  </div>
+
+  <script>
+    let keywordList = [];
+    let preloadedKeywords = [
+      "best Auto insurance", "top Auto insurance", "cheap Auto insurance", "Auto insurance quotes",
+      "Auto insurance near me", "Auto insurance comparison", "Auto insurance for young drivers",
+      "Auto insurance for seniors", "Auto insurance without down payment"
+    ];
+
+    function generateKeywords() {
+      let keywords = document.getElementById('keywordInput').value.trim();
+      keywords = keywords ? keywords.split(',').map(k => k.trim()) : [];
+      keywordList = [];
+      document.getElementById('results').innerHTML = '<h3>Generating keywords...</h3>';
+
+      let allKeywords = [...preloadedKeywords, ...keywords];
+      allKeywords.forEach(keyword => {
+        let generatedKeywords = expandKeywords(keyword);
+        keywordList.push(...generatedKeywords);
+      });
+
+      keywordList = [...new Set(keywordList.map(JSON.stringify))].map(JSON.parse)
+        .slice(0, 250)
+        .sort((a, b) => b.ranking - a.ranking);
+
+      updateResults();
+    }
+
+    function expandKeywords(baseKeyword) {
+      const commonPrefixes = ['best', 'top', 'cheap', 'buy', 'near me', 'how to', 'review', 'vs', 'guide'];
+      const commonSuffixes = ['2025', 'for beginners', 'for professionals', 'under 100', 'near me'];
+      let expandedKeywords = [];
+      expandedKeywords.push(baseKeyword);
+      commonPrefixes.forEach(prefix => expandedKeywords.push(`${prefix} ${baseKeyword}`));
+      commonSuffixes.forEach(suffix => expandedKeywords.push(`${baseKeyword} ${suffix}`));
+      return expandedKeywords.map(k => ({ keyword: k, ranking: estimateKeywordRanking(k) }));
+    }
+
+    function estimateKeywordRanking(keyword) {
+      let words = keyword.split(" ");
+      let lengthFactor = words.length > 3 ? 10 : 40;
+      let competitionFactor = (keyword.includes("best") || keyword.includes("top")) ? 30 : 10;
+      let rankingScore = lengthFactor + competitionFactor;
+      return Math.min(100, Math.max(10, rankingScore));
+    }
+
+    function updateResults() {
+      const resultsContainer = document.getElementById('results');
+      resultsContainer.innerHTML = '<h3>Generated Keywords</h3>';
+      let keywordText = keywordList.map(k => k.keyword).join('<br>');
+      resultsContainer.innerHTML += `<p>${keywordText}</p>`;
+    }
+
+    function showKeywordRankings() {
+      const rankingsContainer = document.getElementById('rankings');
+      rankingsContainer.innerHTML = '<h3>Keyword Rankings</h3>';
+      keywordList.forEach(({ keyword, ranking }) => {
+        const div = document.createElement('div');
+        div.className = 'result-item';
+        let rankClass = ranking < 30 ? 'rank-low' : ranking < 70 ? 'rank-medium' : 'rank-high';
+        div.innerHTML = `<span>${keyword}</span> - <strong class="${rankClass}">Rank Score: ${ranking}</strong>`;
+        rankingsContainer.appendChild(div);
+      });
+    }
+
+    function copyKeywords() {
+      if (!keywordList.length) {
+        alert('No keywords to copy.');
+        return;
+      }
+      let textToCopy = keywordList.map(k => k.keyword).join('\n');
+      navigator.clipboard.writeText(textToCopy).then(() => alert('All Keywords copied!'));
+    }
+
+    function copyHighRankingKeywords() {
+      if (!keywordList.length) {
+        alert('No keywords to copy.');
+        return;
+      }
+      let highRankedKeywords = keywordList.filter(k => k.ranking >= 70).map(k => k.keyword).join('\n');
+      navigator.clipboard.writeText(highRankedKeywords).then(() => alert('High-Ranking Keywords copied!'));
+    }
+
+    function downloadCSV() {
+      if (!keywordList.length) {
+        alert('No keywords to download.');
+        return;
+      }
+      let csvContent = "data:text/csv;charset=utf-8,Keyword,Rank Score\n" + 
+        keywordList.map(({ keyword, ranking }) => `"${keyword}",${ranking}`).join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "keyword_research.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
