@@ -1,541 +1,615 @@
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebApplication">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/manifest.webmanifest">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.webmanifest">
 
-    <!-- SEO Meta Tags -->
-    <title>dPal - AI Holistic Wellness Planner: Personalized Diet, Fitness, Finance & Mindfulness</title>
-    <meta name="description" content="Achieve holistic wellness with dPal, an AI-driven planner for personalized diet & nutrition, BMI tracking, custom workouts, smart investment CAGR calculation, retirement & loan planning, and mindfulness practices.">
-    <meta name="keywords" content="AI holistic wellness planner, personalized diet plan, nutrition guide, BMI calculator, body mass index tracker, AI workout generator, custom fitness routines, CAGR calculator, investment growth calculator, retirement planning tool, loan calculator, EMI calculator, amortization schedule, mindfulness app, mood tracker, gratitude journal, mental wellness, financial health, wellness app, productivity planner, digital life coach, AI driven wellness, personal finance, health and wealth management, balanced lifestyle app, mobile wellness platform, diet and nutrition plan, investment planning, retirement calculator, loan analyzer">
-    <link rel="canonical" href="https://www.dpal.site/dpal">
+  <!-- SEO Meta Tags -->
+  <title>dPal - AI Holistic Wellness Planner: Personalized Diet, Fitness, Finance & Mindfulness</title>
+  <meta name="description" content="Achieve holistic wellness with dPal, an AI-driven planner for personalized diet & nutrition, BMI tracking, custom workouts, smart investment CAGR calculation, retirement & loan planning, and mindfulness practices.">
+  <meta name="keywords" content="AI holistic wellness planner, personalized diet plan, nutrition guide, BMI calculator, body mass index tracker, AI workout generator, custom fitness routines, CAGR calculator, investment growth calculator, retirement planning tool, loan calculator, EMI calculator, amortization schedule, mindfulness app, mood tracker, gratitude journal, mental wellness, financial health, wellness app, productivity planner, digital life coach, AI driven wellness, personal finance, health and wealth management, balanced lifestyle app, diet and nutrition plan, investment planning, retirement calculator, loan analyzer">
+  <link rel="canonical" href="https://www.dpal.site/dpal">
 
-    <!-- Open Graph / Social Media -->
-    <meta property="og:locale" content="en_US">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="dPal - AI Holistic Wellness Planner: Diet, Fitness, Finance & Mind - Your AI Life Balance Companion">
-    <meta property="og:description" content="Find balance with dPal, the AI holistic planner. Get personalized diet & nutrition plans, BMI tracking, AI workouts, CAGR & loan calculators, retirement planning & mindfulness tools for complete well-being.">
-    <meta property="og:url" content="https://www.dpal.site/dpal">
-    <meta property="og:site_name" content="dPal Holistic Wellness Planner">
-    <meta property="og:image" content="https://www.dpal.site/images/dpal-og-image-v3.jpg">
-    <meta property="og:image:alt" content="dPal Holistic Wellness Planner Dashboard Preview">
+  <!-- Open Graph / Social Media -->
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="dPal - AI Holistic Wellness Planner: Diet, Fitness, Finance & Mind - Your AI Life Balance Companion">
+  <meta property="og:description" content="Find balance with dPal, the AI holistic planner. Get personalized diet & nutrition plans, BMI tracking, AI workouts, CAGR & loan calculators, retirement planning & mindfulness tools for complete well-being.">
+  <meta property="og:url" content="https://www.dpal.site/dpal">
+  <meta property="og:site_name" content="dPal Holistic Wellness Planner">
+  <meta property="og:image" content="https://www.dpal.site/images/dpal-og-image-v3.jpg">
+  <meta property="og:image:alt" content="dPal Holistic Wellness Planner Dashboard Preview">
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:description" content="Balance your life with dPal AI Holistic Planner! AI-powered tools for Diet, Fitness, Wealth & Mind. #AIWellness #HolisticHealth #LifeBalance #FinTech">
-    <meta name="twitter:title" content="dPal - AI Holistic Wellness Planner | Diet, Fitness, Finance & Mind Tools">
-    <meta name="twitter:site" content="@dPalApp">
-    <meta name="twitter:image" content="https://www.dpal.site/images/dpal-twitter-card-v3.jpg">
-    <meta name="twitter:image:alt" content="dPal AI Holistic Wellness Planner App Interface">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:description" content="Balance your life with dPal AI Holistic Planner! AI-powered tools for Diet, Fitness, Wealth & Mind. #AIWellness #HolisticHealth #LifeBalance #FinTech">
+  <meta name="twitter:title" content="dPal - AI Holistic Wellness Planner | Diet, Fitness, Finance & Mind Tools">
+  <meta name="twitter:site" content="@dPalApp">
+  <meta name="twitter:image" content="https://www.dpal.site/images/dpal-twitter-card-v3.jpg">
+  <meta name="twitter:image:alt" content="dPal AI Holistic Wellness Planner App Interface">
 
-    <!-- Structured Data -->
-    <script type="application/ld+json">
+  <!-- Structured Data -->
+  <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "dPal - AI Holistic Wellness Planner",
-        "description": "dPal is your AI-powered holistic life management companion, integrating tools for personalized diet & nutrition planning, fitness, wealth building through smart investment analysis, loan management, retirement planning, and mindfulness to help you achieve a balanced and fulfilling lifestyle.",
-        "applicationCategory": ["HealthApplication", "FinanceApplication", "ProductivityApplication"],
-        "operatingSystem": "Web, Android, iOS",
-        "url": "https://www.dpal.site/dpal",
-        "keywords": "AI holistic planner, diet nutrition app, fitness planner, workout generator, BMI calculator, CAGR calculator, retirement planner, loan calculator, mindfulness app, mood tracker, gratitude journal, wellness tools, financial planning, life balance, digital health coach, personalized meal plans, investment analysis, loan management, retirement savings",
-        "image": "https://www.dpal.site/images/dpal-app-icon-v2.png",
-        "brand": {
-            "@type": "Brand",
-            "name": "dPal",
-            "logo": "https://www.dpal.site/images/dpal-logo-v2.png"
-        },
-        "creator": {
-            "@type": "Organization",
-            "name": "Your Company Name",
-            "url": "https://www.dpal.site"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "Your Company Name",
-            "url": "https://www.dpal.site"
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "reviewCount": "580"
-        },
-        "offers": {
-            "@type": "Offer",
-            "price": "0.00",
-            "priceCurrency": "USD",
-            "availability": "https://schema.org/OnlineOnly"
-        },
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://www.dpal.site/search?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-        }
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "dPal - AI Holistic Wellness Planner",
+      "description": "dPal is your AI-powered holistic life management companion, integrating tools for personalized diet & nutrition planning, fitness, wealth building through smart investment analysis, loan management, retirement planning, and mindfulness to help you achieve a balanced and fulfilling lifestyle.",
+      "applicationCategory": ["HealthApplication", "FinanceApplication", "ProductivityApplication"],
+      "operatingSystem": "Web, Android, iOS",
+      "url": "https://www.dpal.site/dpal",
+      "keywords": "AI holistic planner, diet nutrition app, fitness planner, workout generator, BMI calculator, CAGR calculator, retirement planner, loan calculator, mindfulness app, mood tracker, gratitude journal, wellness tools, financial planning, life balance, digital health coach, personalized meal plans, investment analysis, loan management, retirement savings",
+      "image": "https://www.dpal.site/images/dpal-app-icon-v2.png",
+      "brand": {
+          "@type": "Brand",
+          "name": "dPal",
+          "logo": "https://www.dpal.site/images/dpal-logo-v2.png"
+      },
+      "creator": {
+          "@type": "Organization",
+          "name": "Your Company Name",
+          "url": "https://www.dpal.site"
+      },
+      "publisher": {
+          "@type": "Organization",
+          "name": "Your Company Name",
+          "url": "https://www.dpal.site"
+      },
+      "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "580"
+      },
+      "offers": {
+          "@type": "Offer",
+          "price": "0.00",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/OnlineOnly"
+      },
+      "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.dpal.site/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+      }
     }
-    </script>
+  </script>
 
-    <style>
-        :root {
-            --health-color: #059669;
-            --wealth-color: #2563EB;
-            --mind-color: #6D28D9;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            min-height: 100vh;
-            background: #F3F4F6;
-        }
-
-        .main-menu {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            height: 100vh;
-            padding: 2rem;
-        }
-
-        .main-option {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 1.5rem;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            color: white;
-        }
-
-        .main-option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.1);
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .main-option:hover::before {
-            opacity: 1;
-            transform: scale(1.02);
-        }
-
-        .health-option { background: var(--health-color); }
-        .wealth-option { background: var(--wealth-color); }
-        .mind-option { background: var(--mind-color); }
-
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .popup-content {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 2rem;
-            max-width: 800px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: scale(0.8);
-            opacity: 0;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .popup-content.active {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: var(--transition);
-            color: #64748b;
-            font-size: 1.5rem;
-            line-height: 1;
-        }
-
-        .close-btn:hover {
-            background: #f1f5f9;
-        }
-
-        .section-grid {
-            display: grid;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .feature-card {
-            padding: 1.5rem;
-            border-radius: 1rem;
-            border: 1px solid #e2e8f0;
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-            background: white;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-        }
-
-        .meditation-timer {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .timer-display {
-            font-size: 2.5rem;
-            margin: 1rem 0;
-            font-weight: bold;
-            color: var(--mind-color);
-        }
-
-        .mood-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .mood-button {
-            padding: 1rem;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: var(--transition);
-            color: white;
-            font-weight: 500;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .action-button {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.75rem;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            color: Black;
-            margin-top: 1rem;
-			text-shadow: 0 1px 2px rgba(10, 150, 50, 0.1); /* Subtle green text shadow */
-			box-shadow: 0 2px 4px rgba(10, 150, 50, 0.08); /* Very subtle green box shadow */
-		    background-color: #5bbd73; /*  button background for better shadow visibility */
-
-        }
-
-        .action-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-            filter: brightness(1.5);
-        }
-
-        .health-section .action-button { 
-            background: var(--health-color);
-            border: 1px solid #047857;
-        }
-        .wealth-section .action-button { 
-            background: var(--wealth-color);
-            border: 1px solid #1D4ED8;
-        }
-        .mind-section .action-button { 
-            background: var(--mind-color);
-            border: 1px solid #5B21B6;
-        }
-
-        @media (max-width: 768px) {
-            .main-menu {
-                grid-template-columns: 1fr;
-                padding: 1rem;
-                gap: 1rem;
-            }
-            
-            .popup-content {
-                padding: 1.5rem;
-            }
-            
-            .mood-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <style>
+    :root {
+      --health-color: #059669;
+      --wealth-color: #2563EB;
+      --mind-color: #6D28D9;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      background: #F3F4F6;
+    }
+    .main-menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      height: 100vh;
+      padding: 2rem;
+    }
+    .main-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      color: white;
+    }
+    .main-option::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.1);
+      opacity: 0;
+      transition: var(--transition);
+    }
+    .main-option:hover::before {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+    .health-option { background: var(--health-color); }
+    .wealth-option { background: var(--wealth-color); }
+    .mind-option { background: var(--mind-color); }
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .popup-content {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      max-width: 800px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: scale(0.8);
+      opacity: 0;
+      transition: var(--transition);
+      position: relative;
+    }
+    .popup-content.active {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: var(--transition);
+      color: #64748b;
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+    .close-btn:hover {
+      background: #f1f5f9;
+    }
+    .section-grid {
+      display: grid;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .feature-card {
+      padding: 1.5rem;
+      border-radius: 1rem;
+      border: 1px solid #e2e8f0;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+      background: white;
+    }
+    .feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+    }
+    /* Meditation Timer Styling – Reduced size for room to add more elements */
+    .meditation-timer {
+      text-align: center;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+    }
+    .timer-display {
+      font-size: 2.5rem;
+      margin: 0.5rem 0;
+      font-weight: bold;
+      color: var(--mind-color);
+    }
+    .timer-controls {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+    .preset-buttons {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .action-button, .preset-button {
+      padding: 0.5rem 1rem;
+      border-radius: 0.75rem;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+      background-color: #5bbd73;
+      color: #fff;
+      box-shadow: 0 2px 4px rgba(10, 150, 50, 0.08);
+    }
+    .action-button:hover, .preset-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+      filter: brightness(1.1);
+    }
+    .mind-section .action-button, .mind-section .preset-button { 
+      background: var(--mind-color);
+      border: 1px solid #5B21B6;
+    }
+    /* Mood Tracker Styling – Improved appearance and responsiveness */
+    .mood-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin: 0.5rem 0;
+    }
+    .mood-button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      color: white;
+      font-weight: 500;
+    }
+    .mood-entry {
+      background: #e5e7eb;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      margin: 0.25rem;
+      display: inline-block;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 768px) {
+      .main-menu {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1rem;
+      }
+      .popup-content {
+        padding: 1.5rem;
+      }
+      .mood-grid {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
 </head>
 <body>
-    <main class="main-menu">
-        <div class="main-option health-option" onclick="showPopup('health')">
-            <h1>Health</h1>
-            <p>AI-powered health tools</p>
-        </div>
-        <div class="main-option wealth-option" onclick="showPopup('wealth')">
-            <h1>Wealth</h1>
-            <p>Financial planning tools</p>
-        </div>
-        <div class="main-option mind-option" onclick="showPopup('mind')">
-            <h1>Mind</h1>
-            <p>Mindfulness & Productivity</p>
-        </div>
-    </main>
-
-    <!-- Health Popup -->
-    <div class="popup-overlay" id="healthPopup">
-        <div class="popup-content">
-            <button class="close-btn" onclick="hidePopup()">×</button>
-            <h2>Health Management</h2>
-            <div class="section-grid">
-                <div class="feature-card">
-                    <h3>AI Diet Planner</h3>
-                    <p>Create personalized meal plans</p>
-                    <button class="action-button" onclick="window.location.href='Diet-Planner.html'">Start Planning</button>
-                </div>
-                <div class="feature-card">
-                    <h3>Workout Generator</h3>
-                    <p>Custom exercise routines</p>
-                    <button class="action-button" onclick="window.location.href='Workout-Planner.html'">Get Started</button>
-                </div>
-                <div class="feature-card">
-                    <h3>BMI Calculator</h3>
-                    <p>Body mass analysis</p>
-                    <button class="action-button" onclick="window.location.href='BMI-Calculator.html'">Check Now</button>
-                </div>
-            </div>
-        </div>
+  <main class="main-menu">
+    <div class="main-option health-option" onclick="showPopup('health')">
+      <h1>Health</h1>
+      <p>AI-powered health tools</p>
     </div>
-
-    <!-- Wealth Popup -->
-    <div class="popup-overlay" id="wealthPopup">
-        <div class="popup-content">
-            <button class="close-btn" onclick="hidePopup()">×</button>
-            <h2>Wealth Management</h2>
-            <div class="section-grid">
-                <div class="feature-card">
-    <h3>India TAX Help</h3>
-    <p>Free TAX Help for India</p>
-    <button class="action-button" onclick="window.location.href='taxBotGemini1.html'">GeminiBot-2</button>
-    <button class="action-button" onclick="window.location.href='DSBot2.html'">DSBot-1</button>
-    <button class="action-button" onclick="window.location.href='DSBotMobile.html'">DSBot (Mobile Version)</button>
-</div>
-
-<div class="feature-card">
-    <h3>USA TAX Help</h3>
-    <p>Free TAX Help for USA</p>
-    <button class="action-button" onclick="window.location.href='ustaxcomprehensive.html'"> Fedral TAX AI</button>
-    <button class="action-button" onclick="window.location.href='ustax.html'">USA TAX BOT</button>
-</div>
-
-		<div class="feature-card">
-                    <h3>SIP Calculator</h3>
-                    <p>Investment growth analysis</p>
-                    <button class="action-button" onclick="window.location.href='SIP-calculatore.html'">Calculate</button>
-                </div>
-                <div class="feature-card">
-                    <h3>Retirement Planner</h3>
-                    <p>Savings projections</p>
-                    <button class="action-button" onclick="window.location.href='Retirement-Planner.html'">Start Planning</button>
-                </div>
-                <div class="feature-card">
-                    <h3>Loan Analyzer</h3>
-                    <p>EMI calculator</p>
-                    <button class="action-button" onclick="window.location.href='Loan-Analyzer.html'">Analyze</button>
-                </div>
-		
-            </div>
-        </div>
+    <div class="main-option wealth-option" onclick="showPopup('wealth')">
+      <h1>Wealth</h1>
+      <p>Financial planning tools</p>
     </div>
-
-    <!-- Mind Popup -->
-    <div class="popup-overlay" id="mindPopup">
-        <div class="popup-content">
-            <button class="close-btn" onclick="hidePopup()">×</button>
-            <h2>Mindfulness Tools</h2>
-            <div class="section-grid">
-                <div class="feature-card">
-                    <div class="meditation-timer">
-                        <h3>Meditation Timer</h3>
-                        <div class="timer-display" id="current-time">00:00</div>
-                        <div>Best: <span id="best-time">00:00</span></div>
-                        <button class="action-button" onclick="window.location.href='Meditation-Timer.html'">Advanced Timer</button>
-                    </div>
-                </div>
-                <div class="feature-card">
-                    <h3>Mood Tracker</h3>
-                    <div class="mood-grid">
-                        <button class="mood-button" style="background: #4CAF50" onclick="logMood('happy')">😊 Happy</button>
-                        <button class="mood-button" style="background: #FFC107" onclick="logMood('neutral')">😐 Neutral</button>
-                        <button class="mood-button" style="background: #F44336" onclick="logMood('sad')">😞 Sad</button>
-                    </div>
-                    <button class="action-button" onclick="window.location.href='Mood-Tracker.html'" style="margin-top: 1rem;">View History</button>
-                    <div id="mood-history" class="mood-history"></div>
-                </div>
-                <div class="feature-card">
-                    <h3>Gratitude Journal</h3>
-                    <p>Record daily gratitude entries</p>
-                    <button class="action-button" onclick="window.location.href='Gratitude-Journal.html'">Open Journal</button>
-                </div>
-            </div>
-        </div>
+    <div class="main-option mind-option" onclick="showPopup('mind')">
+      <h1>Mind</h1>
+      <p>Mindfulness & Productivity</p>
     </div>
+  </main>
 
-    <script>
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(reg => console.log('Service Worker registered'))
-                    .catch(err => console.log('Service Worker registration failed:', err));
-            });
-        }
+  <!-- Health Popup -->
+  <div class="popup-overlay" id="healthPopup">
+    <div class="popup-content health-section">
+      <button class="close-btn" onclick="hidePopup()">×</button>
+      <h2>Health Management</h2>
+      <div class="section-grid">
+        <div class="feature-card">
+          <h3>AI Diet Planner</h3>
+          <p>Create personalized meal plans</p>
+          <button class="action-button" onclick="window.location.href='Diet-Planner.html'">Start Planning</button>
+        </div>
+        <div class="feature-card">
+          <h3>Workout Generator</h3>
+          <p>Custom exercise routines</p>
+          <button class="action-button" onclick="window.location.href='Workout-Planner.html'">Get Started</button>
+        </div>
+        <div class="feature-card">
+          <h3>BMI Calculator</h3>
+          <p>Body mass analysis</p>
+          <button class="action-button" onclick="window.location.href='BMI-Calculator.html'">Check Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        // Local Storage Manager
-        const Storage = {
-            get: (key) => JSON.parse(localStorage.getItem(`dpal-${key}`)) || null,
-            set: (key, value) => localStorage.setItem(`dpal-${key}`, JSON.stringify(value)),
-            clear: (key) => localStorage.removeItem(`dpal-${key}`)
-        };
+  <!-- Wealth Popup -->
+  <div class="popup-overlay" id="wealthPopup">
+    <div class="popup-content wealth-section">
+      <button class="close-btn" onclick="hidePopup()">×</button>
+      <h2>Wealth Management</h2>
+      <div class="section-grid">
+        <!-- India TAX Help Card -->
+        <div class="feature-card" id="indiaTax">
+          <h3>India TAX Help</h3>
+          <p>Free TAX Help for India</p>
+          <button class="action-button" onclick="window.location.href='taxBotGemini1.html'">GeminiBot-2</button>
+          <button class="action-button" onclick="window.location.href='DSBot2.html'">DSBot-1</button>
+          <button class="action-button" onclick="window.location.href='DSBotMobile.html'">DSBot (Mobile Version)</button>
+        </div>
+        <!-- USA TAX Help Card -->
+        <div class="feature-card" id="usaTax">
+          <h3>USA TAX Help</h3>
+          <p>Free TAX Help for USA</p>
+          <button class="action-button" onclick="window.location.href='ustaxcomprehensive.html'">Federal TAX AI</button>
+          <button class="action-button" onclick="window.location.href='ustax.html'">USA TAX BOT</button>
+        </div>
+        <div class="feature-card">
+          <h3>SIP Calculator</h3>
+          <p>Investment growth analysis</p>
+          <button class="action-button" onclick="window.location.href='SIP-calculatore.html'">Calculate</button>
+        </div>
+        <div class="feature-card">
+          <h3>Retirement Planner</h3>
+          <p>Savings projections</p>
+          <button class="action-button" onclick="window.location.href='Retirement-Planner.html'">Start Planning</button>
+        </div>
+        <div class="feature-card">
+          <h3>Loan Analyzer</h3>
+          <p>EMI calculator</p>
+          <button class="action-button" onclick="window.location.href='Loan-Analyzer.html'">Analyze</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        // Meditation Timer Logic
-        let timer;
-        let startTime;
-        let elapsed = 0;
-        let bestTime = Storage.get('meditation-best') || 0;
+  <!-- Mind Popup -->
+  <div class="popup-overlay" id="mindPopup">
+    <div class="popup-content mind-section">
+      <button class="close-btn" onclick="hidePopup()">×</button>
+      <h2>Mindfulness Tools</h2>
+      <div class="section-grid">
+        <!-- Meditation Timer (smaller UI with sound effects and reverse countdown for presets) -->
+        <div class="feature-card">
+          <div class="meditation-timer">
+            <h3>Meditation Timer</h3>
+            <div class="timer-display" id="current-time">00:00</div>
+            <div>Best: <span id="best-time">00:00</span></div>
+            <div class="timer-controls">
+              <button id="start-timer" class="action-button">Start Timer</button>
+              <button id="stop-timer" class="action-button" disabled>Stop Timer</button>
+            </div>
+            <div class="preset-buttons">
+              <button class="preset-button" onclick="startPresetTimer(15)">15 Minutes</button>
+              <button class="preset-button" onclick="startPresetTimer(30)">30 Minutes</button>
+              <button class="preset-button" onclick="startPresetTimer(60)">1 Hour</button>
+            </div>
+          </div>
+        </div>
+        <!-- Mood Tracker -->
+        <div class="feature-card">
+          <h3>Mood Tracker</h3>
+          <div class="mood-grid">
+            <button class="mood-button" style="background: #4CAF50" onclick="logMood('happy')">😊 Happy</button>
+            <button class="mood-button" style="background: #FFC107" onclick="logMood('neutral')">😐 Neutral</button>
+            <button class="mood-button" style="background: #F44336" onclick="logMood('sad')">😞 Sad</button>
+          </div>
+          <button class="action-button" onclick="window.location.href='Mood-Tracker.html'" style="margin-top: 1rem;">View History</button>
+          <div id="mood-history" class="mood-history"></div>
+        </div>
+        <!-- Gratitude Journal section removed -->
+      </div>
+    </div>
+  </div>
 
-        function updateTimerDisplay() {
-            const totalSeconds = Math.floor(elapsed / 1000);
-            const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-            const seconds = (totalSeconds % 60).toString().padStart(2, '0');
-            document.getElementById('current-time').textContent = `${minutes}:${seconds}`;
-        }
+  <!-- Hidden audio elements for start/stop sounds -->
+  <audio id="startSound" src="start-sound.mp3"></audio>
+  <audio id="stopSound" src="stop-sound.mp3"></audio>
 
-        function updateBestTime() {
-            const minutes = Math.floor(bestTime / 60).toString().padStart(2, '0');
-            const seconds = (bestTime % 60).toString().padStart(2, '0');
-            document.getElementById('best-time').textContent = `${minutes}:${seconds}`;
-        }
+  <!-- Service Worker Registration and JavaScript -->
+  <script>
+    // Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('Service Worker registered'))
+          .catch(err => console.log('Service Worker registration failed:', err));
+      });
+    }
 
-        // Mood Tracker Logic
-        function logMood(mood) {
-            const entry = {
-                mood,
-                date: new Date().toISOString(),
-                timestamp: Date.now()
-            };
-            
-            const history = Storage.get('mood-history') || [];
-            history.push(entry);
-            Storage.set('mood-history', history);
-            updateMoodHistory();
-        }
+    // Local Storage Manager
+    const Storage = {
+      get: (key) => JSON.parse(localStorage.getItem(`dpal-${key}`)) || null,
+      set: (key, value) => localStorage.setItem(`dpal-${key}`, JSON.stringify(value)),
+      clear: (key) => localStorage.removeItem(`dpal-${key}`)
+    };
 
-        function updateMoodHistory() {
-            const history = Storage.get('mood-history') || [];
-            const display = history.slice(-5).reverse().map(entry => `
-                <div class="mood-entry">
-                    <span>${getMoodEmoji(entry.mood)}</span>
-                    ${new Date(entry.date).toLocaleDateString()}
-                </div>
-            `).join('');
-            document.getElementById('mood-history').innerHTML = display;
-        }
+    // Timer Variables
+    let timer;
+    let startTime;
+    let elapsed = 0;
+    let bestTime = Storage.get('meditation-best') || 0;
 
-        function getMoodEmoji(mood) {
-            return {happy: '😊', neutral: '😐', sad: '😞'}[mood] || '❓';
-        }
+    // Play sound helper
+    function playSound(type) {
+      const sound = document.getElementById(type === 'start' ? 'startSound' : 'stopSound');
+      if (sound) sound.play();
+    }
 
-        // Timer Controls
-        document.getElementById('start-timer')?.addEventListener('click', () => {
-            startTime = Date.now() - elapsed;
-            timer = setInterval(() => {
-                elapsed = Date.now() - startTime;
-                updateTimerDisplay();
-            }, 1000);
-            document.getElementById('start-timer').disabled = true;
-            document.getElementById('stop-timer').disabled = false;
-        });
+    // Update display for manual (count-up) timer
+    function updateTimerDisplay() {
+      const totalSeconds = Math.floor(elapsed / 1000);
+      const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+      const seconds = (totalSeconds % 60).toString().padStart(2, '0');
+      document.getElementById('current-time').textContent = `${minutes}:${seconds}`;
+    }
 
-        document.getElementById('stop-timer')?.addEventListener('click', () => {
-            clearInterval(timer);
-            const totalSeconds = Math.floor(elapsed / 1000);
-            if (totalSeconds > bestTime) {
-                bestTime = totalSeconds;
-                Storage.set('meditation-best', bestTime);
-                updateBestTime();
-            }
-            elapsed = 0;
-            updateTimerDisplay();
-            document.getElementById('start-timer').disabled = false;
-            document.getElementById('stop-timer').disabled = true;
-        });
+    // Update display for preset (countdown) timer
+    function updateTimerDisplayCountdown(remaining) {
+      const minutes = Math.floor(remaining / 60).toString().padStart(2, '0');
+      const seconds = (remaining % 60).toString().padStart(2, '0');
+      document.getElementById('current-time').textContent = `${minutes}:${seconds}`;
+    }
 
-        // Popup Management
-        function showPopup(section) {
-            const popup = document.getElementById(`${section}Popup`);
-            const content = popup.querySelector('.popup-content');
-            popup.style.display = 'flex';
-            setTimeout(() => content.classList.add('active'), 10);
-        }
+    function updateBestTime() {
+      const minutes = Math.floor(bestTime / 60).toString().padStart(2, '0');
+      const seconds = (bestTime % 60).toString().padStart(2, '0');
+      document.getElementById('best-time').textContent = `${minutes}:${seconds}`;
+    }
 
-        function hidePopup() {
-            document.querySelectorAll('.popup-overlay').forEach(popup => {
-                const content = popup.querySelector('.popup-content');
-                content.classList.remove('active');
-                setTimeout(() => popup.style.display = 'none', 300);
-            });
-        }
+    // Manual Timer Controls (Count-Up)
+    document.getElementById('start-timer')?.addEventListener('click', () => {
+      // For manual start, play sound and count up
+      playSound('start');
+      startTime = Date.now() - elapsed;
+      timer = setInterval(() => {
+        elapsed = Date.now() - startTime;
+        updateTimerDisplay();
+      }, 1000);
+      document.getElementById('start-timer').disabled = true;
+      document.getElementById('stop-timer').disabled = false;
+      disablePresetButtons(true);
+    });
 
-        // Initialize
-        window.onload = () => {
+    document.getElementById('stop-timer')?.addEventListener('click', () => {
+      stopTimer();
+    });
+
+    function stopTimer() {
+      clearInterval(timer);
+      playSound('stop');
+      const totalSeconds = Math.floor(elapsed / 1000);
+      if (totalSeconds > bestTime) {
+        bestTime = totalSeconds;
+        Storage.set('meditation-best', bestTime);
+        updateBestTime();
+      }
+      elapsed = 0;
+      updateTimerDisplay();
+      document.getElementById('start-timer').disabled = false;
+      document.getElementById('stop-timer').disabled = true;
+      disablePresetButtons(false);
+    }
+
+    function disablePresetButtons(state) {
+      document.querySelectorAll('.preset-button').forEach(btn => btn.disabled = state);
+    }
+
+    // Preset Timer Controls (Countdown)
+    function startPresetTimer(presetMinutes) {
+      if (timer) clearInterval(timer);
+      document.getElementById('start-timer').disabled = true;
+      disablePresetButtons(true);
+      document.getElementById('stop-timer').disabled = false;
+      playSound('start');
+      let remaining = presetMinutes * 60; // seconds
+      updateTimerDisplayCountdown(remaining);
+      timer = setInterval(() => {
+        remaining--;
+        updateTimerDisplayCountdown(remaining);
+        if (remaining <= 0) {
+          clearInterval(timer);
+          playSound('stop');
+          alert(`Congratulations! You've reached your ${presetMinutes} minute session.`);
+          let sessionTime = presetMinutes * 60;
+          if (sessionTime > bestTime) {
+            bestTime = sessionTime;
+            Storage.set('meditation-best', bestTime);
             updateBestTime();
-            updateMoodHistory();
-        };
+          }
+          document.getElementById('start-timer').disabled = false;
+          document.getElementById('stop-timer').disabled = true;
+          disablePresetButtons(false);
+        }
+      }, 1000);
+    }
 
-        // Close popups with ESC key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') hidePopup();
-        });
-    </script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-K9KZ60761N"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    // Mood Tracker Logic
+    function logMood(mood) {
+      const entry = {
+        mood,
+        date: new Date().toISOString(),
+        timestamp: Date.now()
+      };
+      const history = Storage.get('mood-history') || [];
+      history.push(entry);
+      Storage.set('mood-history', history);
+      updateMoodHistory();
+    }
 
-  gtag('config', 'G-K9KZ60761N');
-</script>
+    function updateMoodHistory() {
+      const history = Storage.get('mood-history') || [];
+      const display = history.slice(-5).reverse().map(entry => `
+        <div class="mood-entry">
+          <span>${getMoodEmoji(entry.mood)}</span>
+          ${new Date(entry.date).toLocaleDateString()}
+        </div>
+      `).join('');
+      document.getElementById('mood-history').innerHTML = display;
+    }
+
+    function getMoodEmoji(mood) {
+      return {happy: '😊', neutral: '😐', sad: '😞'}[mood] || '❓';
+    }
+
+    // Popup Management
+    function showPopup(section) {
+      const popup = document.getElementById(`${section}Popup`);
+      const content = popup.querySelector('.popup-content');
+      popup.style.display = 'flex';
+      setTimeout(() => content.classList.add('active'), 10);
+    }
+
+    function hidePopup() {
+      document.querySelectorAll('.popup-overlay').forEach(popup => {
+        const content = popup.querySelector('.popup-content');
+        content.classList.remove('active');
+        setTimeout(() => popup.style.display = 'none', 300);
+      });
+    }
+
+    // Close popups with ESC key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hidePopup();
+    });
+
+    // Initialize on window load
+    window.onload = () => {
+      updateBestTime();
+      updateMoodHistory();
+    };
+
+    // IP-based TAX element display logic
+    fetch("https://ipapi.co/json/")
+      .then(response => response.json())
+      .then(data => {
+        let country = data.country_code;
+        if (country === "IN") {
+          document.getElementById("indiaTax").style.display = "block";
+          document.getElementById("usaTax").style.display = "none";
+        } else {
+          document.getElementById("usaTax").style.display = "block";
+          document.getElementById("indiaTax").style.display = "none";
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching location:", error);
+        document.getElementById("usaTax").style.display = "block";
+        document.getElementById("indiaTax").style.display = "none";
+      });
+  </script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9KZ60761N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K9KZ60761N');
+  </script>
 </body>
 </html>
