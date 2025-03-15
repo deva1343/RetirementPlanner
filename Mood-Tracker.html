@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mood Tracker History - dPal</title>
+  <meta name="description" content="Graphical representation of your mood history as tracked by dPal.">
+  <!-- Load Chart.js from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --mind-color: #6D28D9;
+      --nav-bg: #fff;
+      --nav-text: #333;
+      --nav-hover: #e5e5e5;
+    }
+    /* Dynamic Navbar Styles */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #F3F4F6;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background: var(--nav-bg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .navbar .logo {
+      font-size: 1.5rem;
+      color: var(--mind-color);
+      font-weight: bold;
+    }
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+      margin: 0;
+    }
+    .navbar ul li a {
+      text-decoration: none;
+      color: var(--nav-text);
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: background 0.3s;
+    }
+    .navbar ul li a:hover {
+      background: var(--nav-hover);
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .hamburger span {
+      height: 3px;
+      width: 25px;
+      background: var(--nav-text);
+      margin-bottom: 4px;
+      border-radius: 5px;
+    }
+    /* Responsive Navbar */
+    @media (max-width: 768px) {
+      .navbar ul {
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--nav-bg);
+        display: none;
+      }
+      .navbar ul.active {
+        display: flex;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+    /* Page Content Styles */
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    h1 {
+      color: var(--mind-color);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    #chart-container {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 1.5rem;
+    }
+    canvas {
+      width: 100% !important;
+      height: 350px !important;
+    }
+    .summary {
+      background: #fff;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .summary h2 {
+      margin-bottom: 0.5rem;
+      color: var(--mind-color);
+    }
+    .clear-btn {
+      background: var(--mind-color);
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto 2rem;
+      font-size: 1rem;
+    }
+    .clear-btn:hover {
+      filter: brightness(1.1);
+    }
+    .disclaimer {
+      font-size: 0.9rem;
+      color: #555;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Dynamic Navbar -->
+  <nav class="navbar">
+    <div class="logo">dPal</div>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="Health.html">Health</a></li>
+      <li><a href="Wealth.html">Wealth</a></li>
+      <li><a href="Mind.html">Mind</a></li>
+      <li><a href="Mood-Tracker.html">Mood Tracker</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+    <h1>Mood Tracker History</h1>
+    <div id="chart-container">
+      <canvas id="moodChart"></canvas>
+    </div>
+    <div class="summary" id="summary"></div>
+    <button class="clear-btn" onclick="clearMoodData()">Clear Mood Data</button>
+    <div class="disclaimer">
+      <p>Disclaimer: Your mood data is stored locally on your device. We do not access or transmit your data to any server.</p>
+    </div>
+  </div>
+
+  <script>
+    // Toggle navigation for mobile
+    function toggleMenu() {
+      const navLinks = document.getElementById("nav-links");
+      navLinks.classList.toggle("active");
+    }
+
+    // Retrieve mood data from localStorage (key: "dpal-mood-history")
+    const moodData = JSON.parse(localStorage.getItem('dpal-mood-history')) || [];
+    
+    // If no mood data, display a message in the chart container
+    if(moodData.length === 0) {
+      document.getElementById('chart-container').innerHTML = "<p style='text-align:center; padding: 1rem;'>No mood data found. Please log your mood in the app.</p>";
+    } else {
+      // Sort mood data by timestamp (oldest to newest)
+      moodData.sort((a, b) => a.timestamp - b.timestamp);
+      
+      // Prepare labels (using the logged time) and mood values (mapping moods to numbers)
+      const labels = moodData.map(entry => {
+        const date = new Date(entry.timestamp);
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      });
+      
+      // Map moods to numeric values
+      const moodMapping = { "happy": 3, "neutral": 2, "sad": 1 };
+      const dataPoints = moodData.map(entry => moodMapping[entry.mood] || 0);
+      
+      // Create the chart using Chart.js
+      const ctx = document.getElementById('moodChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Mood over Time',
+            data: dataPoints,
+            borderColor: getComputedStyle(document.documentElement).getPropertyValue('--mind-color').trim(),
+            backgroundColor: 'rgba(109, 40, 217, 0.2)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 4
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              ticks: {
+                callback: function(value) {
+                  if(value === 1) return 'Sad';
+                  if(value === 2) return 'Neutral';
+                  if(value === 3) return 'Happy';
+                  return value;
+                },
+                stepSize: 1,
+                min: 0,
+                max: 4
+              }
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          },
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+      
+      // Calculate summary details
+      const totalEntries = moodData.length;
+      const sumMood = dataPoints.reduce((sum, val) => sum + val, 0);
+      const avgMood = (sumMood / totalEntries).toFixed(2);
+      const moodCounts = { happy: 0, neutral: 0, sad: 0 };
+      moodData.forEach(entry => {
+        if(moodCounts[entry.mood] !== undefined) {
+          moodCounts[entry.mood]++;
+        }
+      });
+      
+      // Render summary details
+      const summaryDiv = document.getElementById('summary');
+      summaryDiv.innerHTML = `
+        <h2>Summary</h2>
+        <p><strong>Total Entries:</strong> ${totalEntries}</p>
+        <p><strong>Average Mood Score:</strong> ${avgMood} (${avgMood >= 2.5 ? 'Generally Happy' : avgMood >= 1.5 ? 'Neutral' : 'Generally Sad'})</p>
+        <p><strong>Mood Distribution:</strong></p>
+        <ul>
+          <li>Happy: ${moodCounts.happy}</li>
+          <li>Neutral: ${moodCounts.neutral}</li>
+          <li>Sad: ${moodCounts.sad}</li>
+        </ul>
+      `;
+    }
+    
+    // Function to clear mood data from localStorage and reload the page
+    function clearMoodData() {
+      if(confirm("Are you sure you want to clear your mood history?")) {
+        localStorage.removeItem('dpal-mood-history');
+        location.reload();
+      }
+    }
+  </script>
+</body>
+</html>
