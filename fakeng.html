@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fake Person Generator - Top 50 GDP Countries</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    /* Navbar */
+    #navbar {
+      background: #343a40;
+      padding: 15px;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    #navbar a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    #navbar a:hover {
+      color: #ffc107;
+    }
+    /* Container */
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      margin-top: 70px; /* Prevent navbar overlap */
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #343a40;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+      color: #495057;
+    }
+    input[type="text"], select, button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ced4da;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      background: #f1f1f1;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+      text-align: left;
+    }
+    .result h2 {
+      text-align: center;
+      color: #343a40;
+    }
+    .result .info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .result .info-row div {
+      width: 48%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Dynamic Navbar -->
+  <div id="navbar">
+    <a href="#">Home</a>
+    <a href="#">Generate</a>
+    <a href="#">About</a>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <h1>Fake Person Generator</h1>
+    <label for="countrySearch">Search Country:</label>
+    <input type="text" id="countrySearch" placeholder="Type to search..." onkeyup="filterCountries()">
+    <label for="nationality">Select Country Origin (Top 50 GDP):</label>
+    <select id="nationality" size="5">
+      <option value="en_US">United States</option>
+      <option value="zh_CN">China</option>
+      <option value="ja">Japan</option>
+      <option value="de">Germany</option>
+      <option value="en_IND">India</option>
+      <option value="en_GB">United Kingdom</option>
+      <option value="fr">France</option>
+      <option value="it">Italy</option>
+      <option value="en_CA">Canada</option>
+      <option value="ko">South Korea</option>
+      <option value="ru">Russia</option>
+      <option value="es">Spain</option>
+      <option value="en_AU">Australia</option>
+      <option value="es_MX">Mexico</option>
+      <option value="id_ID">Indonesia</option>
+      <option value="nl">Netherlands</option>
+      <option value="ar">Saudi Arabia</option>
+      <option value="tr">Turkey</option>
+      <option value="de_CH">Switzerland</option>
+      <option value="zh_TW">Taiwan</option>
+      <option value="sv">Sweden</option>
+      <option value="pl">Poland</option>
+      <option value="en">Belgium</option>
+      <option value="en">Thailand</option>
+      <option value="es">Argentina</option>
+      <option value="de_AT">Austria</option>
+      <option value="nb_NO">Norway</option>
+      <option value="ar">United Arab Emirates</option>
+      <option value="en_NG">Nigeria</option>
+      <option value="he">Israel</option>
+      <option value="en_US">South Africa</option>
+      <option value="zh_CN">Hong Kong</option>
+      <option value="en_IE">Ireland</option>
+      <option value="en">Denmark</option>
+      <option value="en_US">Singapore</option>
+      <option value="en_US">Malaysia</option>
+      <option value="es">Colombia</option>
+      <option value="en_US">Pakistan</option>
+      <option value="es">Chile</option>
+      <option value="fi">Finland</option>
+      <option value="en_US">Bangladesh</option>
+      <option value="ar">Egypt</option>
+      <option value="vi">Vietnam</option>
+      <option value="cs">Czech Republic</option>
+      <option value="ro">Romania</option>
+      <option value="es">Peru</option>
+      <option value="pt_BR">Portugal</option>
+      <option value="en_US">Iraq</option>
+      <option value="fa">Iran</option>
+      <option value="en_NZ">New Zealand</option>
+    </select>
+    <button onclick="generateFakePerson()">Generate Person</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <!-- Include Faker.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js"></script>
+  <script>
+    // Filter the country options based on user input
+    function filterCountries() {
+      const input = document.getElementById('countrySearch');
+      const filter = input.value.toLowerCase();
+      const select = document.getElementById('nationality');
+      const options = select.getElementsByTagName('option');
+
+      let firstVisibleOption = null;
+      for (let i = 0; i < options.length; i++) {
+        const txtValue = options[i].textContent || options[i].innerText;
+        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+          options[i].style.display = "";
+          if (!firstVisibleOption) {
+            firstVisibleOption = options[i];
+          }
+        } else {
+          options[i].style.display = "none";
+        }
+      }
+      if (firstVisibleOption) {
+        select.value = firstVisibleOption.value;
+      }
+    }
+
+    // Map each option value to a Faker.js–supported locale.
+    const localeMapping = {
+      "en_US": "en",
+      "zh_CN": "zh_CN",
+      "ja": "ja",
+      "de": "de",
+      "en_IND": "en",
+      "en_GB": "en",
+      "fr": "fr",
+      "it": "it",
+      "es": "es",
+      "en_CA": "en",
+      "ko": "ko",
+      "ru": "ru",
+      "en_AU": "en",
+      "es_MX": "es",
+      "id_ID": "en",
+      "nl": "nl",
+      "ar": "en",
+      "tr": "tr",
+      "de_CH": "de",
+      "zh_TW": "zh_TW",
+      "sv": "sv",
+      "pl": "en",
+      "en": "en",
+      "nb_NO": "en",
+      "he": "en",
+      "en_NG": "en",
+      "en_IE": "en",
+      "fi": "en",
+      "vi": "en",
+      "cs": "en",
+      "ro": "en",
+      "pt_BR": "pt_BR",
+      "fa": "en",
+      "en_NZ": "en"
+    };
+
+    // Generate a fake person using faker.helpers.createCard() along with manually generated credit card details
+    function generateFakePerson() {
+      // Get the selected locale from the dropdown and map it to a supported one
+      const selectedValue = document.getElementById('nationality').value;
+      const locale = localeMapping[selectedValue] || 'en';
+      faker.locale = locale;
+      
+      // Use createCard() to generate basic person information
+      const cardData = faker.helpers.createCard();
+      
+      // Generate a job title (not provided by createCard)
+      const jobTitle = faker.name.jobTitle();
+      
+      // Generate credit card details manually using helper functions
+      const cardNumber = faker.helpers.replaceSymbolWithNumber("#### #### #### ####");
+      const cardType = faker.random.arrayElement(["Visa", "MasterCard", "American Express", "Discover"]);
+      const expiryMonth = faker.random.number({min: 1, max: 12});
+      const expiryYear = faker.random.number({min: 2024, max: 2030});
+      const cardExpiry = (expiryMonth < 10 ? "0" + expiryMonth : expiryMonth) + "/" + expiryYear;
+      const cardCVV = faker.helpers.replaceSymbolWithNumber("###");
+      
+      // Build the address from cardData.address properties
+      let address = "";
+      if (cardData.address) {
+        address = `${cardData.address.streetA}, ${cardData.address.streetB}, ${cardData.address.city}, ${cardData.address.zipcode}`;
+      }
+      
+      // Display all generated details
+      document.getElementById('result').innerHTML = `
+        <h2>Generated Person</h2>
+        <div class="info-row">
+          <div><strong>Name:</strong> ${cardData.name}</div>
+          <div><strong>Email:</strong> ${cardData.email}</div>
+        </div>
+        <div class="info-row">
+          <div><strong>Phone:</strong> ${cardData.phone}</div>
+          <div><strong>Address:</strong> ${address}</div>
+        </div>
+        <div class="info-row">
+          <div><strong>Company:</strong> ${cardData.company.name}</div>
+          <div><strong>Job Title:</strong> ${jobTitle}</div>
+        </div>
+        <div class="info-row">
+          <div><strong>Card Number:</strong> ${cardNumber}</div>
+          <div><strong>Card Type:</strong> ${cardType}</div>
+        </div>
+        <div class="info-row">
+          <div><strong>Card Expiry:</strong> ${cardExpiry}</div>
+          <div><strong>Card CVV:</strong> ${cardCVV}</div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
