@@ -132,7 +132,7 @@
     <div class="metrics" id="metrics"></div>
 
     <div class="disclaimer">
-      <p><strong>Disclaimer:</strong> This tool employs advanced Monte Carlo simulations combining GARCH volatility, regime switching, and now a quantum-inspired variance reduction approach using low-discrepancy sequences and importance sampling. Results are probabilistic forecasts, not guarantees. Past performance ≠ future results. Consult a financial advisor.</p>
+      <p><strong>Disclaimer:</strong> This tool employs advanced Monte Carlo simulations combining GARCH volatility, dynamic regime switching, and jump diffusion (using a Poisson process) with quantum-inspired variance reduction. Results are probabilistic forecasts, not guarantees. Past performance ≠ future results. Consult a financial advisor.</p>
     </div>
   </div>
 
@@ -144,23 +144,19 @@
     function sobolSequence(dimensions, samples) {
       let seq = new Array(samples);
       for (let i = 0; i < samples; i++) {
-        // For simplicity, we use (i+1)/(samples+1) for each dimension
+        // Evenly spaced values in (0,1) (non-inclusive)
         seq[i] = new Array(dimensions).fill(0).map(() => (i + 1) / (samples + 1));
       }
       return seq;
     }
 
-    // Convert a low-discrepancy sequence to normally distributed numbers using a Box–Muller-like approach.
+    // Convert the low-discrepancy sequence to normally distributed numbers using a Box–Muller-like method.
     function quantumInspiredRandom(samples) {
-      // Generate a sequence of quasi-random uniform numbers.
       let sobolSeq = sobolSequence(1, samples + 1);
       let results = [];
-      // For Box-Muller, we need two uniform numbers.
       for (let i = 0; i < samples; i++) {
-        // Use two consecutive values from the sequence
         let u = sobolSeq[i][0];
         let u2 = sobolSeq[i+1][0];
-        // Apply Box-Muller transform
         let z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * u2);
         results.push(z);
       }
@@ -172,27 +168,47 @@
       return drift + sigma * epsilon * importanceWeight;
     }
 
-    // Helper functions for tanh, median, and quantile calculations.
+    // Helper function: standard tanh.
     function tanh(x) {
       return Math.tanh ? Math.tanh(x) : ((Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x)));
     }
 
+    // Helper function: median.
     function median(arr) {
       let sorted = arr.slice().sort((a, b) => a - b);
       let mid = Math.floor(sorted.length / 2);
       return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
     }
 
+    // Helper function: quantile.
     function quantileSeq(arr, quantile) {
       let sorted = arr.slice().sort((a, b) => a - b);
       let pos = (sorted.length - 1) * quantile;
       let base = Math.floor(pos);
       let rest = pos - base;
-      if (sorted[base + 1] !== undefined) {
-        return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
-      } else {
-        return sorted[base];
-      }
+      return (sorted[base + 1] !== undefined)
+              ? sorted[base] + rest * (sorted[base + 1] - sorted[base])
+              : sorted[base];
+    }
+
+    // Poisson random generator (returns an integer)
+    function poissonRandom(lambda) {
+      let L = Math.exp(-lambda);
+      let k = 0;
+      let p = 1;
+      do {
+        k++;
+        p *= Math.random();
+      } while (p > L);
+      return k - 1;
+    }
+
+    // Simple random normal generator (using Box-Muller)
+    function randomNormal() {
+      let u = 0, v = 0;
+      while(u === 0) u = Math.random();
+      while(v === 0) v = Math.random();
+      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
     }
 
     let priceChart = null;
@@ -213,7 +229,11 @@
 
       // 1. Fundamental Analysis (Discounted Cash Flow)
       const growthRate = inputs.epsGrowth;
-      const discountRate = inputs.riskFree + inputs.beta * 0.055; // Using CAPM for discount rate
+      const discountRate = inputs.riskFree + inputs.beta * 0.055;
+      if (discountRate <= growthRate) {
+        alert("Invalid input: (risk-free + beta×0.055) must be greater than EPS Growth.");
+        return;
+      }
       const terminalValue = inputs.price * (1 + growthRate) / (discountRate - growthRate);
       const fundamentalScore = Math.log(terminalValue / inputs.price);
 
@@ -224,56 +244,69 @@
       const shortInterestScore = -Math.log(1 + inputs.shortInterest * 10);
       const technicalScore = maScore + rsiScore + shortInterestScore;
 
-      // 3. Advanced Monte Carlo Simulation with GARCH, Regime Switching, and Quantum-Inspired Variance Reduction.
+      // 3. Simulation Setup
       const simulations = 2000;
       const timeSteps = 180; // 6 months of trading days.
-      const sigma0 = inputs.beta * 0.2 / Math.sqrt(252); // Initial volatility.
+      const sigma0 = inputs.beta * 0.2 / Math.sqrt(252);
 
-      // GARCH(1,1) parameters.
+      // --- GARCH parameters ---
+      // (In practice, these would be calibrated using historical data.)
       const garchAlpha0 = 0.000001;
       const garchAlpha1 = 0.1;
       const garchBeta1 = 0.85;
 
-      // Regime Switching parameters.
-      const regimeProbability = 0.05; // Daily chance to enter turbulent regime.
-      const turbulentFactor = 1.5; // Increase in volatility during turbulence.
+      // --- Base Regime Switching parameters ---
+      let baseRegimeProbability = 0.05;
+      // Use a simple heuristic: if RSI is in extreme territory, increase probability.
+      let dynamicRegimeProbability = baseRegimeProbability;
+      if (inputs.rsi < 30 || inputs.rsi > 70) {
+        dynamicRegimeProbability *= 2;
+      }
+      const turbulentFactor = 1.5;
+
+      // --- Jump Diffusion parameters (using Poisson process) ---
+      const jumpLambda = 0.03;   // Average number of jumps per day.
+      const jumpMean = 0.02;     // Mean jump size.
+      const jumpStd = 0.01;      // Std dev of jump size.
 
       let paths = [];
       for (let i = 0; i < simulations; i++) {
         let path = [inputs.price];
         let sigma = sigma0;
-        // Pre-generate quantum-inspired epsilon values for this simulation.
         let epsilons = quantumInspiredRandom(timeSteps);
         for (let j = 1; j < timeSteps; j++) {
-          // Mean reversion factor: nudges price toward its fundamental value.
-          let reversionFactor = 0.0002 * (terminalValue - path[j - 1]) / inputs.price;
-
-          // Regime switching: increase volatility if in turbulent regime.
-          let regimeFactor = (Math.random() < regimeProbability) ? turbulentFactor : 1.0;
-
-          // Jump component: rare sudden move of ±5%.
-          let jump = (Math.random() < 0.03) ? (Math.random() < 0.5 ? -0.05 : 0.05) : 0;
-
-          // Drift component: blend of growth, fundamental, technical, and mean reversion factors.
+          // Mean reversion factor: nudges price toward fundamental value.
+          let reversionFactor = 0.00015 * (terminalValue - path[j - 1]) / inputs.price;
+          
+          // Dynamic regime switching: use dynamicRegimeProbability.
+          let regimeFactor = (Math.random() < dynamicRegimeProbability) ? turbulentFactor : 1.0;
+          
+          // Jump diffusion: determine number of jumps today from Poisson distribution.
+          let jumpCount = poissonRandom(jumpLambda);
+          let totalJump = 0;
+          for (let k = 0; k < jumpCount; k++) {
+            // Each jump's direction is random; size sampled from normal distribution.
+            totalJump += (Math.random() < 0.5 ? -1 : 1) * (jumpMean + jumpStd * randomNormal());
+          }
+          
+          // Drift component: blend of growth, fundamental, technical, and mean reversion.
           let drift = (growthRate - 0.5 * sigma * sigma) / 252 +
-                      fundamentalScore * 0.0005 +
-                      technicalScore * 0.0005 +
+                      fundamentalScore * 0.0003 +
+                      technicalScore * 0.0003 +
                       reversionFactor;
-
-          // Importance weight: emphasize scenarios with stronger drift.
-          let importanceWeight = 1 + Math.abs(drift) * 5;
-
-          // Use a pre-generated quasi-random epsilon.
+          
+          // Importance weight: reduced multiplier.
+          let importanceWeight = 1 + Math.abs(drift) * 2;
+          
           let epsilon = epsilons[j - 1];
-
-          // Apply importance sampling to obtain the shock.
-          let shock = importanceSampledShock(drift, sigma, importanceWeight, epsilon) * regimeFactor + jump;
-
+          // Compute shock with importance sampling and add jump diffusion.
+          let shock = importanceSampledShock(drift, sigma, importanceWeight, epsilon) * regimeFactor + totalJump;
+          
           // Update price.
           let newPrice = path[j - 1] * Math.exp(shock);
           path.push(newPrice);
-
-          // Update volatility using a simple GARCH(1,1) update.
+          
+          // Revised GARCH update: here we use a simple update using the scaled epsilon.
           let epsilonScaled = sigma * epsilon;
           sigma = Math.sqrt(garchAlpha0 + garchAlpha1 * Math.pow(epsilonScaled, 2) + garchBeta1 * sigma * sigma);
         }
@@ -287,7 +320,10 @@
       const confHigh = quantileSeq(finalPrices, 0.90);
       const upsideProbability = (finalPrices.filter(p => p > inputs.price).length / simulations) * 100;
 
-      // Update the metrics display.
+      // Use numeric trading day labels.
+      const labels = Array.from({ length: timeSteps }, (_, i) => i + 1);
+
+      // Display metrics.
       document.getElementById('metrics').innerHTML = `
         <div class="metric-box">
           <h3>Median Forecast</h3>
@@ -303,13 +339,13 @@
         </div>
       `;
 
-      // Update the chart: plot one sample simulation and the median forecast over time.
+      // Update the chart.
       if (priceChart) priceChart.destroy();
       const ctx = document.getElementById('priceChart').getContext('2d');
       priceChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: Array.from({ length: timeSteps }, (_, i) => i + 1),
+          labels: labels,
           datasets: [{
             label: 'Sample Simulation',
             data: paths[0],
@@ -337,3 +373,4 @@
   </script>
 </body>
 </html>
+
