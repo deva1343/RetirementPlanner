@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Stock Predictor</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Simplified and compact UI */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 10px;
+    }
+    .container {
+      max-width: 800px;
+      background: #fff;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .input-section {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 4px;
+      color: #333;
+      font-size: 14px;
+    }
+    input {
+      width: 100%;
+      padding: 6px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #2c3e50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #1a252f;
+    }
+    .chart-container {
+      height: 400px;
+      margin-top: 15px;
+    }
+    .metrics, .news {
+      margin-top: 15px;
+    }
+    .metric-box, .news-box {
+      padding: 10px;
+      background: #f8f9fa;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .disclaimer {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Advanced Stock Predictor</h2>
+    <div class="input-section">
+      <!-- Only Stock Symbol Input -->
+      <div class="input-group">
+        <label>Stock Symbol</label>
+        <input type="text" id="symbol" placeholder="e.g., TSLA" required>
+      </div>
+    </div>
+
+    <button onclick="calculateAdvancedPrediction()">Generate Forecast</button>
+
+    <div class="chart-container">
+      <canvas id="priceChart"></canvas>
+    </div>
+
+    <div class="metrics" id="metrics"></div>
+
+    <div class="disclaimer">
+      <p>
+        <strong>Disclaimer:</strong> This tool employs advanced Monte Carlo simulations (with GARCH volatility, dynamic regime switching, and jump diffusion via a Poisson process) and uses free Alpha Vantage data for historical calibration and news sentiment. Results are probabilistic forecasts—not guarantees. Past performance ≠ future results. Consult a financial advisor.
+      </p>
+    </div>
+
+    <!-- News Section -->
+    <div class="news" id="news">
+      <h3>Latest News</h3>
+      <div id="newsContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_KEY = "3V9ILUFE3HRNIO7H";
+
+    /***************************************
+     * Data Fetching Functions (Alpha Vantage)
+     ***************************************/
+    async function fetchOverview(symbol) {
+      const url = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${API_KEY}`;
+      try {
+        const response = await fetch(url);
+        return await response.json();
+      } catch (error) {
+        console.error("Error fetching overview:", error);
+        return null;
+      }
+    }
+
+    async function fetchDailyAdjusted(symbol) {
+      // First try TIME_SERIES_DAILY_ADJUSTED
+      const urlAdjusted = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&apikey=${API_KEY}`;
+      try {
+        let response = await fetch(urlAdjusted);
+        let data = await response.json();
+        if (data["Time Series (Daily)"]) return data;
+        // If not, try TIME_SERIES_DAILY
+        const urlDaily = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${API_KEY}`;
+        response = await fetch(urlDaily);
+        data = await response.json();
+        if (data["Time Series (Daily)"]) return data;
+        else return data;
+      } catch (error) {
+        console.error("Error fetching daily data:", error);
+        return null;
+      }
+    }
+
+    async function fetchRSI(symbol) {
+      const url = `https://www.alphavantage.co/query?function=RSI&symbol=${symbol}&interval=daily&time_period=14&series_type=close&apikey=${API_KEY}`;
+      try {
+        const response = await fetch(url);
+        return await response.json();
+      } catch (error) {
+        console.error("Error fetching RSI:", error);
+        return null;
+      }
+    }
+
+    async function fetchNews(symbol) {
+      const url = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${symbol}&apikey=${API_KEY}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.feed ? data.feed.slice(0, 5) : [];
+      } catch (error) {
+        console.error("Error fetching news:", error);
+        return [];
+      }
+    }
+
+    async function fetchNewsSentimentFactor(symbol) {
+      const newsItems = await fetchNews(symbol);
+      if (newsItems.length === 0) return 1;
+      let sum = 0, count = 0;
+      newsItems.forEach(item => {
+        if (item.overall_sentiment_score) {
+          sum += parseFloat(item.overall_sentiment_score);
+          count++;
+        }
+      });
+      if (count === 0) return 1;
+      const avg = sum / count;
+      return avg < 0 ? 2 : 1;
+    }
+
+    async function fetchHistoricalVolatility(symbol) {
+      const data = await fetchDailyAdjusted(symbol);
+      if (!data || !data["Time Series (Daily)"]) {
+        console.error("No historical daily data available.");
+        return null;
+      }
+      const timeSeries = data["Time Series (Daily)"];
+      const dates = Object.keys(timeSeries).sort((a, b) => new Date(b) - new Date(a));
+      const returns = [];
+      for (let i = 1; i < Math.min(dates.length, 31); i++) {
+        const priceToday = parseFloat(timeSeries[dates[i-1]]["5. adjusted close"] || timeSeries[dates[i-1]]["4. close"]);
+        const priceYesterday = parseFloat(timeSeries[dates[i]]["5. adjusted close"] || timeSeries[dates[i]]["4. close"]);
+        const ret = Math.log(priceToday / priceYesterday);
+        returns.push(ret);
+      }
+      const mean = returns.reduce((acc, r) => acc + r, 0) / returns.length;
+      const variance = returns.reduce((acc, r) => acc + Math.pow(r - mean, 2), 0) / (returns.length - 1);
+      return Math.sqrt(variance);
+    }
+
+    /***************************************
+     * Helper Functions for Simulation
+     ***************************************/
+    function sobolSequence(dimensions, samples) {
+      let seq = new Array(samples);
+      for (let i = 0; i < samples; i++) {
+        seq[i] = new Array(dimensions).fill(0).map(() => (i + 1) / (samples + 1));
+      }
+      return seq;
+    }
+
+    function quantumInspiredRandom(samples) {
+      let sobolSeq = sobolSequence(1, samples + 1);
+      let results = [];
+      for (let i = 0; i < samples; i++) {
+        let u = sobolSeq[i][0];
+        let u2 = sobolSeq[i+1][0];
+        let z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * u2);
+        results.push(z);
+      }
+      return results;
+    }
+
+    function importanceSampledShock(drift, sigma, importanceWeight, epsilon) {
+      return drift + sigma * epsilon * importanceWeight;
+    }
+
+    function tanh(x) {
+      return Math.tanh ? Math.tanh(x) : ((Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x)));
+    }
+
+    function median(arr) {
+      let sorted = arr.slice().sort((a, b) => a - b);
+      let mid = Math.floor(sorted.length / 2);
+      return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
+    }
+
+    function quantileSeq(arr, quantile) {
+      let sorted = arr.slice().sort((a, b) => a - b);
+      let pos = (sorted.length - 1) * quantile;
+      let base = Math.floor(pos);
+      let rest = pos - base;
+      return (sorted[base + 1] !== undefined)
+              ? sorted[base] + rest * (sorted[base + 1] - sorted[base])
+              : sorted[base];
+    }
+
+    function poissonRandom(lambda) {
+      let L = Math.exp(-lambda);
+      let k = 0;
+      let p = 1;
+      do {
+        k++;
+        p *= Math.random();
+      } while (p > L);
+      return k - 1;
+    }
+
+    function randomNormal() {
+      let u = 0, v = 0;
+      while(u === 0) u = Math.random();
+      while(v === 0) v = Math.random();
+      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+    }
+
+    /***************************************
+     * Simulation and Charting Functions
+     ***************************************/
+    let priceChart = null;
+
+    async function calculateAdvancedPrediction() {
+      const symbol = document.getElementById('symbol').value.trim();
+      if (!symbol) {
+        alert("Please enter a stock symbol.");
+        return;
+      }
+      
+      // Fetch API data.
+      const overview = await fetchOverview(symbol);
+      const dailyData = await fetchDailyAdjusted(symbol);
+      const rsiData = await fetchRSI(symbol);
+      
+      if (!overview || !dailyData || !rsiData) {
+        alert("Error fetching data from Alpha Vantage. Please try again later.");
+        return;
+      }
+      
+      // Extract daily data.
+      const dailySeries = dailyData["Time Series (Daily)"];
+      if (!dailySeries) {
+        if (dailyData.Note) {
+          alert("Alpha Vantage API note: " + dailyData.Note);
+        } else if (dailyData["Error Message"]) {
+          alert("Alpha Vantage API error: " + dailyData["Error Message"]);
+        } else {
+          alert("No daily data available.");
+        }
+        return;
+      }
+      
+      const latestDate = Object.keys(dailySeries)[0];
+      const currentPrice = parseFloat(dailySeries[latestDate]["5. adjusted close"] || dailySeries[latestDate]["4. close"]);
+      
+      // Use Overview data.
+      const peRatio = parseFloat(overview["PERatio"]) || 100;
+      const beta = parseFloat(overview["Beta"]) || 1.0;
+      const ma50 = parseFloat(overview["50DayMovingAverage"]) || currentPrice;
+      const ma200 = parseFloat(overview["200DayMovingAverage"]) || currentPrice;
+      const epsGrowth = overview["QuarterlyEarningsGrowthYOY"] ? parseFloat(overview["QuarterlyEarningsGrowthYOY"]) / 100 : 0.10;
+      
+      // RSI data.
+      const rsiSeries = rsiData["Technical Analysis: RSI"] || {};
+      const latestRSI = Object.keys(rsiSeries).length ? parseFloat(rsiSeries[Object.keys(rsiSeries)[0]]["RSI"]) : 50;
+      
+      // Set risk-free and short interest defaults.
+      const riskFree = 0.02;
+      const shortInterest = 0.05;
+      
+      console.log({ currentPrice, peRatio, beta, ma50, ma200, epsGrowth, latestRSI, riskFree, shortInterest });
+      
+      // Fundamental Analysis.
+      const growthRate = epsGrowth;
+      const discountRate = riskFree + beta * 0.055;
+      if (discountRate <= growthRate) {
+        alert("Invalid input: (risk-free + beta×0.055) must be greater than EPS Growth.");
+        return;
+      }
+      const terminalValue = currentPrice * (1 + growthRate) / (discountRate - growthRate);
+      const fundamentalScore = Math.log(terminalValue / currentPrice);
+      
+      // Technical Analysis.
+      const calcMaScore = ((currentPrice - ma50) / ma50) * 0.4 + ((ma50 - ma200) / ma200) * 0.6;
+      const calcRsiScore = tanh((latestRSI - 50) / 25) * 0.5;
+      const calcShortInterestScore = -Math.log(1 + shortInterest * 10);
+      const technicalScore = calcMaScore + calcRsiScore + calcShortInterestScore;
+      
+      // Simulation Setup.
+      const simulations = 2000;
+      const timeSteps = 180;
+      let histVol = await fetchHistoricalVolatility(symbol);
+      let sigma0 = histVol !== null ? histVol : (beta * 0.2 / Math.sqrt(252));
+      
+      const garchAlpha0 = 0.000001;
+      const garchAlpha1 = 0.1;
+      const garchBeta1 = 0.85;
+      
+      let baseRegimeProbability = 0.05;
+      let dynamicRegimeProbability = baseRegimeProbability;
+      if (latestRSI < 30 || latestRSI > 70) {
+        dynamicRegimeProbability *= 2;
+      }
+      const newsSentimentFactor = await fetchNewsSentimentFactor(symbol);
+      dynamicRegimeProbability *= newsSentimentFactor;
+      const turbulentFactor = 1.5;
+      
+      const jumpLambda = 0.03;
+      const jumpMean = 0.02;
+      const jumpStd = 0.01;
+      
+      let paths = [];
+      let epsilons;
+      for (let i = 0; i < simulations; i++) {
+        let path = [currentPrice];
+        let sigma = sigma0;
+        epsilons = quantumInspiredRandom(timeSteps);
+        for (let j = 1; j < timeSteps; j++) {
+          let reversionFactor = 0.00015 * (terminalValue - path[j - 1]) / currentPrice;
+          let regimeFactor = (Math.random() < dynamicRegimeProbability) ? turbulentFactor : 1.0;
+          
+          let jumpCount = poissonRandom(jumpLambda);
+          let totalJump = 0;
+          for (let k = 0; k < jumpCount; k++) {
+            totalJump += (Math.random() < 0.5 ? -1 : 1) * (jumpMean + jumpStd * randomNormal());
+          }
+          
+          let drift = (growthRate - 0.5 * sigma * sigma) / 252 +
+                      fundamentalScore * 0.0003 +
+                      technicalScore * 0.0003 +
+                      reversionFactor;
+          let importanceWeight = 1 + Math.abs(drift) * 2;
+          let epsilon = epsilons[j - 1];
+          let shock = importanceSampledShock(drift, sigma, importanceWeight, epsilon) * regimeFactor + totalJump;
+          let newPrice = path[j - 1] * Math.exp(shock);
+          path.push(newPrice);
+          let epsilonScaled = sigma * epsilon;
+          sigma = Math.sqrt(garchAlpha0 + garchAlpha1 * Math.pow(epsilonScaled, 2) + garchBeta1 * sigma * sigma);
+        }
+        paths.push(path);
+      }
+      
+      const finalPrices = paths.map(p => p[p.length - 1]);
+      const medianPrice = median(finalPrices);
+      const confLow = quantileSeq(finalPrices, 0.10);
+      const confHigh = quantileSeq(finalPrices, 0.90);
+      const upsideProbability = (finalPrices.filter(p => p > currentPrice).length / simulations) * 100;
+      
+      const labels = Array.from({ length: timeSteps }, (_, i) => i + 1);
+      
+      document.getElementById('metrics').innerHTML = `
+        <div class="metric-box">
+          <h3>Median Forecast</h3>
+          <p>$${medianPrice.toFixed(2)}</p>
+        </div>
+        <div class="metric-box">
+          <h3>90% Confidence Range</h3>
+          <p>$${confLow.toFixed(2)} - $${confHigh.toFixed(2)}</p>
+        </div>
+        <div class="metric-box">
+          <h3>Upside Probability</h3>
+          <p>${upsideProbability.toFixed(2)}%</p>
+        </div>
+      `;
+      
+      if (priceChart) priceChart.destroy();
+      const ctx = document.getElementById('priceChart').getContext('2d');
+      priceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Sample Simulation',
+            data: paths[0],
+            borderColor: 'rgba(44, 62, 80, 0.1)',
+            pointRadius: 0,
+            tension: 0.1
+          }, {
+            label: 'Median Forecast',
+            data: paths[0].map((_, i) => median(paths.map(p => p[i]))),
+            borderColor: '#2c3e50',
+            borderWidth: 2,
+            tension: 0.2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { title: { display: true, text: 'Price ($)' } },
+            x: { title: { display: true, text: 'Trading Days' } }
+          }
+        }
+      });
+      
+      displayNews(symbol);
+    }
+
+    async function displayNews(symbol) {
+      const newsItems = await fetchNews(symbol);
+      const container = document.getElementById('newsContainer');
+      if (newsItems.length === 0) {
+        container.innerHTML = "<p>No news available.</p>";
+        return;
+      }
+      let html = "";
+      newsItems.forEach(item => {
+        html += `<div class="news-box">
+                  <h4>${item.title}</h4>
+                  <p>${item.summary || ""}</p>
+                  <a href="${item.url}" target="_blank">Read more</a>
+                 </div>`;
+      });
+      container.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
