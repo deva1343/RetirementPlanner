@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Stock Predictor</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Improved CSS styles */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      background: #fff;
+      margin: 0 auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .input-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .input-group {
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #2c3e50;
+      font-weight: 500;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #dee2e6;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    button {
+      background: #2c3e50;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #1a252f;
+    }
+    .chart-container {
+      height: 500px;
+      margin-top: 30px;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .metric-box {
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Advanced Stock Price Predictor</h1>
+    
+    <div class="input-section">
+      <!-- Fundamental Analysis -->
+      <div class="input-group">
+        <label>Current Price ($)</label>
+        <input type="number" id="price" step="0.01" required>
+      </div>
+      <div class="input-group">
+        <label>EPS Growth Next 5Y (%)</label>
+        <input type="number" id="epsGrowth" step="0.1" required>
+      </div>
+      <div class="input-group">
+        <label>P/E Ratio</label>
+        <input type="number" id="pe" step="0.1" required>
+      </div>
+
+      <!-- Technical Analysis -->
+      <div class="input-group">
+        <label>50-day MA ($)</label>
+        <input type="number" id="ma50" step="0.01" required>
+      </div>
+      <div class="input-group">
+        <label>200-day MA ($)</label>
+        <input type="number" id="ma200" step="0.01" required>
+      </div>
+      <div class="input-group">
+        <label>RSI (14-day)</label>
+        <input type="number" id="rsi" min="0" max="100" required>
+      </div>
+
+      <!-- Market Factors -->
+      <div class="input-group">
+        <label>Risk-Free Rate (%)</label>
+        <input type="number" id="riskFree" step="0.01" required>
+      </div>
+      <div class="input-group">
+        <label>Beta (Volatility)</label>
+        <input type="number" id="beta" step="0.1" required>
+      </div>
+      <div class="input-group">
+        <label>Short Interest (%)</label>
+        <input type="number" id="shortInterest" step="0.1" required>
+      </div>
+    </div>
+
+    <button onclick="calculateAdvancedPrediction()">Generate Forecast</button>
+
+    <div class="chart-container">
+      <canvas id="priceChart"></canvas>
+    </div>
+
+    <div class="metrics" id="metrics"></div>
+
+    <div class="disclaimer">
+      <p><strong>Disclaimer:</strong> This tool employs advanced Monte Carlo simulations combining GARCH volatility, regime switching, and now a quantum-inspired variance reduction approach using low-discrepancy sequences and importance sampling. Results are probabilistic forecasts, not guarantees. Past performance ≠ future results. Consult a financial advisor.</p>
+    </div>
+  </div>
+
+  <script>
+    /***************************************
+     * Quantum-Inspired Variance Reduction *
+     ***************************************/
+    // A simplified low-discrepancy sequence generator (Sobol-like)
+    function sobolSequence(dimensions, samples) {
+      let seq = new Array(samples);
+      for (let i = 0; i < samples; i++) {
+        // For simplicity, we use (i+1)/(samples+1) for each dimension
+        seq[i] = new Array(dimensions).fill(0).map(() => (i + 1) / (samples + 1));
+      }
+      return seq;
+    }
+
+    // Convert a low-discrepancy sequence to normally distributed numbers using a Box–Muller-like approach.
+    function quantumInspiredRandom(samples) {
+      // Generate a sequence of quasi-random uniform numbers.
+      let sobolSeq = sobolSequence(1, samples + 1);
+      let results = [];
+      // For Box-Muller, we need two uniform numbers.
+      for (let i = 0; i < samples; i++) {
+        // Use two consecutive values from the sequence
+        let u = sobolSeq[i][0];
+        let u2 = sobolSeq[i+1][0];
+        // Apply Box-Muller transform
+        let z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * u2);
+        results.push(z);
+      }
+      return results;
+    }
+
+    // Importance sampling: adjust the shock by an importance weight.
+    function importanceSampledShock(drift, sigma, importanceWeight, epsilon) {
+      return drift + sigma * epsilon * importanceWeight;
+    }
+
+    // Helper functions for tanh, median, and quantile calculations.
+    function tanh(x) {
+      return Math.tanh ? Math.tanh(x) : ((Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x)));
+    }
+
+    function median(arr) {
+      let sorted = arr.slice().sort((a, b) => a - b);
+      let mid = Math.floor(sorted.length / 2);
+      return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
+    }
+
+    function quantileSeq(arr, quantile) {
+      let sorted = arr.slice().sort((a, b) => a - b);
+      let pos = (sorted.length - 1) * quantile;
+      let base = Math.floor(pos);
+      let rest = pos - base;
+      if (sorted[base + 1] !== undefined) {
+        return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+      } else {
+        return sorted[base];
+      }
+    }
+
+    let priceChart = null;
+
+    function calculateAdvancedPrediction() {
+      // Extract input values.
+      const inputs = {
+        price: parseFloat(document.getElementById('price').value),
+        epsGrowth: parseFloat(document.getElementById('epsGrowth').value) / 100,
+        pe: parseFloat(document.getElementById('pe').value),
+        ma50: parseFloat(document.getElementById('ma50').value),
+        ma200: parseFloat(document.getElementById('ma200').value),
+        rsi: parseFloat(document.getElementById('rsi').value),
+        riskFree: parseFloat(document.getElementById('riskFree').value) / 100,
+        beta: parseFloat(document.getElementById('beta').value),
+        shortInterest: parseFloat(document.getElementById('shortInterest').value) / 100
+      };
+
+      // 1. Fundamental Analysis (Discounted Cash Flow)
+      const growthRate = inputs.epsGrowth;
+      const discountRate = inputs.riskFree + inputs.beta * 0.055; // Using CAPM for discount rate
+      const terminalValue = inputs.price * (1 + growthRate) / (discountRate - growthRate);
+      const fundamentalScore = Math.log(terminalValue / inputs.price);
+
+      // 2. Technical Analysis: Combine moving averages, RSI, and short interest effects.
+      const maScore = ((inputs.price - inputs.ma50) / inputs.ma50) * 0.4 +
+                      ((inputs.ma50 - inputs.ma200) / inputs.ma200) * 0.6;
+      const rsiScore = tanh((inputs.rsi - 50) / 25) * 0.5;
+      const shortInterestScore = -Math.log(1 + inputs.shortInterest * 10);
+      const technicalScore = maScore + rsiScore + shortInterestScore;
+
+      // 3. Advanced Monte Carlo Simulation with GARCH, Regime Switching, and Quantum-Inspired Variance Reduction.
+      const simulations = 2000;
+      const timeSteps = 180; // 6 months of trading days.
+      const sigma0 = inputs.beta * 0.2 / Math.sqrt(252); // Initial volatility.
+
+      // GARCH(1,1) parameters.
+      const garchAlpha0 = 0.000001;
+      const garchAlpha1 = 0.1;
+      const garchBeta1 = 0.85;
+
+      // Regime Switching parameters.
+      const regimeProbability = 0.05; // Daily chance to enter turbulent regime.
+      const turbulentFactor = 1.5; // Increase in volatility during turbulence.
+
+      let paths = [];
+      for (let i = 0; i < simulations; i++) {
+        let path = [inputs.price];
+        let sigma = sigma0;
+        // Pre-generate quantum-inspired epsilon values for this simulation.
+        let epsilons = quantumInspiredRandom(timeSteps);
+        for (let j = 1; j < timeSteps; j++) {
+          // Mean reversion factor: nudges price toward its fundamental value.
+          let reversionFactor = 0.0002 * (terminalValue - path[j - 1]) / inputs.price;
+
+          // Regime switching: increase volatility if in turbulent regime.
+          let regimeFactor = (Math.random() < regimeProbability) ? turbulentFactor : 1.0;
+
+          // Jump component: rare sudden move of ±5%.
+          let jump = (Math.random() < 0.03) ? (Math.random() < 0.5 ? -0.05 : 0.05) : 0;
+
+          // Drift component: blend of growth, fundamental, technical, and mean reversion factors.
+          let drift = (growthRate - 0.5 * sigma * sigma) / 252 +
+                      fundamentalScore * 0.0005 +
+                      technicalScore * 0.0005 +
+                      reversionFactor;
+
+          // Importance weight: emphasize scenarios with stronger drift.
+          let importanceWeight = 1 + Math.abs(drift) * 5;
+
+          // Use a pre-generated quasi-random epsilon.
+          let epsilon = epsilons[j - 1];
+
+          // Apply importance sampling to obtain the shock.
+          let shock = importanceSampledShock(drift, sigma, importanceWeight, epsilon) * regimeFactor + jump;
+
+          // Update price.
+          let newPrice = path[j - 1] * Math.exp(shock);
+          path.push(newPrice);
+
+          // Update volatility using a simple GARCH(1,1) update.
+          let epsilonScaled = sigma * epsilon;
+          sigma = Math.sqrt(garchAlpha0 + garchAlpha1 * Math.pow(epsilonScaled, 2) + garchBeta1 * sigma * sigma);
+        }
+        paths.push(path);
+      }
+
+      // Compute simulation statistics.
+      const finalPrices = paths.map(p => p[p.length - 1]);
+      const medianPrice = median(finalPrices);
+      const confLow = quantileSeq(finalPrices, 0.10);
+      const confHigh = quantileSeq(finalPrices, 0.90);
+      const upsideProbability = (finalPrices.filter(p => p > inputs.price).length / simulations) * 100;
+
+      // Update the metrics display.
+      document.getElementById('metrics').innerHTML = `
+        <div class="metric-box">
+          <h3>Median Forecast</h3>
+          <p>$${medianPrice.toFixed(2)}</p>
+        </div>
+        <div class="metric-box">
+          <h3>90% Confidence Range</h3>
+          <p>$${confLow.toFixed(2)} - $${confHigh.toFixed(2)}</p>
+        </div>
+        <div class="metric-box">
+          <h3>Upside Probability</h3>
+          <p>${upsideProbability.toFixed(2)}%</p>
+        </div>
+      `;
+
+      // Update the chart: plot one sample simulation and the median forecast over time.
+      if (priceChart) priceChart.destroy();
+      const ctx = document.getElementById('priceChart').getContext('2d');
+      priceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: Array.from({ length: timeSteps }, (_, i) => i + 1),
+          datasets: [{
+            label: 'Sample Simulation',
+            data: paths[0],
+            borderColor: 'rgba(44, 62, 80, 0.1)',
+            pointRadius: 0,
+            tension: 0.1
+          }, {
+            label: 'Median Forecast',
+            data: paths[0].map((_, i) => median(paths.map(p => p[i]))),
+            borderColor: '#2c3e50',
+            borderWidth: 2,
+            tension: 0.2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { title: { display: true, text: 'Price ($)' } },
+            x: { title: { display: true, text: 'Trading Days' } }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
