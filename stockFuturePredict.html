@@ -6,81 +6,88 @@
   <title>Advanced Stock Predictor</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    /* Improved CSS styles */
+    /* Simplified UI styles */
     body {
       font-family: 'Roboto', sans-serif;
       background: #f8f9fa;
       margin: 0;
-      padding: 20px;
+      padding: 10px;
     }
     .container {
-      max-width: 1200px;
+      max-width: 800px;
       background: #fff;
-      margin: 0 auto;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
     .input-section {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 15px;
     }
     .input-group {
-      padding: 15px;
-      background: #f8f9fa;
-      border-radius: 8px;
+      margin-bottom: 10px;
     }
     label {
       display: block;
-      margin-bottom: 8px;
-      color: #2c3e50;
-      font-weight: 500;
+      margin-bottom: 4px;
+      color: #333;
+      font-size: 14px;
     }
     input, select {
       width: 100%;
-      padding: 12px;
-      border: 2px solid #dee2e6;
-      border-radius: 6px;
+      padding: 6px;
       font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
     button {
+      width: 100%;
+      padding: 10px;
       background: #2c3e50;
-      color: white;
-      padding: 14px;
+      color: #fff;
       border: none;
-      border-radius: 6px;
+      border-radius: 4px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      font-size: 16px;
     }
     button:hover {
       background: #1a252f;
     }
     .chart-container {
-      height: 500px;
-      margin-top: 30px;
+      height: 400px;
+      margin-top: 15px;
     }
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin-top: 30px;
+    .metrics, .news {
+      margin-top: 15px;
     }
-    .metric-box {
-      padding: 15px;
+    .metric-box, .news-box {
+      padding: 10px;
       background: #f8f9fa;
-      border-radius: 8px;
-      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .disclaimer {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #555;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Advanced Stock Price Predictor</h1>
+    <h2>Advanced Stock Predictor</h2>
     
     <div class="input-section">
-      <!-- Fundamental Analysis -->
+      <!-- Stock & Fundamental Inputs -->
+      <div class="input-group">
+        <label>Stock Symbol</label>
+        <input type="text" id="symbol" placeholder="e.g., IBM" required>
+      </div>
       <div class="input-group">
         <label>Current Price ($)</label>
         <input type="number" id="price" step="0.01" required>
@@ -93,8 +100,8 @@
         <label>P/E Ratio</label>
         <input type="number" id="pe" step="0.1" required>
       </div>
-
-      <!-- Technical Analysis -->
+      
+      <!-- Technical Inputs -->
       <div class="input-group">
         <label>50-day MA ($)</label>
         <input type="number" id="ma50" step="0.01" required>
@@ -107,7 +114,7 @@
         <label>RSI (14-day)</label>
         <input type="number" id="rsi" min="0" max="100" required>
       </div>
-
+      
       <!-- Market Factors -->
       <div class="input-group">
         <label>Risk-Free Rate (%)</label>
@@ -132,7 +139,13 @@
     <div class="metrics" id="metrics"></div>
 
     <div class="disclaimer">
-      <p><strong>Disclaimer:</strong> This tool employs advanced Monte Carlo simulations combining GARCH volatility, dynamic regime switching, and jump diffusion (using a Poisson process) with quantum-inspired variance reduction. Results are probabilistic forecasts, not guarantees. Past performance ≠ future results. Consult a financial advisor.</p>
+      <p><strong>Disclaimer:</strong> This tool employs advanced Monte Carlo simulations (with GARCH volatility, dynamic regime switching, and jump diffusion via a Poisson process) and uses Alpha Vantage data for historical calibration. Results are probabilistic forecasts—not guarantees. Past performance ≠ future results. Consult a financial advisor.</p>
+    </div>
+
+    <!-- News Section (populated by Alpha Vantage NEWS_SENTIMENT API) -->
+    <div class="news" id="news">
+      <h3>Latest News</h3>
+      <div id="newsContainer"></div>
     </div>
   </div>
 
@@ -140,17 +153,14 @@
     /***************************************
      * Quantum-Inspired Variance Reduction *
      ***************************************/
-    // A simplified low-discrepancy sequence generator (Sobol-like)
     function sobolSequence(dimensions, samples) {
       let seq = new Array(samples);
       for (let i = 0; i < samples; i++) {
-        // Evenly spaced values in (0,1) (non-inclusive)
         seq[i] = new Array(dimensions).fill(0).map(() => (i + 1) / (samples + 1));
       }
       return seq;
     }
 
-    // Convert the low-discrepancy sequence to normally distributed numbers using a Box–Muller-like method.
     function quantumInspiredRandom(samples) {
       let sobolSeq = sobolSequence(1, samples + 1);
       let results = [];
@@ -163,24 +173,20 @@
       return results;
     }
 
-    // Importance sampling: adjust the shock by an importance weight.
     function importanceSampledShock(drift, sigma, importanceWeight, epsilon) {
       return drift + sigma * epsilon * importanceWeight;
     }
 
-    // Helper function: standard tanh.
     function tanh(x) {
       return Math.tanh ? Math.tanh(x) : ((Math.exp(x) - Math.exp(-x)) / (Math.exp(x) + Math.exp(-x)));
     }
 
-    // Helper function: median.
     function median(arr) {
       let sorted = arr.slice().sort((a, b) => a - b);
       let mid = Math.floor(sorted.length / 2);
       return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
     }
 
-    // Helper function: quantile.
     function quantileSeq(arr, quantile) {
       let sorted = arr.slice().sort((a, b) => a - b);
       let pos = (sorted.length - 1) * quantile;
@@ -191,7 +197,7 @@
               : sorted[base];
     }
 
-    // Poisson random generator (returns an integer)
+    // Poisson random generator for jump diffusion.
     function poissonRandom(lambda) {
       let L = Math.exp(-lambda);
       let k = 0;
@@ -203,7 +209,6 @@
       return k - 1;
     }
 
-    // Simple random normal generator (using Box-Muller)
     function randomNormal() {
       let u = 0, v = 0;
       while(u === 0) u = Math.random();
@@ -211,11 +216,56 @@
       return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
     }
 
+    // Fetch historical daily data from Alpha Vantage to compute volatility.
+    async function fetchHistoricalVolatility(symbol) {
+      const apiKey = "I4O6XZKS96360MWB";
+      const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&apikey=${apiKey}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const timeSeries = data["Time Series (Daily)"];
+        if (!timeSeries) {
+          console.error("No historical data found");
+          return null;
+        }
+        const dates = Object.keys(timeSeries).sort((a, b) => new Date(b) - new Date(a));
+        const returns = [];
+        for (let i = 1; i < Math.min(dates.length, 31); i++) {
+          const priceToday = parseFloat(timeSeries[dates[i-1]]["5. adjusted close"]);
+          const priceYesterday = parseFloat(timeSeries[dates[i]]["5. adjusted close"]);
+          const ret = Math.log(priceToday / priceYesterday);
+          returns.push(ret);
+        }
+        const mean = returns.reduce((acc, r) => acc + r, 0) / returns.length;
+        const variance = returns.reduce((acc, r) => acc + Math.pow(r - mean, 2), 0) / (returns.length - 1);
+        return Math.sqrt(variance);
+      } catch (error) {
+        console.error("Error fetching historical volatility:", error);
+        return null;
+      }
+    }
+
+    // Fetch latest news from Alpha Vantage NEWS_SENTIMENT endpoint.
+    async function fetchNews(symbol) {
+      const apiKey = "I4O6XZKS96360MWB";
+      const url = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${symbol}&apikey=${apiKey}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        // The API typically returns a "feed" array.
+        return data.feed ? data.feed.slice(0, 5) : [];
+      } catch (error) {
+        console.error("Error fetching news:", error);
+        return [];
+      }
+    }
+
     let priceChart = null;
 
-    function calculateAdvancedPrediction() {
-      // Extract input values.
+    // Main simulation function (asynchronous to allow API calls)
+    async function calculateAdvancedPrediction() {
       const inputs = {
+        symbol: document.getElementById('symbol').value.trim(),
         price: parseFloat(document.getElementById('price').value),
         epsGrowth: parseFloat(document.getElementById('epsGrowth').value) / 100,
         pe: parseFloat(document.getElementById('pe').value),
@@ -227,7 +277,7 @@
         shortInterest: parseFloat(document.getElementById('shortInterest').value) / 100
       };
 
-      // 1. Fundamental Analysis (Discounted Cash Flow)
+      // Fundamental Analysis
       const growthRate = inputs.epsGrowth;
       const discountRate = inputs.riskFree + inputs.beta * 0.055;
       if (discountRate <= growthRate) {
@@ -237,93 +287,80 @@
       const terminalValue = inputs.price * (1 + growthRate) / (discountRate - growthRate);
       const fundamentalScore = Math.log(terminalValue / inputs.price);
 
-      // 2. Technical Analysis: Combine moving averages, RSI, and short interest effects.
+      // Technical Analysis
       const maScore = ((inputs.price - inputs.ma50) / inputs.ma50) * 0.4 +
                       ((inputs.ma50 - inputs.ma200) / inputs.ma200) * 0.6;
       const rsiScore = tanh((inputs.rsi - 50) / 25) * 0.5;
       const shortInterestScore = -Math.log(1 + inputs.shortInterest * 10);
       const technicalScore = maScore + rsiScore + shortInterestScore;
 
-      // 3. Simulation Setup
+      // Simulation Setup
       const simulations = 2000;
-      const timeSteps = 180; // 6 months of trading days.
-      const sigma0 = inputs.beta * 0.2 / Math.sqrt(252);
+      const timeSteps = 180; // Trading days.
+      let histVol = await fetchHistoricalVolatility(inputs.symbol);
+      let sigma0 = histVol !== null ? histVol : (inputs.beta * 0.2 / Math.sqrt(252));
 
-      // --- GARCH parameters ---
-      // (In practice, these would be calibrated using historical data.)
+      // GARCH parameters (for demonstration).
       const garchAlpha0 = 0.000001;
       const garchAlpha1 = 0.1;
       const garchBeta1 = 0.85;
 
-      // --- Base Regime Switching parameters ---
+      // Dynamic Regime Switching: use RSI as a proxy.
       let baseRegimeProbability = 0.05;
-      // Use a simple heuristic: if RSI is in extreme territory, increase probability.
       let dynamicRegimeProbability = baseRegimeProbability;
       if (inputs.rsi < 30 || inputs.rsi > 70) {
         dynamicRegimeProbability *= 2;
       }
       const turbulentFactor = 1.5;
 
-      // --- Jump Diffusion parameters (using Poisson process) ---
+      // Jump Diffusion via Poisson Process.
       const jumpLambda = 0.03;   // Average number of jumps per day.
       const jumpMean = 0.02;     // Mean jump size.
       const jumpStd = 0.01;      // Std dev of jump size.
 
       let paths = [];
+      let epsilons;
       for (let i = 0; i < simulations; i++) {
         let path = [inputs.price];
         let sigma = sigma0;
-        let epsilons = quantumInspiredRandom(timeSteps);
+        epsilons = quantumInspiredRandom(timeSteps);
         for (let j = 1; j < timeSteps; j++) {
-          // Mean reversion factor: nudges price toward fundamental value.
           let reversionFactor = 0.00015 * (terminalValue - path[j - 1]) / inputs.price;
-          
-          // Dynamic regime switching: use dynamicRegimeProbability.
           let regimeFactor = (Math.random() < dynamicRegimeProbability) ? turbulentFactor : 1.0;
           
-          // Jump diffusion: determine number of jumps today from Poisson distribution.
+          // Jump diffusion: sample number of jumps and sum their effect.
           let jumpCount = poissonRandom(jumpLambda);
           let totalJump = 0;
           for (let k = 0; k < jumpCount; k++) {
-            // Each jump's direction is random; size sampled from normal distribution.
             totalJump += (Math.random() < 0.5 ? -1 : 1) * (jumpMean + jumpStd * randomNormal());
           }
           
-          // Drift component: blend of growth, fundamental, technical, and mean reversion.
           let drift = (growthRate - 0.5 * sigma * sigma) / 252 +
                       fundamentalScore * 0.0003 +
                       technicalScore * 0.0003 +
                       reversionFactor;
-          
-          // Importance weight: reduced multiplier.
           let importanceWeight = 1 + Math.abs(drift) * 2;
-          
           let epsilon = epsilons[j - 1];
-          // Compute shock with importance sampling and add jump diffusion.
           let shock = importanceSampledShock(drift, sigma, importanceWeight, epsilon) * regimeFactor + totalJump;
           
-          // Update price.
           let newPrice = path[j - 1] * Math.exp(shock);
           path.push(newPrice);
           
-          // Revised GARCH update: here we use a simple update using the scaled epsilon.
           let epsilonScaled = sigma * epsilon;
           sigma = Math.sqrt(garchAlpha0 + garchAlpha1 * Math.pow(epsilonScaled, 2) + garchBeta1 * sigma * sigma);
         }
         paths.push(path);
       }
 
-      // Compute simulation statistics.
       const finalPrices = paths.map(p => p[p.length - 1]);
       const medianPrice = median(finalPrices);
       const confLow = quantileSeq(finalPrices, 0.10);
       const confHigh = quantileSeq(finalPrices, 0.90);
       const upsideProbability = (finalPrices.filter(p => p > inputs.price).length / simulations) * 100;
 
-      // Use numeric trading day labels.
+      // Numeric trading day labels.
       const labels = Array.from({ length: timeSteps }, (_, i) => i + 1);
 
-      // Display metrics.
       document.getElementById('metrics').innerHTML = `
         <div class="metric-box">
           <h3>Median Forecast</h3>
@@ -339,7 +376,6 @@
         </div>
       `;
 
-      // Update the chart.
       if (priceChart) priceChart.destroy();
       const ctx = document.getElementById('priceChart').getContext('2d');
       priceChart = new Chart(ctx, {
@@ -369,8 +405,43 @@
           }
         }
       });
+
+      // Fetch and display news from Alpha Vantage.
+      const news = await fetchNews(inputs.symbol);
+      displayNews(news);
+    }
+
+    // Fetch latest news using Alpha Vantage NEWS_SENTIMENT endpoint.
+    async function fetchNews(symbol) {
+      const apiKey = "I4O6XZKS96360MWB";
+      const url = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${symbol}&apikey=${apiKey}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.feed ? data.feed.slice(0, 5) : [];
+      } catch (error) {
+        console.error("Error fetching news:", error);
+        return [];
+      }
+    }
+
+    // Display news items in the #newsContainer element.
+    function displayNews(newsItems) {
+      const container = document.getElementById('newsContainer');
+      if (newsItems.length === 0) {
+        container.innerHTML = "<p>No news available.</p>";
+        return;
+      }
+      let html = "";
+      newsItems.forEach(item => {
+        html += `<div class="news-box">
+                  <h4>${item.title}</h4>
+                  <p>${item.summary || ""}</p>
+                  <a href="${item.url}" target="_blank">Read more</a>
+                 </div>`;
+      });
+      container.innerHTML = html;
     }
   </script>
 </body>
 </html>
-
