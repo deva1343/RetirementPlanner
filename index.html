@@ -646,7 +646,7 @@
 
     // Blog Posts Integration
     // URL to your posts.json hosted from blogCreation
-    const postsJsonUrl = 'http://bpost.dpal.site/posts.json';
+    const postsJsonUrl = 'https://bpost.dpal.site/posts.json';
 
     // Load posts by category: for 'health' (Food & Recipes, Health & Fitness) and 'mind' (Lifestyle)
     function loadPostsByCategory(section) {
@@ -672,7 +672,7 @@
                 <div class="post-content">
                   <h3>${post.title}</h3>
                   <p>${post.summary}</p>
-                  <a class="read-more" href="http://bpost.dpal.site/post.html?id=${post.id}">Read More</a>
+                  <a class="read-more" href="https://bpost.dpal.site/post.html?id=${post.id}">Read More</a>
                 </div>
               `;
               document.getElementById('health-posts').appendChild(card);
@@ -688,7 +688,7 @@
                 <div class="post-content">
                   <h3>${post.title}</h3>
                   <p>${post.summary}</p>
-                  <a class="read-more" href="http://bpost.dpal.site/post.html?id=${post.id}">Read More</a>
+                  <a class="read-more" href="https://bpost.dpal.site/post.html?id=${post.id}">Read More</a>
                 </div>
               `;
               document.getElementById('mind-posts').appendChild(card);
@@ -709,3 +709,5 @@
   </script>
 </body>
 </html>
+
+ 
