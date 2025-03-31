@@ -960,7 +960,7 @@
 
    <script>
     // Object to store active timers and their intervals
-    const activeTimers = {};
+    let activeTimers = {};
 
     function showWorkout(bodyPart) {
         stopAllTimers(); // Stop all timers when switching workouts
