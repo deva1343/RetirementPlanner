@@ -637,6 +637,59 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-K9KZ60761N');
+
+
+     // Load posts by category: for 'health' (Food & Recipes, Health & Fitness) and 'mind' (Lifestyle)
+    function loadPostsByCategory(section) {
+      fetch(postsJsonUrl)
+        .then(response => response.json())
+        .then(posts => {
+          // Clear existing containers
+          if(section === 'health'){
+            document.getElementById('health-posts').innerHTML = '';
+          } else if(section === 'mind'){
+            document.getElementById('mind-posts').innerHTML = '';
+          }
+          // Loop through posts and filter by category
+          posts.forEach(post => {
+            // For Health section: categories Food & Recipes, Health & Fitness
+            if(section === 'health' && (post.category === 'Food & Recipes' || post.category === 'Health & Fitness')) {
+              const card = document.createElement('div');
+              card.className = 'post-card';
+              card.innerHTML = `
+                <div class="post-image-container">
+                  <img src="${post.image}" alt="${post.title}">
+                </div>
+                <div class="post-content">
+                  <h3>${post.title}</h3>
+                  <p>${post.summary}</p>
+                  <a class="read-more" href="https://bpost.dpal.site/post.html?id=${post.id}">Read More</a>
+                </div>
+              `;
+              document.getElementById('health-posts').appendChild(card);
+            }
+            // For Mind section: category Lifestyle
+            if(section === 'mind' && post.category === 'Lifestyle') {
+              const card = document.createElement('div');
+              card.className = 'post-card';
+              card.innerHTML = `
+                <div class="post-image-container">
+                  <img src="${post.image}" alt="${post.title}">
+                </div>
+                <div class="post-content">
+                  <h3>${post.title}</h3>
+                  <p>${post.summary}</p>
+                  <a class="read-more" href="https://bpost.dpal.site/post.html?id=${post.id}">Read More</a>
+                </div>
+              `;
+              document.getElementById('mind-posts').appendChild(card);
+            }
+          });
+        })
+        .catch(error => console.error('Error loading posts:', error));
+    }
+
   </script>
+
 </body>
 </html>
