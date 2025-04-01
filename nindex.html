@@ -102,231 +102,65 @@
       min-height: 100vh;
       background: #F3F4F6;
     }
-    .main-menu {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      height: 100vh;
-      padding: 2rem;
-    }
-    .main-option {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-radius: 1.5rem;
-      cursor: pointer;
-      transition: var(--transition);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-      padding: 2rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      color: white;
-    }
-    .main-option::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.1);
-      opacity: 0;
-      transition: var(--transition);
-    }
-    .main-option:hover::before {
-      opacity: 1;
-      transform: scale(1.02);
-    }
-    .health-option { background: var(--health-color); }
-    .wealth-option { background: var(--wealth-color); }
-    .mind-option { background: var(--mind-color); }
-    .popup-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(5px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .popup-content {
-      background: white;
-      border-radius: 1.5rem;
-      padding: 2rem;
-      max-width: 800px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      transform: scale(0.8);
-      opacity: 0;
-      transition: var(--transition);
-      position: relative;
-    }
-    .popup-content.active {
-      transform: scale(1);
-      opacity: 1;
-    }
-    .close-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 50%;
-      transition: var(--transition);
-      color: #64748b;
-      font-size: 1.5rem;
-      line-height: 1;
-    }
-    .close-btn:hover {
-      background: #f1f5f9;
-    }
-    .section-grid {
-      display: grid;
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-    .feature-card {
-      padding: 1.5rem;
-      border-radius: 1rem;
-      border: 1px solid #e2e8f0;
-      position: relative;
-      overflow: hidden;
-      transition: var(--transition);
-      background: white;
-    }
-    .feature-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-    }
-    /* Meditation Timer Styling – Reduced size for room to add more elements */
-    .meditation-timer {
-      text-align: center;
-      padding: 1rem;
-      background: #fff;
-      border-radius: 1rem;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      margin-bottom: 1rem;
-    }
-    .timer-display {
-      font-size: 2.5rem;
-      margin: 0.5rem 0;
-      font-weight: bold;
-      color: var(--mind-color);
-    }
-    .timer-controls {
-      display: flex;
-      gap: 0.5rem;
-      justify-content: center;
-      margin-bottom: 0.5rem;
-    }
-    .preset-buttons {
-      display: flex;
-      gap: 0.5rem;
-      justify-content: center;
-      margin-top: 0.5rem;
-      flex-wrap: wrap;
-    }
-    .action-button, .preset-button {
-      padding: 0.5rem 1rem;
-      border-radius: 0.75rem;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      transition: var(--transition);
-      background-color: #5bbd73;
-      color: #fff;
-      box-shadow: 0 2px 4px rgba(10, 150, 50, 0.08);
-    }
-    .action-button:hover, .preset-button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-      filter: brightness(1.1);
-    }
-    .mind-section .action-button, .mind-section .preset-button {
-      background: var(--mind-color);
-      border: 1px solid #5B21B6;
-    }
-    /* Mood Tracker Styling – Improved appearance and responsiveness */
-    .mood-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      justify-content: center;
-      margin: 0.5rem 0;
-    }
-    .mood-button {
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: var(--transition);
-      color: white;
-      font-weight: 500;
-    }
-    .mood-entry {
-      background: #e5e7eb;
-      padding: 0.5rem 0.75rem;
-      border-radius: 0.5rem;
-      margin: 0.25rem;
-      display: inline-block;
-      font-size: 0.9rem;
-    }
-    @media (max-width: 768px) {
-      .main-menu {
-        grid-template-columns: 1fr;
-        padding: 1rem;
-        gap: 1rem;
-      }
-      .popup-content {
-        padding: 1.5rem;
-      }
-      .mood-grid {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-    /* Blog Post Integration Styles */
     .post-card {
-      margin: 1rem 0;
+      margin: 0;
       padding: 1rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 5px;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
       background: #fff;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     .post-image-container {
       width: 100%;
+      height: 150px;
       overflow: hidden;
-      border-radius: 5px;
+      border-radius: 0.5rem;
       margin-bottom: 0.5rem;
     }
     .post-image-container img {
       width: 100%;
+      height: 100%;
       object-fit: cover;
       display: block;
-    }
-    .post-content h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-    }
-    .post-content p {
-      font-size: 0.95rem;
-      margin-bottom: 0.5rem;
     }
     .read-more {
       font-size: 0.9rem;
       color: var(--health-color);
       text-decoration: none;
       font-weight: bold;
+    }
+    .news-card {
+      background: #fff;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .news-card:hover {
+      transform: translateY(-4px);
+    }
+    .news-image img {
+      width: 100%;
+      height: 12rem;
+      object-fit: cover;
+    }
+    .news-content {
+      padding: 1rem;
+    }
+    .news-category {
+      font-size: 0.8rem;
+      color: #2563EB;
+      font-weight: 600;
+    }
+    .news-title {
+      font-size: 1.25rem;
+      margin-top: 0.5rem;
+      font-weight: 700;
+    }
+    .news-excerpt {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      color: #4B5563;
     }
   </style>
 </head>
@@ -350,7 +184,7 @@
   <main class="container mx-auto px-4 py-8">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <!-- Health Section -->
-      <div @click="openSection = 'health'" class="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-6 cursor-pointer transform transition hover:scale-[1.02]">
+      <div @click="openSection = 'health'; loadPostsByCategory('health')" class="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-6 cursor-pointer transform transition hover:scale-[1.02]">
         <div class="text-white text-center space-y-4">
           <h2 class="text-3xl font-bold">Health</h2>
           <p class="opacity-90">AI-powered wellness solutions</p>
@@ -358,15 +192,15 @@
         </div>
       </div>
       <!-- Wealth Section -->
-      <div @click="openSection = 'wealth'" class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 cursor-pointer transform transition hover:scale-[1.02]">
+      <div @click="openSection = 'wealth'; loadWealthPosts(); loadLocationBasedTax()" class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 cursor-pointer transform transition hover:scale-[1.02]">
         <div class="text-white text-center space-y-4">
           <h2 class="text-3xl font-bold">Wealth</h2>
-          <p class="opacity-90">Financial planning tools</p>
+          <p class="opacity-90">Financial planning, news & tax tools</p>
           <div class="inline-block bg-white/20 px-4 py-1 rounded-full text-sm">Explore Tools</div>
         </div>
       </div>
       <!-- Mind Section -->
-      <div @click="openSection = 'mind'" class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 cursor-pointer transform transition hover:scale-[1.02]">
+      <div @click="openSection = 'mind'; loadPostsByCategory('mind')" class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 cursor-pointer transform transition hover:scale-[1.02]">
         <div class="text-white text-center space-y-4">
           <h2 class="text-3xl font-bold">Mind</h2>
           <p class="opacity-90">Mindfulness & Productivity</p>
@@ -374,22 +208,35 @@
         </div>
       </div>
     </div>
+
+    <!-- Bottom Horizontal Ad -->
+    <div class="mt-12 w-full">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9260288636900184" crossorigin="anonymous"></script>
+      <!-- home.dapl.horizontal -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-9260288636900184"
+           data-ad-slot="3919330608"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
   </main>
 
   <!-- Health Modal -->
-  <div x-show="openSection === 'health'" x-cloak class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto">
+  <div x-show="openSection === 'health'" x-cloak @click.self="openSection = null" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto">
     <div class="container mx-auto p-4 max-w-4xl min-h-screen flex items-center">
       <div class="bg-white rounded-2xl p-6 shadow-2xl w-full">
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-2xl font-bold text-gray-800">Health Management Suite</h3>
           <button @click="openSection = null" class="text-gray-500 hover:text-gray-700 transition">✕</button>
         </div>
-        <!-- In-content Ad -->
         <div class="my-6">
           <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9260288636900184"></script>
           <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-fb+5w+4e-db+86"></ins>
         </div>
-        <!-- Features Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition">
             <h4 class="font-semibold mb-2">AI Diet Planner</h4>
@@ -407,7 +254,6 @@
             <button onclick="window.location.href='BMI-Calculator.html'" class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-lg text-sm hover:bg-emerald-200 transition">Check Now →</button>
           </div>
         </div>
-        <!-- Blog Posts -->
         <div class="mt-8">
           <h4 class="text-lg font-semibold mb-4">Latest Health Articles</h4>
           <div id="health-posts" class="grid gap-4"></div>
@@ -417,16 +263,15 @@
   </div>
 
   <!-- Wealth Modal -->
-  <div x-show="openSection === 'wealth'" x-cloak class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto">
+  <div x-show="openSection === 'wealth'" x-cloak @click.self="openSection = null" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto">
     <div class="container mx-auto p-4 max-w-4xl min-h-screen flex items-center">
       <div class="bg-white rounded-2xl p-6 shadow-2xl w-full">
         <div class="flex justify-between items-center mb-6">
-          <h3 class="text-2xl font-bold text-gray-800">Wealth Management Tools</h3>
+          <h3 class="text-2xl font-bold text-gray-800">Wealth Management & The Finance Times</h3>
           <button @click="openSection = null" class="text-gray-500 hover:text-gray-700 transition">✕</button>
         </div>
-        <!-- Tax Help Section -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div id="indiaTax" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div id="indiaTax" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hidden">
             <h4 class="font-semibold mb-2">India Tax Help</h4>
             <div class="space-y-2">
               <a href="taxBotGemini1.html" class="block px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition">GeminiBot-2</a>
@@ -434,7 +279,7 @@
               <a href="DSBotMobile.html" class="block px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition">DSBot (Mobile)</a>
             </div>
           </div>
-          <div id="usaTax" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+          <div id="usaTax" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hidden">
             <h4 class="font-semibold mb-2">USA Tax Help</h4>
             <div class="space-y-2">
               <a href="ustaxcomprehensive.html" class="block px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition">Federal TAX AI</a>
@@ -442,8 +287,7 @@
             </div>
           </div>
         </div>
-        <!-- Financial Tools -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
             <h4 class="font-semibold mb-2">SIP Calculator</h4>
             <a href="SIP-calculatore.html" class="text-blue-600 hover:text-blue-800 transition">Calculate →</a>
@@ -457,56 +301,67 @@
             <a href="Loan-Analyzer.html" class="text-blue-600 hover:text-blue-800 transition">Analyze →</a>
           </div>
         </div>
+
+        <!-- Feed Ad -->
+        <div class="my-6">
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9260288636900184" crossorigin="anonymous"></script>
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-format="fluid"
+               data-ad-layout-key="-6t+ed+2i-1n-4w"
+               data-ad-client="ca-pub-9260288636900184"
+               data-ad-slot="5814000234"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+
+        <div class="mt-4">
+          <h4 class="text-lg font-semibold mb-4">The Finance Times</h4>
+          <div id="wealth-posts" class="grid gap-4"></div>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Mind Modal -->
-  <div x-show="openSection === 'mind'" x-cloak class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto">
+  <div x-show="openSection === 'mind'" x-cloak @click.self="openSection = null" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto">
     <div class="container mx-auto p-4 max-w-4xl min-h-screen flex items-center">
       <div class="bg-white rounded-2xl p-6 shadow-2xl w-full">
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-2xl font-bold text-gray-800">Mindfulness Tools</h3>
           <button @click="openSection = null" class="text-gray-500 hover:text-gray-700 transition">✕</button>
         </div>
-        <!-- Meditation Timer -->
-        <div class="bg-purple-50 p-4 rounded-xl">
-          <h4 class="text-lg font-semibold mb-4">Meditation Timer</h4>
-          <div class="text-center space-y-4">
-            <div class="text-4xl font-mono" x-text="formatTime(meditation.elapsed)">00:00</div>
-            <div class="flex justify-center space-x-4">
-              <button @click="startTimer()" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition" :disabled="meditation.timer">Start</button>
-              <button @click="stopTimer()" class="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition" :disabled="!meditation.timer">Stop</button>
+        <div class="flex flex-col md:flex-row gap-4">
+          <div class="bg-purple-50 p-4 rounded-xl w-full md:w-1/2">
+            <h4 class="text-lg font-semibold mb-4">Meditation Timer</h4>
+            <div class="text-center space-y-4">
+              <div class="text-3xl font-mono" x-text="meditation.presetMode ? formatTime(meditation.remaining) : formatTime(meditation.elapsed)">00:00</div>
+              <div class="flex justify-center space-x-4">
+                <button @click="startTimer()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition" :disabled="meditation.timer || meditation.presetMode">Start</button>
+                <button @click="stopTimer()" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition" :disabled="!meditation.timer && !meditation.presetMode">Stop</button>
+              </div>
+              <div class="flex justify-center gap-2 mt-4">
+                <button @click="startPreset(15)" class="px-3 py-2 bg-purple-100 text-purple-700 rounded-lg">15m</button>
+                <button @click="startPreset(30)" class="px-3 py-2 bg-purple-100 text-purple-700 rounded-lg">30m</button>
+                <button @click="startPreset(60)" class="px-3 py-2 bg-purple-100 text-purple-700 rounded-lg">60m</button>
+              </div>
+              <div class="text-sm text-gray-600">Best: <span x-text="formatTime(meditation.bestTime)"></span></div>
             </div>
-            <div class="flex justify-center gap-2 mt-4">
-              <button @click="startPreset(15)" class="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg">15m</button>
-              <button @click="startPreset(30)" class="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg">30m</button>
-              <button @click="startPreset(60)" class="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg">60m</button>
+          </div>
+          <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm w-full md:w-1/2">
+            <h4 class="text-lg font-semibold mb-4">Mood Tracker</h4>
+            <div class="grid grid-cols-3 gap-2">
+              <button @click="logMood('happy'); activeMood = 'happy'" :class="{'scale-90': activeMood === 'happy'}" class="p-2 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition">😊</button>
+              <button @click="logMood('neutral'); activeMood = 'neutral'" :class="{'scale-90': activeMood === 'neutral'}" class="p-2 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition">😐</button>
+              <button @click="logMood('sad'); activeMood = 'sad'" :class="{'scale-90': activeMood === 'sad'}" class="p-2 bg-red-100 text-red-800 rounded-lg hover:bg-red-200 transition">😞</button>
             </div>
-            <div class="text-sm text-gray-600">Best: <span x-text="formatTime(meditation.bestTime)"></span></div>
-          </div>
-        </div>
-        <!-- Mood Tracker -->
-        <div class="mt-6 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-          <h4 class="text-lg font-semibold mb-4">Mood Tracker</h4>
-          <div class="grid grid-cols-3 gap-2">
-            <button @click="logMood('happy')" class="p-2 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition">😊 Happy</button>
-            <button @click="logMood('neutral')" class="p-2 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition">😐 Neutral</button>
-            <button @click="logMood('sad')" class="p-2 bg-red-100 text-red-800 rounded-lg hover:bg-red-200 transition">😞 Sad</button>
-          </div>
-          <div class="mt-4">
-            <h5 class="font-medium mb-2">Recent Entries</h5>
-            <div class="flex flex-wrap gap-2">
-              <template x-for="entry in moodHistory" :key="entry.timestamp">
-                <div class="px-3 py-1 bg-gray-100 rounded-full text-sm">
-                  <span x-text="getMoodEmoji(entry.mood)"></span>
-                  <span x-text="new Date(entry.date).toLocaleDateString()"></span>
-                </div>
-              </template>
+            <div class="mt-4 text-center text-xl" x-text="activeMood ? getMoodEmoji(activeMood) : ''"></div>
+            <div class="mt-4 text-center">
+              <a href="Mood-Tracker.html" class="text-sm text-purple-700 underline">View Past Mood History</a>
             </div>
           </div>
         </div>
-        <!-- Blog Posts -->
         <div class="mt-8">
           <h4 class="text-lg font-semibold mb-4">Mindfulness Articles</h4>
           <div id="mind-posts" class="grid gap-4"></div>
@@ -514,10 +369,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Hidden audio elements for start/stop sounds -->
-  <audio id="startSound" src="start-sound.mp3"></audio>
-  <audio id="stopSound" src="stop-sound.mp3"></audio>
 
   <!-- Scripts -->
   <script>
@@ -527,9 +378,14 @@
         meditation: {
           timer: null,
           elapsed: 0,
-          bestTime: localStorage.getItem('meditation-best') || 0
+          bestTime: localStorage.getItem('meditation-best') || 0,
+          remaining: 0,
+          presetMode: false
         },
+        activeMood: '',
         moodHistory: JSON.parse(localStorage.getItem('mood-history') || '[]'),
+        postsJsonUrl: 'https://bpost.dpal.site/posts.json',
+        newsJsonUrl: '/data.json',
 
         init() {
           this.loadLocationBasedTax();
@@ -543,25 +399,46 @@
         },
 
         startTimer() {
-          if(this.meditation.timer) return;
+          if (this.meditation.timer || this.meditation.presetMode) return;
           this.meditation.timer = setInterval(() => {
             this.meditation.elapsed++;
           }, 1000);
         },
 
         stopTimer() {
-          clearInterval(this.meditation.timer);
-          this.meditation.timer = null;
-          if(this.meditation.elapsed > this.meditation.bestTime) {
-            this.meditation.bestTime = this.meditation.elapsed;
-            localStorage.setItem('meditation-best', this.meditation.bestTime);
+          if (this.meditation.timer) {
+            clearInterval(this.meditation.timer);
+            this.meditation.timer = null;
+          }
+          if (this.meditation.presetMode && this.meditation.remaining === 0) {
+            if (this.meditation.elapsed > this.meditation.bestTime) {
+              this.meditation.bestTime = this.meditation.elapsed;
+              localStorage.setItem('meditation-best', this.meditation.bestTime);
+            }
           }
           this.meditation.elapsed = 0;
+          this.meditation.remaining = 0;
+          this.meditation.presetMode = false;
         },
 
         startPreset(minutes) {
-          this.meditation.elapsed = minutes * 60;
-          this.startTimer();
+          if (this.meditation.timer) clearInterval(this.meditation.timer);
+          this.meditation.presetMode = true;
+          this.meditation.remaining = minutes * 60;
+          this.meditation.timer = setInterval(() => {
+            if (this.meditation.remaining > 0) {
+              this.meditation.remaining--;
+            } else {
+              clearInterval(this.meditation.timer);
+              this.meditation.timer = null;
+              this.meditation.presetMode = false;
+              alert(`Your ${minutes}-minute session is complete!`);
+              if ((minutes * 60) > this.meditation.bestTime) {
+                this.meditation.bestTime = minutes * 60;
+                localStorage.setItem('meditation-best', this.meditation.bestTime);
+              }
+            }
+          }, 1000);
         },
 
         logMood(mood) {
@@ -572,6 +449,7 @@
           };
           this.moodHistory = [entry, ...this.moodHistory].slice(0, 5);
           localStorage.setItem('mood-history', JSON.stringify(this.moodHistory));
+          this.activeMood = mood;
         },
 
         getMoodEmoji(mood) {
@@ -582,7 +460,7 @@
           try {
             const response = await fetch('https://ipapi.co/json/');
             const data = await response.json();
-            if(data.country_code === 'IN') {
+            if (data.country_code === 'IN') {
               document.getElementById('indiaTax').classList.remove('hidden');
               document.getElementById('usaTax').classList.add('hidden');
             } else {
@@ -596,34 +474,57 @@
 
         async loadPostsByCategory(section) {
           try {
-            const response = await fetch('https://bpost.dpal.site/posts.json');
+            const response = await fetch(this.postsJsonUrl);
             const posts = await response.json();
-            const containerId = `${section}-posts`;
+            const containerId = section === 'health' ? 'health-posts' : 'mind-posts';
             const container = document.getElementById(containerId);
             container.innerHTML = posts.filter(post =>
               (section === 'health' && ['Food & Recipes', 'Health & Fitness'].includes(post.category)) ||
               (section === 'mind' && post.category === 'Lifestyle')
             ).map(post => `
-              <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                <div class="aspect-video mb-3 rounded-lg overflow-hidden">
-                  <img src="${post.image}" alt="${post.title}" class="w-full h-full object-cover">
+              <div class="post-card">
+                <div class="post-image-container">
+                  <img src="${post.image}" alt="${post.title}">
                 </div>
-                <h5 class="font-semibold mb-2">${post.title}</h5>
-                <p class="text-sm text-gray-600 mb-3">${post.summary}</p>
-                <a href="https://bpost.dpal.site/post.html?id=${post.id}" class="text-purple-600 hover:text-purple-800 font-medium text-sm">Read More →</a>
+                <div class="post-content">
+                  <h3 class="font-semibold mb-1">${post.title}</h3>
+                  <p class="text-sm text-gray-600 mb-2">${post.summary}</p>
+                  <a href="https://bpost.dpal.site/post.html?id=${post.id}" class="read-more">Read More →</a>
+                </div>
               </div>
             `).join('');
           } catch (error) {
             console.error('Error loading posts:', error);
           }
+        },
+
+        async loadWealthPosts() {
+          try {
+            const response = await fetch(this.newsJsonUrl);
+            const posts = await response.json();
+            const container = document.getElementById('wealth-posts');
+            container.innerHTML = posts.map(post => `
+              <article class="news-card">
+                <div class="news-image">
+                  <img src="${post.image}" alt="${post.title}">
+                </div>
+                <div class="news-content">
+                  <span class="news-category">${post.category || 'News'}</span>
+                  <h3 class="news-title">${post.title}</h3>
+                  <p class="news-excerpt">${post.summary}</p>
+                  <a href="https://news.dpal.site/post.html?slug=${post.slug}" class="read-more">Read More →</a>
+                </div>
+              </article>
+            `).join('');
+          } catch (error) {
+            console.error('Error loading wealth posts:', error);
+          }
         }
       }));
     });
 
-    // Initialize Ads
     (adsbygoogle = window.adsbygoogle || []).push({});
 
-    // Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
@@ -632,63 +533,19 @@
       });
     }
 
-    // Google Analytics
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-K9KZ60761N');
+  </script>
 
-
-     // Load posts by category: for 'health' (Food & Recipes, Health & Fitness) and 'mind' (Lifestyle)
-    function loadPostsByCategory(section) {
-      fetch(postsJsonUrl)
-        .then(response => response.json())
-        .then(posts => {
-          // Clear existing containers
-          if(section === 'health'){
-            document.getElementById('health-posts').innerHTML = '';
-          } else if(section === 'mind'){
-            document.getElementById('mind-posts').innerHTML = '';
-          }
-          // Loop through posts and filter by category
-          posts.forEach(post => {
-            // For Health section: categories Food & Recipes, Health & Fitness
-            if(section === 'health' && (post.category === 'Food & Recipes' || post.category === 'Health & Fitness')) {
-              const card = document.createElement('div');
-              card.className = 'post-card';
-              card.innerHTML = `
-                <div class="post-image-container">
-                  <img src="${post.image}" alt="${post.title}">
-                </div>
-                <div class="post-content">
-                  <h3>${post.title}</h3>
-                  <p>${post.summary}</p>
-                  <a class="read-more" href="https://bpost.dpal.site/post.html?id=${post.id}">Read More</a>
-                </div>
-              `;
-              document.getElementById('health-posts').appendChild(card);
-            }
-            // For Mind section: category Lifestyle
-            if(section === 'mind' && post.category === 'Lifestyle') {
-              const card = document.createElement('div');
-              card.className = 'post-card';
-              card.innerHTML = `
-                <div class="post-image-container">
-                  <img src="${post.image}" alt="${post.title}">
-                </div>
-                <div class="post-content">
-                  <h3>${post.title}</h3>
-                  <p>${post.summary}</p>
-                  <a class="read-more" href="https://bpost.dpal.site/post.html?id=${post.id}">Read More</a>
-                </div>
-              `;
-              document.getElementById('mind-posts').appendChild(card);
-            }
-          });
-        })
-        .catch(error => console.error('Error loading posts:', error));
-    }
-
+   <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9KZ60761N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K9KZ60761N');
   </script>
 
 </body>
