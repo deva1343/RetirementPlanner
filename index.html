@@ -652,7 +652,18 @@
     // Blog Posts Integration
     // URL to your posts.json hosted from blogCreation
     const postsJsonUrl = 'https://bpost.dpal.site/posts.json';
+    
+   // Close popup when clicking outside the popup-content
+document.querySelectorAll('.popup-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) { 
+      hidePopup();
+    }
+  });
+});
 
+
+	  
     // Load posts by category: for 'health' (Food & Recipes, Health & Fitness) and 'mind' (Lifestyle)
     function loadPostsByCategory(section) {
       fetch(postsJsonUrl)
