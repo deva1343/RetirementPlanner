@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebApplication" x-data="app()" x-cloak>
 <head>
@@ -224,40 +226,56 @@
       margin-top: 0.5rem;
       color: #4B5563;
     }
-
-    /* Hero Section Styles */
-    .hero-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-    }
-    .hero-post {
-      background: #fff;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-    }
-    .hero-post:hover {
-      transform: scale(1.03);
-    }
   </style>
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
   <!-- Header -->
-  <header class="sticky top-0 bg-white/80 backdrop-blur-md shadow-sm z-50">
-    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <img src="logo.png" alt="dPal" class="h-10 w-10 float-animation">
-        <span class="text-2xl font-bold text-gray-800">dPal</span>
-      </div>
-      <!-- Header Ad -->
-      <div class="hidden lg:block">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9260288636900184"></script>
-        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-9260288636900184"></ins>
-      </div>
+ <header class="fixed top-0 w-full z-50 bg-[#0A0A0A] backdrop-blur-[2px] border-b border-[#FFD700]/10 shadow-[0_1px_0_rgba(255_215_0_0.03)]">
+  <div class="max-w-7xl mx-auto px-6 py-5">
+    <div class="flex items-center gap-5">
+      <!-- Logo Image Container -->
+      <a href="/" class="block hover:opacity-90 transition-opacity">
+        <img 
+          src="logo.png" 
+          alt="dPal Logo"
+          class="h-12 w-auto max-w-[200px] sm:max-w-[240px]"
+          loading="lazy"
+        >
+      </a>
+
+      <!-- Original Header Elements -->
+      <h1 class="text-[28px] tracking-tight">
+        <span class="font-serif text-[#FFE8A3] pr-[0.15em]">.Site</span>
+       </h1>
+
+      <!-- Existing Separator -->
+      <div class="ml-5 h-px w-20 bg-gradient-to-r from-[#FFD700]/15 via-[#FFD700]/10 to-transparent"></div>
     </div>
-  </header>
+  </div>
+</header>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@300;400&display=swap');
+
+  .font-serif {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  }
+
+  .font-sans {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  /* Add this to your main CSS */
+  body {
+    margin-top: 80px; /* Matches header height */
+  }
+</style>
+<br><br><br><br><br>
 
   <!-- Main Grid -->
   <main class="container mx-auto px-4 py-8">
@@ -302,12 +320,6 @@
            (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
     </div>
-
-    <!-- Hero Section: Featured Articles -->
-    <section id="hero-section" class="my-12">
-      <h2 class="text-3xl font-bold text-center mb-6">Featured Articles</h2>
-      <div id="hero-posts" class="hero-grid grid gap-4"></div>
-    </section>
   </main>
 
   <!-- Health Modal -->
@@ -455,6 +467,307 @@
     </div>
   </div>
 
+<!-- Innovative Hero Section -->
+<section class="relative py-16 overflow-hidden">
+  <div class="container mx-auto px-4">
+    <div class="relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+      <!-- 3D Interactive Cube -->
+      <div class="perspective-2000 mx-auto w-full max-w-md">
+        <div class="relative h-96 transform-style-preserve-3d group">
+          <!-- Front Face -->
+          <div class="absolute inset-0 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-3xl shadow-2xl transform transition-transform duration-1000 group-hover:rotate-y-180">
+            <div class="p-8 h-full flex flex-col justify-center text-center text-white">
+              <svg class="w-20 h-20 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              <h3 class="text-3xl font-bold mb-4">Holistic Balance</h3>
+              <p class="opacity-90">Where Health, Wealth, and Mind Converge</p>
+            </div>
+          </div>
+          
+          <!-- Back Face - Animated Particles -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-3xl shadow-2xl transform rotate-y-180 backface-hidden transition-transform duration-1000 group-hover:rotate-y-0">
+            <div class="absolute inset-0 animate-particle-flow">
+              <div class="particle absolute w-2 h-2 bg-white rounded-full opacity-20"></div>
+            </div>
+            <div class="relative p-8 h-full flex flex-col justify-center text-center text-white">
+              <div class="text-4xl mb-4">🚀</div>
+              <h3 class="text-3xl font-bold mb-4">Think Different</h3>
+              <p class="opacity-90">AI-Powered Life Optimization</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="text-center lg:text-left">
+        <h2 class="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-500">
+          Reimagining Wellness
+        </h2>
+        <p class="text-xl text-gray-600 mb-8">
+          Break free from conventional approaches. Our AI-powered triad system creates dynamic synergy between your physical, financial, and mental well-being.
+        </p>
+         
+      </div>
+    </div>
+
+    <!-- Floating Elements -->
+    <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+      <div class="absolute w-64 h-64 bg-purple-300/20 rounded-full blur-3xl -top-32 -left-32"></div>
+      <div class="absolute w-64 h-64 bg-emerald-300/20 rounded-full blur-3xl -bottom-32 -right-32"></div>
+    </div>
+  </div>
+</section>
+
+ 
+<style>
+  @keyframes particle-flow {
+    0% { transform: translateY(-100%) translateX(0); opacity: 0; }
+    100% { transform: translateY(100%) translateX(100px); opacity: 0.4; }
+  }
+
+  .animate-particle-flow {
+    animation: particle-flow 8s linear infinite;
+  }
+
+  .particle:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+  .particle:nth-child(2) { top: 30%; left: 70%; animation-delay: 1s; }
+  .particle:nth-child(3) { top: 50%; left: 40%; animation-delay: 2s; }
+  .particle:nth-child(4) { top: 80%; left: 60%; animation-delay: 3s; }
+
+  .transform-style-preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+</style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <script src="https://unpkg.com/alpinejs" defer></script>
+  <style>
+    /* Floating Background Elements */
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    .animate-float-delayed {
+      animation: float 6s ease-in-out infinite 3s;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    /* Hover effects for dynamic posts */
+    .health-grid article:hover { transform: translateY(-3px); }
+    .wealth-timeline div:hover { transform: translateX(5px); }
+    .mind-grid article:hover { transform: rotate(1deg); }
+    [class*="-grid"] article,
+    [class*="-timeline"] div {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+  </style>
+    <!-- Floating Content Ecosystem -->
+  <div class="fixed inset-0 pointer-events-none z-0">
+    <div class="absolute w-[120vw] h-[120vh] bg-emerald-500/5 blur-3xl -top-1/2 -left-1/2 animate-float"></div>
+    <div class="absolute w-[120vw] h-[120vh] bg-blue-500/5 blur-3xl -bottom-1/2 -right-1/2 animate-float-delayed"></div>
+  </div>
+
+  <main class="relative z-10 space-y-36 py-28 px-4 sm:px-8" x-data="appData()" x-init="init()">
+    <!-- Health Constellation -->
+    <section class="max-w-7xl mx-auto grid md:grid-cols-[1fr_2fr] gap-16 items-start">
+      <!-- Core Module -->
+      <div class="relative group cursor-pointer" @click="loadPostsByCategory('health')">
+        <div class="absolute -inset-8 bg-emerald-500/10 rounded-[40%_60%_70%_30%_/40%_50%_60%_70%] transform group-hover:rotate-12 transition-all"></div>
+        <div class="relative bg-gradient-to-br from-emerald-500 to-teal-600 p-12 rounded-[30%_70%_70%_30%_/30%_30%_70%_70%] shadow-2xl">
+          <h2 class="text-5xl font-bold text-white mb-4">Health</h2>
+          <div class="space-y-6">
+            <p class="text-emerald-100/90 text-lg">Biometric Harmony Interface</p>
+            <div class="inline-flex items-center gap-3 bg-white/20 px-6 py-2 rounded-full">
+              <span class="text-emerald-100">Explore Synergy</span>
+              <div class="w-2 h-2 bg-emerald-300 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic Content Cluster -->
+      <div class="grid grid-cols-2 gap-8 transform translate-y-20">
+        <!-- Tools -->
+        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all">
+          <h3 class="text-xl font-bold mb-3">Neural Nutrition</h3>
+          <p class="text-sm text-gray-600 mb-4">AI-powered metabolic mapping</p>
+          <button onclick="window.location.href='Diet-Planner.html'" 
+                  class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full hover:bg-emerald-200 transition">
+            Diet Matrix →
+          </button>
+        </div>
+        <!-- Live Posts Feed -->
+        <div class="col-span-2 bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-xl space-y-6">
+          <h4 class="text-lg font-semibold text-gray-800">Latest Health Insights</h4>
+          <div id="health-posts" class="health-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Dynamic posts from bpost.dpal.site -->
+            <template x-for="post in healthPosts" :key="post.id">
+              <article class="p-4 rounded-lg border border-gray-100 hover:border-emerald-200 transition">
+                <h5 class="font-medium mb-2" x-text="post.title"></h5>
+                <p class="text-sm text-gray-600" x-text="post.excerpt"></p>
+                <time class="text-xs text-emerald-600 mt-2 block" x-text="post.date"></time>
+              </article>
+            </template>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wealth Galaxy -->
+    <section class="max-w-7xl mx-auto grid lg:grid-cols-3 gap-20">
+      <!-- Core Module -->
+      <div class="lg:col-span-2 relative group cursor-pointer" @click="loadWealthPosts()">
+        <div class="absolute -inset-8 bg-blue-500/10 rounded-3xl transform group-hover:-rotate-3 transition-all"></div>
+        <div class="relative bg-gradient-to-br from-blue-500 to-indigo-600 p-12 rounded-2xl shadow-2xl">
+          <h2 class="text-5xl font-bold text-white mb-4">Wealth</h2>
+          <div class="space-y-6">
+            <p class="text-blue-100/90 text-lg">Quantum Finance Engine</p>
+            <div class="inline-flex items-center gap-3 bg-white/20 px-6 py-2 rounded-full">
+              <span class="text-blue-100">Financial Event Horizon</span>
+              <div class="w-2 h-2 bg-blue-300 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Financial Tools & Posts Nebula -->
+      <div class="grid gap-8 transform -translate-y-10">
+        <div class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-xl space-y-6">
+          <h4 class="text-lg font-semibold text-gray-800">Market Pulse</h4>
+          <!-- USA Tax Help visible only for USA users -->
+          <div x-show="isUS" class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <h5 class="font-medium mb-2">USA Tax Help</h5>
+            <ul class="space-y-2">
+              <li><a href="ustaxcomprehensive.html" class="text-blue-700 underline">Federal TAX AI</a></li>
+              <li><a href="ustax.html" class="text-blue-700 underline">USA TAX BOT</a></li>
+            </ul>
+          </div>
+          <div id="wealth-posts" class="wealth-timeline space-y-4">
+            <!-- Dynamic posts from bpost.dpal.site -->
+            <template x-for="post in wealthPosts" :key="post.id">
+              <div class="flex items-start gap-4 p-3 rounded-lg hover:bg-blue-50 transition">
+                <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                <div>
+                  <h5 class="font-medium" x-text="post.title"></h5>
+                  <time class="text-xs text-blue-600" x-text="post.date"></time>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mind Cosmos -->
+    <section class="max-w-7xl mx-auto grid md:grid-cols-[2fr_1fr] gap-16 items-start">
+      <!-- Core Module -->
+      <div class="relative group cursor-pointer" @click="loadPostsByCategory('mind')">
+        <div class="absolute -inset-8 bg-purple-500/10 rounded-[60%_40%_30%_70%_/60%_30%_70%_40%] transform group-hover:-rotate-12 transition-all"></div>
+        <div class="relative bg-gradient-to-br from-purple-500 to-fuchsia-600 p-12 rounded-[70%_30%_60%_40%_/30%_60%_40%_70%] shadow-2xl">
+          <h2 class="text-5xl font-bold text-white mb-4">Mind</h2>
+          <div class="space-y-6">
+            <p class="text-purple-100/90 text-lg">Neuroplasticity Forge</p>
+            <div class="inline-flex items-center gap-3 bg-white/20 px-6 py-2 rounded-full">
+              <span class="text-purple-100">Cognitive Elevation</span>
+              <div class="w-2 h-2 bg-purple-300 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Mindfulness & Posts Dimension -->
+      <div class="grid gap-8 transform -translate-y-16">
+        <div class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-xl space-y-6">
+          <h4 class="text-lg font-semibold text-gray-800">Consciousness Stream</h4>
+          <div id="mind-posts" class="mind-grid space-y-4">
+            <!-- Dynamic posts from bpost.dpal.site -->
+            <template x-for="post in mindPosts" :key="post.id">
+              <article class="p-4 rounded-lg border border-purple-100 hover:border-purple-200 transition">
+                <h5 class="font-medium mb-2" x-text="post.title"></h5>
+                <p class="text-sm text-gray-600" x-text="post.excerpt"></p>
+                <div class="flex items-center gap-2 mt-3">
+                  <div class="w-3 h-3 bg-purple-500 rounded-full animate-pulse"></div>
+                  <time class="text-xs text-purple-600" x-text="post.date"></time>
+                </div>
+              </article>
+            </template>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contextual Ad Orbit -->
+    <div class="max-w-7xl mx-auto transform rotate-1 hover:rotate-0 transition-transform">
+      <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-gray-100">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9260288636900184" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-9260288636900184"
+             data-ad-slot="3919330608"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </div>
+  </main>
+
+  <!-- Alpine.js Data & Methods -->
+  <script>
+    function appData() {
+      return {
+        healthPosts: [],
+        wealthPosts: [],
+        mindPosts: [],
+        isUS: false,
+        init() {
+          // Load posts for each category
+          this.loadPostsByCategory('health');
+          this.loadWealthPosts();
+          this.loadPostsByCategory('mind');
+          // Determine if the user is from the USA
+          fetch("https://ipapi.co/json/")
+            .then(response => response.json())
+            .then(data => {
+              if (data && data.country_code === "US") {
+                this.isUS = true;
+              }
+            })
+            .catch(error => console.error("Error fetching location:", error));
+        },
+        loadPostsByCategory(category) {
+          fetch(`https://bpost.dpal.site/api/posts?category=${category}`)
+            .then(response => response.json())
+            .then(posts => {
+              if (category === 'health') {
+                this.healthPosts = posts;
+              } else if (category === 'mind') {
+                this.mindPosts = posts;
+              }
+            })
+            .catch(error => console.error("Error loading posts for", category, error));
+        },
+        loadWealthPosts() {
+          fetch(`https://bpost.dpal.site/api/posts?category=wealth`)
+            .then(response => response.json())
+            .then(posts => {
+              this.wealthPosts = posts;
+            })
+            .catch(error => console.error("Error loading wealth posts:", error));
+        }
+      }
+    }
+  </script>
+ 
+
+
  <!-- Scripts -->
 <script>
   document.addEventListener('alpine:init', () => {
@@ -476,7 +789,6 @@
         this.loadLocationBasedTax();
         this.meditation.bestTime = parseInt(this.meditation.bestTime);
         this.loadWealthPosts();
-        this.loadHeroPosts();
       },
 
       formatTime(seconds) {
@@ -613,40 +925,6 @@
         } catch (error) {
           console.error('Error loading wealth posts:', error);
         }
-      },
-
-      async loadHeroPosts() {
-        let postsCombined = [];
-        try {
-          const response1 = await fetch(this.postsJsonUrl);
-          const posts1 = await response1.json();
-          const response2 = await fetch(this.newsJsonUrl);
-          const posts2 = await response2.json();
-          postsCombined = posts1.concat(posts2);
-        } catch (error) {
-          console.error('Error loading hero posts:', error);
-        }
-        const container = document.getElementById('hero-posts');
-        let html = '';
-        postsCombined.forEach((post, index) => {
-          // Use a different grid style for some posts
-          let gridClass = (index % 5 === 0) ? "col-span-2 row-span-2" : "";
-          let image = post.image || post.thumbnail || "default.jpg";
-          let link = post.slug ? `https://news.dpal.site/post.html?slug=${post.slug}` : `https://bpost.dpal.site/post.html?id=${post.id}`;
-          html += `
-            <article class="hero-post ${gridClass}">
-              <div class="post-image-container">
-                <img src="${image}" alt="${post.title}">
-              </div>
-              <div class="p-4">
-                <h3 class="font-semibold mb-2">${post.title}</h3>
-                <p class="text-sm text-gray-600">${post.summary}</p>
-                <a href="${link}" class="read-more">Read More →</a>
-              </div>
-            </article>
-          `;
-        });
-        container.innerHTML = html;
       }
     }));
   });
