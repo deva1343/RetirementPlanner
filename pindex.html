@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebApplication" x-data="app()" x-cloak>
 <head>
@@ -77,7 +79,7 @@
   </script>
 
   <!-- Styles & Libraries -->
-  <link href="/dist/output.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
     @keyframes float {
@@ -233,8 +235,8 @@
     <div class="flex items-center gap-5">
       <!-- Logo Image Container -->
       <a href="/" class="block hover:opacity-90 transition-opacity">
-        <img
-          src="logo.png"
+        <img 
+          src="logo.png" 
           alt="dPal Logo"
           class="h-12 w-auto max-w-[200px] sm:max-w-[240px]"
           loading="lazy"
@@ -482,7 +484,7 @@
               <p class="opacity-90">Where Health, Wealth, and Mind Converge</p>
             </div>
           </div>
-
+          
           <!-- Back Face - Animated Particles -->
           <div class="absolute inset-0 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-3xl shadow-2xl transform rotate-y-180 backface-hidden transition-transform duration-1000 group-hover:rotate-y-0">
             <div class="absolute inset-0 animate-particle-flow">
@@ -505,7 +507,7 @@
         <p class="text-xl text-gray-600 mb-8">
           Break free from conventional approaches. Our AI-powered triad system creates dynamic synergy between your physical, financial, and mental well-being.
         </p>
-
+         
       </div>
     </div>
 
@@ -517,6 +519,7 @@
   </div>
 </section>
 
+ 
 <style>
   @keyframes particle-flow {
     0% { transform: translateY(-100%) translateX(0); opacity: 0; }
@@ -597,7 +600,7 @@
         <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all">
           <h3 class="text-xl font-bold mb-3">Neural Nutrition</h3>
           <p class="text-sm text-gray-600 mb-4">AI-powered metabolic mapping</p>
-          <button onclick="window.location.href='Diet-Planner.html'"
+          <button onclick="window.location.href='Diet-Planner.html'" 
                   class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full hover:bg-emerald-200 transition">
             Diet Matrix →
           </button>
@@ -762,8 +765,10 @@
       }
     }
   </script>
+ 
 
-  <!-- Scripts -->
+
+ <!-- Scripts -->
 <script>
   document.addEventListener('alpine:init', () => {
     Alpine.data('app', () => ({
@@ -872,7 +877,7 @@
           const posts = await response.json();
           const containerId = `${section}-posts`;
           const container = document.getElementById(containerId);
-
+          
           let html = '';
           if(section === 'health') {
             posts.filter(post => ['Food & Recipes', 'Health & Fitness'].includes(post.category))
